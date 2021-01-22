@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SmartPTUI.Models;
 using System;
@@ -23,6 +24,7 @@ namespace SmartPTUI.Controllers
             return View();
         }
 
+        [Authorize(Roles = "SMARTPTUICUSTOMERROLE")]
         public IActionResult Privacy()
         {
             return View();

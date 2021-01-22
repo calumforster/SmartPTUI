@@ -17,6 +17,7 @@ using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartPTUI
 {
@@ -35,10 +36,13 @@ namespace SmartPTUI
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddMvc(options => {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -53,9 +57,11 @@ namespace SmartPTUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+         
 
             app.UseEndpoints(endpoints =>
             {
@@ -65,5 +71,6 @@ namespace SmartPTUI
                 endpoints.MapRazorPages();
             });
         }
+
     }
 }

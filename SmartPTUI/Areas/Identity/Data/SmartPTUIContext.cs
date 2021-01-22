@@ -9,7 +9,7 @@ using SmartPTUI.Areas.Identity.Data;
 
 namespace SmartPTUI.Data
 {
-    public class SmartPTUIContext : IdentityDbContext<SmartPTUICustomer>
+    public class SmartPTUIContext : IdentityDbContext<SmartPTUICustomer, IdentityRole, string>
     {
         public SmartPTUIContext(DbContextOptions<SmartPTUIContext> options)
             : base(options)
