@@ -24,7 +24,6 @@ namespace SmartPTUI.Controllers
             return View();
         }
 
-        [Authorize(Roles = "SMARTPTUICUSTOMERROLE")]
         public IActionResult Privacy()
         {
             return View();
