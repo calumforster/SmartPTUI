@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SmartPTUI.Business;
+using SmartPTUI.Data;
 using SmartPTUI.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Controllers
@@ -13,19 +13,24 @@ namespace SmartPTUI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICustomerRepository _customerRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICustomerRepository customerRepository)
         {
             _logger = logger;
+            _customerRepository = customerRepository;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var customers = await _customerRepository.GetCustomersAsync();
             return View();
         }
 
         public IActionResult Privacy()
         {
+
             return View();
         }
 

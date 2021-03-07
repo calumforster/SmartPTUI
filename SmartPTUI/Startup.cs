@@ -18,6 +18,8 @@ using SmartPTUI.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using SmartPTUI.Business;
 
 namespace SmartPTUI
 {
@@ -33,6 +35,8 @@ namespace SmartPTUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]));
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
