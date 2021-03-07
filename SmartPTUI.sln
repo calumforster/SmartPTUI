@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI", "SmartPTUI\Smar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPTUI.Data", "SmartPTUI.Data\SmartPTUI.Data.csproj", "{DDA1BC7F-A7FE-435D-8C1B-47C22B856A5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPTUI.Business", "SmartPTUI.Business\SmartPTUI.Business.csproj", "{1A0F8046-5571-48BC-BEA4-9B759C9167A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DDA1BC7F-A7FE-435D-8C1B-47C22B856A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDA1BC7F-A7FE-435D-8C1B-47C22B856A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDA1BC7F-A7FE-435D-8C1B-47C22B856A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A0F8046-5571-48BC-BEA4-9B759C9167A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A0F8046-5571-48BC-BEA4-9B759C9167A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A0F8046-5571-48BC-BEA4-9B759C9167A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A0F8046-5571-48BC-BEA4-9B759C9167A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
