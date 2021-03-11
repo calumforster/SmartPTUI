@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SmartPTUI.Business;
+using SmartPTUI.Business.ViewModelRepo;
+using SmartPTUI.ContentRepository;
 using SmartPTUI.Data;
 using SmartPTUI.Models;
 using System.Diagnostics;
@@ -13,18 +15,18 @@ namespace SmartPTUI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IViewModelRepository _viewModelRepository;
 
-        public HomeController(ILogger<HomeController> logger, ICustomerRepository customerRepository)
+        public HomeController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository)
         {
             _logger = logger;
-            _customerRepository = customerRepository;
+            _viewModelRepository = viewModelRepository;
 
         }
 
         public async Task<IActionResult> Index()
         {
-            var customers = await _customerRepository.GetCustomersAsync();
+            var customers = await _viewModelRepository.GetQuestionnaireViewModel(1);
             return View();
         }
 

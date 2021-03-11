@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SmartPTUI.Business;
+using SmartPTUI.ContentRepository;
+using SmartPTUI.Business.ViewModelRepo;
+using SmartPTUI.Business.ViewModels;
 
 namespace SmartPTUI
 {
@@ -37,6 +40,9 @@ namespace SmartPTUI
         {
             services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]));
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IViewModelRepository, ViewModelRepository>();
+            services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
+            services.AddScoped<ICustomerViewModel, CustomerViewModel>();
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();

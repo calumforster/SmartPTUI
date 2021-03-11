@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartPTUI.Data;
-using SmartPTUI.Data.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmartPTUI.Business
+namespace SmartPTUI.ContentRepository
 {
     public class CustomerRepository : ICustomerRepository
     {
@@ -20,6 +20,13 @@ namespace SmartPTUI.Business
         {
             var customers = await _context.Customers.ToListAsync();
             return customers;
+        }
+
+        public async Task<Customer> GetCustomerById(int id)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Id == id);
+  
+            return customer;
         }
     }
 }

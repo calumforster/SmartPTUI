@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartPTUI.Areas.Identity.Data;
-using SmartPTUI.Data.Data;
+using SmartPTUI.Data;
 
 namespace SmartPTUI.Data
 {

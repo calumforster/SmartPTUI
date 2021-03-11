@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartPTUI.Repository\SmartPTUI.ContentRepository.csproj" />
+    <ProjectReference Include="..\SmartPTUI.Data\SmartPTUI.Data.csproj" />
   </ItemGroup>
 
 </Project>

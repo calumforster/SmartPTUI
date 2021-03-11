@@ -1,9 +1,11 @@
 ﻿using SmartPTUI.Data.Enums;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace SmartPTUI.Data
+namespace SmartPTUI.Business.ViewModels
 {
-    public class Customer
+    public class CustomerViewModel : ICustomerViewModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
