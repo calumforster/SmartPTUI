@@ -29,7 +29,6 @@ namespace SmartPTUI.Controllers
             var customers = await _viewModelRepository.GetQuestionnaireViewModel(1);
             return View();
         }
-
         public IActionResult Privacy()
         {
 

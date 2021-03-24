@@ -10,8 +10,8 @@ using SmartPTUI.Data;
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    [Migration("20210310190949_AddedTables")]
-    partial class AddedTables
+    [Migration("20210324193306_IdentityRework")]
+    partial class IdentityRework
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,9 +168,6 @@ namespace SmartPTUI.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DOB")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -183,9 +180,6 @@ namespace SmartPTUI.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -252,7 +246,12 @@ namespace SmartPTUI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
                 });
@@ -306,6 +305,15 @@ namespace SmartPTUI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SmartPTUI.Data.Customer", b =>
+                {
+                    b.HasOne("SmartPTUI.Areas.Identity.Data.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

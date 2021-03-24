@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SmartPTUI.Areas.Identity.Data
 {
-    public class SMARTPTUICustomerRole : IdentityRole
+    public class AppUserRole : IdentityRole
     {
     }
 }

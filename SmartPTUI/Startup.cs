@@ -23,6 +23,7 @@ using SmartPTUI.Business;
 using SmartPTUI.ContentRepository;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
+using SmartPTUI.Business.Transactions;
 
 namespace SmartPTUI
 {
@@ -43,6 +44,7 @@ namespace SmartPTUI
             services.AddScoped<IViewModelRepository, ViewModelRepository>();
             services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
             services.AddScoped<ICustomerViewModel, CustomerViewModel>();
+            services.AddScoped<ICustomerTransactions, CustomerTransactions>();
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();

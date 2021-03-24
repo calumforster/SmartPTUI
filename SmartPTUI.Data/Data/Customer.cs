@@ -1,5 +1,8 @@
-﻿using SmartPTUI.Data.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SmartPTUI.Areas.Identity.Data;
+using SmartPTUI.Data.Enums;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartPTUI.Data
 {
@@ -12,5 +15,8 @@ namespace SmartPTUI.Data
         public int Height { get; set; }
         public DateTime DOB { get; set; }
         public CurrentHealthRating CurrentHealth { get; set; }
+        [ForeignKey("UserId")]
+        public AppUser User { get; set; }
+        public string UserId { get; set; }
     }
 }

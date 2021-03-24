@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Data;
 using System;
 using System.Collections.Generic;
@@ -28,5 +30,12 @@ namespace SmartPTUI.ContentRepository
   
             return customer;
         }
+
+        public async Task SaveCustomer(Customer customer)
+        {
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

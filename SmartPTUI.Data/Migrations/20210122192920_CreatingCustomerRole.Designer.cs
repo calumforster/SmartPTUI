@@ -156,7 +156,7 @@ namespace SmartPTUI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SmartPTUI.Areas.Identity.Data.SmartPTUICustomer", b =>
+            modelBuilder.Entity("SmartPTUI.Areas.Identity.Data.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -238,7 +238,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SmartPTUI.Areas.Identity.Data.SmartPTUICustomer", null)
+                    b.HasOne("SmartPTUI.Areas.Identity.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -247,7 +247,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SmartPTUI.Areas.Identity.Data.SmartPTUICustomer", null)
+                    b.HasOne("SmartPTUI.Areas.Identity.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -262,7 +262,7 @@ namespace SmartPTUI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartPTUI.Areas.Identity.Data.SmartPTUICustomer", null)
+                    b.HasOne("SmartPTUI.Areas.Identity.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,7 +271,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SmartPTUI.Areas.Identity.Data.SmartPTUICustomer", null)
+                    b.HasOne("SmartPTUI.Areas.Identity.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

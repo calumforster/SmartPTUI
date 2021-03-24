@@ -18,7 +18,7 @@ namespace SmartPTUI.Areas.Identity
                 services.AddDbContext<SmartPTUIContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("SmartPTUIContextConnection")));
-                services.AddDefaultIdentity<SmartPTUICustomer>(options => options.SignIn.RequireConfirmedAccount = false)
+                services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<SmartPTUIContext>();
 

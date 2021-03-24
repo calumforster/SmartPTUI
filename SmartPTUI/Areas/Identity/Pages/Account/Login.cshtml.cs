@@ -17,13 +17,13 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<SmartPTUICustomer> _userManager;
-        private readonly SignInManager<SmartPTUICustomer> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<SmartPTUICustomer> signInManager, 
+        public LoginModel(SignInManager<AppUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<SmartPTUICustomer> userManager)
+            UserManager<AppUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

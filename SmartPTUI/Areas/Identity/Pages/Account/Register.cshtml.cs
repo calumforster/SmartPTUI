@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SmartPTUI.Areas.Identity.Data;
+using SmartPTUI.Business.Transactions;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Areas.Identity.Pages.Account
@@ -20,18 +21,21 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<SmartPTUICustomer> _signInManager;
-        private readonly UserManager<SmartPTUICustomer> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly ICustomerTransactions _customerTransaction;
 
         public RegisterModel(
-            UserManager<SmartPTUICustomer> userManager,
-            SignInManager<SmartPTUICustomer> signInManager,
-            ILogger<RegisterModel> logger)
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            ILogger<RegisterModel> logger,
+            ICustomerTransactions customerTransaction )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _customerTransaction = customerTransaction;
         }
 
         [BindProperty]
@@ -82,17 +86,31 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new SmartPTUICustomer {
-                    Name = Input.Name,
-                    DOB = Input.DOB,
+                var user = new AppUser {
                     UserName = Input.Email, 
                     Email = Input.Email 
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "SMARTPTUICustomerRole");
+
+                    
+                    
+                    await _userManager.AddToRoleAsync(user, "AppUserRole");
                     _logger.LogInformation("User created a new account with password.");
+
+                    var customer = new Customer()
+                    {
+                        FirstName = "John",
+                        LastName = "Smith",
+                        Gender = SmartPTUI.Data.Enums.Gender.Male,
+                        Height = 170,
+                        DOB = DateTime.Now,
+                        CurrentHealth = SmartPTUI.Data.Enums.CurrentHealthRating.Fair,
+                        User = user
+                    };
+
+                    await _customerTransaction.SaveCustomer(customer);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

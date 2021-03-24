@@ -11,6 +11,7 @@ namespace SmartPTUI.Data.DomainModels
         public WorkoutQuestion WorkoutQuestion { get; set; } 
         public IEnumerable<WorkoutWeek> WorkoutWeek { get; set; }
         public IEnumerable<WorkoutArea> AreaRanking { get; set; }
+        public Customer Customer { get; set; }
 
 
 
