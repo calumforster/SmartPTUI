@@ -15,8 +15,8 @@ namespace SmartPTUI.Data
         public int Height { get; set; }
         public DateTime DOB { get; set; }
         public CurrentHealthRating CurrentHealth { get; set; }
-        [ForeignKey("UserId")]
-        public AppUser User { get; set; }
         public string UserId { get; set; }
+
+        public virtual AppUser User { get; set; }
     }
 }

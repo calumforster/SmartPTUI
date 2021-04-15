@@ -26,7 +26,7 @@ namespace SmartPTUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var customers = await _viewModelRepository.GetQuestionnaireViewModel(1);
+            //var customers = await _viewModelRepository.GetQuestionnaireViewModel(1);
             return View();
         }
         public IActionResult Privacy()

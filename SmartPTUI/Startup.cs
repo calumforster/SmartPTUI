@@ -24,6 +24,7 @@ using SmartPTUI.ContentRepository;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
 using SmartPTUI.Business.Transactions;
+using SmartPTUI.Data.Data;
 
 namespace SmartPTUI
 {
@@ -39,12 +40,23 @@ namespace SmartPTUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]));
+
+            var builder = services.AddIdentityCore<AppUser>();
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<SmartPTUIContext>();
+            builder.AddRoleValidator<RoleValidator<IdentityRole>>();
+            builder.AddRoleManager<RoleManager<IdentityRole>>();
+            builder.AddSignInManager<SignInManager<AppUser>>();
+
+
+            services.AddTransient<UserManager<AppUser>>();
+            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]), ServiceLifetime.Transient);
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IViewModelRepository, ViewModelRepository>();
             services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
             services.AddScoped<ICustomerViewModel, CustomerViewModel>();
             services.AddScoped<ICustomerTransactions, CustomerTransactions>();
+            services.AddTransient<SmartPTUIContext>();
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -54,7 +66,7 @@ namespace SmartPTUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, SmartPTUIContext dbContext ,UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -82,6 +94,8 @@ namespace SmartPTUI
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            DbInitializer.InitializeAsync(app.ApplicationServices, dbContext, userManager, roleManager).Wait();
         }
 
     }

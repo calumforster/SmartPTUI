@@ -13,6 +13,11 @@
         Layout = "~/Views/Shared/_LayoutPT.cshtml";
     }
 
+    else if (this.User.IsInRole("SMARTPTUIADMINROLETEST"))
+    {
+        Layout = "~/Views/Shared/_LayoutPTTest.cshtml";
+    }
+
     else
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
