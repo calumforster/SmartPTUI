@@ -1,5 +1,6 @@
 ﻿@page
 @model RegisterModel
+@using SmartPTUI.Data.Enums
 @{
     ViewData["Title"] = "Register";
 }
@@ -13,15 +14,44 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Name"></label>
-                <input asp-for="Input.Name" class="form-control" />
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Gender"></label>
+                <select asp-for="Input.Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control">
+                    <option selected="selected" value="">Please select a Gender</option>
+                </select>
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Height"></label>
+                <input asp-for="Input.Height" class="form-control" />
+                <span asp-validation-for="Input.Height" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.CurrentHealthRating"></label>
+                <select asp-for="Input.CurrentHealthRating" asp-items="Html.GetEnumSelectList<CurrentHealthRating>()" class="form-control">
+                    <option selected="selected" value="">Please select a Current Health Rating</option>
+                </select>
+                <span asp-validation-for="Input.CurrentHealthRating" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Input.DOB"></label>
                 <input asp-for="Input.DOB" class="form-control" />
                 <span asp-validation-for="Input.DOB" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />

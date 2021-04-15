@@ -15,7 +15,7 @@ namespace SmartPTUI.Data.Data
     public class DbInitializer
     {
        
-        public static async Task InitializeAsync(IServiceProvider services, SmartPTUIContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(SmartPTUIContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var _context = context;
             var _userManager = userManager;
@@ -109,14 +109,6 @@ namespace SmartPTUI.Data.Data
 
         }
 
-        public static async Task<IdentityResult> AssignRoles(IServiceProvider services, string email, string[] roles)
-        {
-            UserManager<AppUser> _userManager = services.GetService<UserManager<AppUser>>();
-            AppUser user = await _userManager.FindByEmailAsync(email);
-            var result = await _userManager.AddToRolesAsync(user, roles);
-
-            return result;
-        }
 
     }
 

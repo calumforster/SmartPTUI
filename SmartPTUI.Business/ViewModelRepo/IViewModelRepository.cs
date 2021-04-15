@@ -5,6 +5,6 @@ namespace SmartPTUI.Business.ViewModelRepo
 {
     public interface IViewModelRepository
     {
-        Task<QuestionnaireViewModel> GetQuestionnaireViewModel(int id);
+        Task<QuestionnaireViewModel> GetQuestionnaireViewModel(string id);
     }
 }

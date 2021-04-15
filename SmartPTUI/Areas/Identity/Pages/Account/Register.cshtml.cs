@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Business.Transactions;
 using SmartPTUI.Data;
+using SmartPTUI.Data.Enums;
 
 namespace SmartPTUI.Areas.Identity.Pages.Account
 {
@@ -49,8 +50,25 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Full name")]
-            public string Name { get; set; }
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Gender")]
+            public Gender Gender { get; set; }
+
+            [Required]
+            [Display(Name = "Height")]
+            public int Height { get; set; }
+
+            [Required]
+            [Display(Name = "Current Health Rating")]
+            public CurrentHealthRating CurrentHealthRating { get; set; }
 
             [Required]
             [Display(Name = "Birth Date")]
@@ -101,13 +119,13 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
 
                     var customer = new Customer()
                     {
-                        FirstName = "John",
-                        LastName = "Smith",
-                        Gender = SmartPTUI.Data.Enums.Gender.Male,
-                        Height = 170,
-                        DOB = DateTime.Now,
-                        CurrentHealth = SmartPTUI.Data.Enums.CurrentHealthRating.Fair,
-                        User = user
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        Gender = Input.Gender,
+                        Height = Input.Height,
+                        DOB = Input.DOB,
+                        CurrentHealth = Input.CurrentHealthRating,
+                        UserId = user.Id
                     };
 
                     await _customerTransaction.SaveCustomer(customer);

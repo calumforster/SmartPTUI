@@ -24,9 +24,9 @@ namespace SmartPTUI.ContentRepository
             return customers;
         }
 
-        public async Task<Customer> GetCustomerById(int id)
+        public async Task<Customer> GetCustomerById(string id)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Id == id);
+            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId.Equals(id));
   
             return customer;
         }

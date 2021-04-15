@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
 using System;
@@ -14,15 +17,19 @@ namespace SmartPTUI.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IViewModelRepository _viewModelRepository;
         private readonly IQuestionnaireViewModel _questionnaireViewModel;
-        public WorkoutQuestionnaireController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel)
+        private readonly UserManager<AppUser> _userManager;
+        public WorkoutQuestionnaireController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _viewModelRepository = viewModelRepository;
             _questionnaireViewModel = questionnaireViewModel;
+            _userManager = userManager;
         }
+        [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> Index()
         {
-            var model = await _viewModelRepository.GetQuestionnaireViewModel(1);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var model = await _viewModelRepository.GetQuestionnaireViewModel(user.Id);
             return View(model);
         }
 

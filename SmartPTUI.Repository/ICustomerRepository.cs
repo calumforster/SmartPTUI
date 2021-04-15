@@ -9,7 +9,7 @@ namespace SmartPTUI.ContentRepository
     public interface ICustomerRepository
     {
         Task<IEnumerable<Customer>> GetCustomersAsync();
-        Task<Customer> GetCustomerById(int id);
+        Task<Customer> GetCustomerById(string id);
         Task SaveCustomer(Customer Customer);
     }
 }

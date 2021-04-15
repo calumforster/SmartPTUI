@@ -18,7 +18,7 @@ namespace SmartPTUI.Business.ViewModelRepo
             _customerRepository = customerRepository;
         }
 
-        public async Task<QuestionnaireViewModel> GetQuestionnaireViewModel(int id)
+        public async Task<QuestionnaireViewModel> GetQuestionnaireViewModel(string id)
         {
             var customer = await _customerRepository.GetCustomerById(id);
             return new QuestionnaireViewModel()
@@ -28,7 +28,7 @@ namespace SmartPTUI.Business.ViewModelRepo
                     FirstName = customer.FirstName,
                     LastName = customer.LastName
                 },
-                WorkoutQuestion = new WorkoutQuestion()
+                WorkoutQuestion = new WorkoutQuestion()              
             };
         }
     }

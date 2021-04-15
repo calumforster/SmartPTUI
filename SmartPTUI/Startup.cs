@@ -95,7 +95,7 @@ namespace SmartPTUI
                 endpoints.MapRazorPages();
             });
 
-            DbInitializer.InitializeAsync(app.ApplicationServices, dbContext, userManager, roleManager).Wait();
+            DbInitializer.InitializeAsync(dbContext, userManager, roleManager).Wait();
         }
 
     }
