@@ -56,6 +56,8 @@ namespace SmartPTUI
             services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
             services.AddScoped<ICustomerViewModel, CustomerViewModel>();
             services.AddScoped<ICustomerTransactions, CustomerTransactions>();
+            services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+            services.AddScoped<IWorkoutTransaction, WorkoutTransaction>();
             services.AddTransient<SmartPTUIContext>();
             services.AddAuthentication();
             services.AddControllersWithViews();
