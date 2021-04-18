@@ -1,16 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SmartPTUI.Business.Transactions;
+using SmartPTUI.Business.ViewModelRepo;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Controllers
 {
     public class WorkoutController : Controller
     {
-        public IActionResult Index()
+        private readonly ILogger<WorkoutController> _logger;
+        private readonly IWorkoutTransaction _workoutTransaction;
+        public WorkoutController(ILogger<WorkoutController> logger, IViewModelRepository viewModelRepository, IWorkoutTransaction workoutTransaction)
         {
-            return View();
+            _logger = logger;
+            _workoutTransaction = workoutTransaction;
+        }
+
+        [Authorize(Roles = "APPUSERROLE")]
+        public async Task<IActionResult> Index(int WorkoutId)
+        {
+            var workoutPlan = await _workoutTransaction.GetWorkout(WorkoutId);
+
+            return View(workoutPlan);
         }
     }
 }

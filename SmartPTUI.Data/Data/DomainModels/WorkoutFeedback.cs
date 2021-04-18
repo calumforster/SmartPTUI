@@ -6,5 +6,6 @@ namespace SmartPTUI.Data.DomainModels
 {
     public class WorkoutFeedback
     {
+        public int Id { get; set; }
     }
 }

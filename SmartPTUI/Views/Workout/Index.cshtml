@@ -1,5 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using SmartPTUI.Data.DomainModels
+@model WorkoutPlan
+
+@for (int i = 0; i <= Model.WorkoutWeek.Count; i++)
+{
+    <h1>Week @(i+1)</h1>
+
+    for (int j = 0; j <= Model.WorkoutWeek[i].Workout.Count; j++)
+    {
+        <h2>Workout Day @(j+1)</h2>
+        for (int z = 0; z <= Model.WorkoutWeek[i].Workout[j].Excersizes.Count; z++)
+        {
+            <h3>Excersize @(z+1):</h3>
+            <p>Name: @Model.WorkoutWeek[i].Workout[j].Excersizes[z].ExcersizeType.WorkoutName</p>
+            <p>Sets: @Model.WorkoutWeek[i].Workout[j].Excersizes[z].Sets</p>
+            <p>Reps: @Model.WorkoutWeek[i].Workout[j].Excersizes[z].Reps</p>
+            <p>Weight: @Model.WorkoutWeek[i].Workout[j].Excersizes[z].Weight</p>
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ namespace SmartPTUI.Data.DomainModels
 {
     public class WorkoutQuestion
     {
+        public int Id { get; set; }
         [Display(Name = "Starting Weight (Kg's)", Prompt = "e.g 100")]
         [Required]
         public int? StartWeight { get; set; }

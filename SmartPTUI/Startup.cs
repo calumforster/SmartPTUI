@@ -4,27 +4,19 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Session;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.StaticFiles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SmartPTUI.Business;
 using SmartPTUI.ContentRepository;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
 using SmartPTUI.Business.Transactions;
 using SmartPTUI.Data.Data;
+using AutoMapper;
+using SmartPTUI.Business;
 
 namespace SmartPTUI
 {
@@ -48,6 +40,7 @@ namespace SmartPTUI
             builder.AddRoleManager<RoleManager<IdentityRole>>();
             builder.AddSignInManager<SignInManager<AppUser>>();
 
+            services.AddAutoMapper(typeof(AutoMapperConfig));
 
             services.AddTransient<UserManager<AppUser>>();
             services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]), ServiceLifetime.Transient);
@@ -58,6 +51,7 @@ namespace SmartPTUI
             services.AddScoped<ICustomerTransactions, CustomerTransactions>();
             services.AddScoped<IWorkoutRepository, WorkoutRepository>();
             services.AddScoped<IWorkoutTransaction, WorkoutTransaction>();
+            services.AddScoped<IExcersizeRepository, ExcersizeRepository>();
             services.AddTransient<SmartPTUIContext>();
             services.AddAuthentication();
             services.AddControllersWithViews();

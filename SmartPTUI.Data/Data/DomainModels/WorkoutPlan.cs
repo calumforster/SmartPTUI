@@ -8,8 +8,9 @@ namespace SmartPTUI.Data.DomainModels
 {
     public class WorkoutPlan
     {
+        public int Id { get; set; }
         public WorkoutQuestion WorkoutQuestion { get; set; } 
-        public IEnumerable<WorkoutWeek> WorkoutWeek { get; set; }
+        public IList<WorkoutWeek> WorkoutWeek { get; set; }
         public Customer Customer { get; set; }
 
 
