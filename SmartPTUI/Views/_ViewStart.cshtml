@@ -1,3 +1,26 @@
 ﻿@{
-    Layout = "_Layout";
+
+    if (this.User.IsInRole("APPUSERROLE"))
+    {
+        Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    }
+    else if (this.User.IsInRole("SMARTPTUIADMINROLE"))
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else if (this.User.IsInRole("SMARTPTUIPTROLE"))
+    {
+        Layout = "~/Views/Shared/_LayoutPT.cshtml";
+    }
+
+    else if (this.User.IsInRole("SMARTPTUIADMINROLETEST"))
+    {
+        Layout = "~/Views/Shared/_LayoutPTTest.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
+

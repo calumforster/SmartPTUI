@@ -8,33 +8,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SmartPTUI.Areas.Identity.Data;
+using SmartPTUI.Business.Transactions;
+using SmartPTUI.Data;
+using SmartPTUI.Data.Enums;
 
 namespace SmartPTUI.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<SmartPTUICustomer> _signInManager;
-        private readonly UserManager<SmartPTUICustomer> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly ICustomerTransactions _customerTransaction;
 
         public RegisterModel(
-            UserManager<SmartPTUICustomer> userManager,
-            SignInManager<SmartPTUICustomer> signInManager,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            ICustomerTransactions customerTransaction )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _customerTransaction = customerTransaction;
         }
 
         [BindProperty]
@@ -48,8 +50,25 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Full name")]
-            public string Name { get; set; }
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Gender")]
+            public Gender Gender { get; set; }
+
+            [Required]
+            [Display(Name = "Height")]
+            public int Height { get; set; }
+
+            [Required]
+            [Display(Name = "Current Health Rating")]
+            public CurrentHealthRating CurrentHealthRating { get; set; }
 
             [Required]
             [Display(Name = "Birth Date")]
@@ -85,16 +104,31 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new SmartPTUICustomer {
-                    Name = Input.Name,
-                    DOB = Input.DOB,
+                var user = new AppUser {
                     UserName = Input.Email, 
                     Email = Input.Email 
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+
+                    
+                    
+                    await _userManager.AddToRoleAsync(user, "AppUserRole");
                     _logger.LogInformation("User created a new account with password.");
+
+                    var customer = new Customer()
+                    {
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        Gender = Input.Gender,
+                        Height = Input.Height,
+                        DOB = Input.DOB,
+                        CurrentHealth = Input.CurrentHealthRating,
+                        UserId = user.Id
+                    };
+
+                    await _customerTransaction.SaveCustomer(customer);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -104,8 +138,6 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

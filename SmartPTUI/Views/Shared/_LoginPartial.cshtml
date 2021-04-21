@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using SmartPTUI.Areas.Identity.Data
 
-@inject SignInManager<SmartPTUICustomer> SignInManager
-@inject UserManager<SmartPTUICustomer> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

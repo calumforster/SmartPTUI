@@ -1,0 +1,8 @@
+﻿@using SmartPTUI.Data.DomainModels
+@model WorkoutSession
+
+@for (int z = 0; z < Model.Excersizes.Count; z++)
+{
+    <h3>Excersize @(z+1):</h3>
+    @await Html.PartialAsync("Excersize.cshtml", Model.Excersizes[z])
+}

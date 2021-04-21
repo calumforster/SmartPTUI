@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +18,13 @@ namespace SmartPTUI.Areas.Identity
                 services.AddDbContext<SmartPTUIContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("SmartPTUIContextConnection")));
-
-                services.AddDefaultIdentity<SmartPTUICustomer>(options => options.SignIn.RequireConfirmedAccount = false)
+                services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<SmartPTUIContext>();
+
             });
         }
+
+
     }
 }

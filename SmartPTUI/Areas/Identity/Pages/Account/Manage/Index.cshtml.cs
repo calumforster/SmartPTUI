@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,14 +11,15 @@ using SmartPTUI.Areas.Identity.Data;
 
 namespace SmartPTUI.Areas.Identity.Pages.Account.Manage
 {
+    [AllowAnonymous]
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<SmartPTUICustomer> _userManager;
-        private readonly SignInManager<SmartPTUICustomer> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
         public IndexModel(
-            UserManager<SmartPTUICustomer> userManager,
-            SignInManager<SmartPTUICustomer> signInManager)
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -47,7 +49,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
-        private async Task LoadAsync(SmartPTUICustomer user)
+        private async Task LoadAsync(AppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -56,8 +58,6 @@ namespace SmartPTUI.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                Name = user.Name,
-                DOB = user.DOB,
                 PhoneNumber = phoneNumber
             };
         }
@@ -97,16 +97,6 @@ namespace SmartPTUI.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
-            }
-
-            if (Input.Name != user.Name)
-            {
-                user.Name = Input.Name;
-            }
-
-            if (Input.DOB != user.DOB)
-            {
-                user.DOB = Input.DOB;
             }
 
             await _userManager.UpdateAsync(user);
