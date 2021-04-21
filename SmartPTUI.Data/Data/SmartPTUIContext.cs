@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Data;
-using SmartPTUI.Data.Data.DomainModels;
 using SmartPTUI.Data.DomainModels;
 using SmartPTUI.Data.Enums;
 using System;

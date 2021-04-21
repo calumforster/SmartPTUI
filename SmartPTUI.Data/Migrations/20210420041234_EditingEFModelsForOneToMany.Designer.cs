@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210420041234_EditingEFModelsForOneToMany")]
+    partial class EditingEFModelsForOneToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,7 +263,7 @@ namespace SmartPTUI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExcersizeId")
+                    b.Property<int?>("ExcersizeTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Reps")
@@ -278,7 +280,7 @@ namespace SmartPTUI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExcersizeId");
+                    b.HasIndex("ExcersizeTypeId");
 
                     b.HasIndex("WorkoutId");
 
@@ -384,14 +386,14 @@ namespace SmartPTUI.Migrations
                     b.Property<int?>("FeedbackId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WorkoutWeekId")
+                    b.Property<int?>("WorkoutId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FeedbackId");
 
-                    b.HasIndex("WorkoutWeekId");
+                    b.HasIndex("WorkoutId");
 
                     b.ToTable("WorkoutSessions");
                 });
@@ -486,9 +488,7 @@ namespace SmartPTUI.Migrations
                 {
                     b.HasOne("SmartPTUI.Data.DomainModels.Excersize", "ExcersizeType")
                         .WithMany()
-                        .HasForeignKey("ExcersizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExcersizeTypeId");
 
                     b.HasOne("SmartPTUI.Data.DomainModels.WorkoutSession", "Workout")
                         .WithMany("Excersizes")
@@ -520,13 +520,13 @@ namespace SmartPTUI.Migrations
                         .WithMany()
                         .HasForeignKey("FeedbackId");
 
-                    b.HasOne("SmartPTUI.Data.DomainModels.WorkoutWeek", "WorkoutWeek")
+                    b.HasOne("SmartPTUI.Data.DomainModels.WorkoutWeek", "Workout")
                         .WithMany("Workout")
-                        .HasForeignKey("WorkoutWeekId");
+                        .HasForeignKey("WorkoutId");
 
                     b.Navigation("Feedback");
 
-                    b.Navigation("WorkoutWeek");
+                    b.Navigation("Workout");
                 });
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutWeek", b =>

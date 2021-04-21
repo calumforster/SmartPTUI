@@ -1,0 +1,9 @@
+﻿@using SmartPTUI.Data.DomainModels
+@model WorkoutWeek
+
+
+@for (int j = 0; j < Model.Workout.Count; j++)
+{
+    <h2>Workout Day @(j+1)</h2>
+    @await Html.PartialAsync("WorkoutSession.cshtml", Model.Workout[j])
+}

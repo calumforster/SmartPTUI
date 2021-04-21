@@ -18,7 +18,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<WorkoutPlan> GetWorkout(int id)
         {
-           return await _context.WorkoutPlans.FirstOrDefaultAsync(x => x.Id == id);
+           return await _context.WorkoutPlans.Include(x => x.WorkoutWeek).ThenInclude(x => x.Workout).ThenInclude(x => x.Excersizes).ThenInclude(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)

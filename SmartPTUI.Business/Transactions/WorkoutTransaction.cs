@@ -2,8 +2,8 @@
 using SmartPTUI.Business.ViewModels;
 using SmartPTUI.ContentRepository;
 using SmartPTUI.Data;
-using SmartPTUI.Data.Data.DomainModels;
 using SmartPTUI.Data.DomainModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,7 +40,7 @@ namespace SmartPTUI.Business.Transactions
                 EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
                 CaloriesConsumed = 0
             });
-
+            Workout.WorkoutWeek[0].Workout = new List<WorkoutSession>();
 
             for (int i = 0; i < questionResults.WorkoutQuestion.DaysPerWeek; i ++) 
             {
@@ -49,19 +49,22 @@ namespace SmartPTUI.Business.Transactions
                 {
                     excersizeCycle = excersizeCycle - 4;
                 }
-                Workout.WorkoutWeek[0].Workout = new List<WorkoutSession>();
+                
 
                 WorkoutSession workoutSession = new WorkoutSession();
                 workoutSession.Excersizes = new List<ExcersizeMeta>();
                 workoutSession.Feedback = new WorkoutFeedback();
+                Random random = new Random();
 
                 for (int j = 0; j < 4; j++) {
+                    var excersize = await _excersizeRepository.GetChestExcersize();
+                    int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
                     { 
                      Weight = (int) (0.7 * questionResults.WorkoutQuestion.StartWeight),
-                     Sets = 4,
+                     Sets = random.Next(1,10),
                      Reps = 12,
-                     ExcersizeType = await _excersizeRepository.GetChestExcersize()
+                     ExcersizeId = excersizeId
                     });
                 }
                 Workout.WorkoutWeek[0].Workout.Add(workoutSession);

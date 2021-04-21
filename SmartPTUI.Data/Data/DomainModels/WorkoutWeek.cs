@@ -10,7 +10,8 @@ namespace SmartPTUI.Data.DomainModels
         public int StartWeight { get; set; }
         public int EndWeight { get; set; }
         public int CaloriesConsumed { get; set; }
-        public List<WorkoutSession> Workout { get; set; }
+        public IList<WorkoutSession> Workout { get; set; }
+        public WorkoutPlan WorkoutPlan { get; set; }
  
     }
 }
