@@ -63,6 +63,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             public Gender Gender { get; set; }
 
             [Required]
+            [Range(100, 250)]
             [Display(Name = "Height")]
             public int Height { get; set; }
 

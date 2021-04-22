@@ -19,13 +19,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.StartWeight);
+        @Html.LabelFor(m => m.WorkoutQuestion.StartWeight)
         @Html.TextBoxFor(m => m.WorkoutQuestion.StartWeight, new { @class = formCssClass })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.StartWeight)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.EndWeight);
+        @Html.LabelFor(m => m.WorkoutQuestion.EndWeight)
         @Html.TextBoxFor(m => m.WorkoutQuestion.EndWeight, new { @class = formCssClass })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.EndWeight)
     </div>
@@ -37,13 +37,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { placeholder = "Placeholder", @class = formCssClass })
+        @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek,new { @class = formCssClass })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.TimePerWorkout);
+        @Html.LabelFor(m => m.WorkoutQuestion.TimePerWorkout)
         @Html.TextBoxFor(m => m.WorkoutQuestion.TimePerWorkout, new { @class = formCssClass })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.TimePerWorkout)
     </div>
