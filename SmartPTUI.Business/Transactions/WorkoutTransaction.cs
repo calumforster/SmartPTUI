@@ -78,5 +78,20 @@ namespace SmartPTUI.Business.Transactions
         {
             return await _workoutRepository.GetWorkout(id);
         }
+
+        public async Task<WorkoutWeek> GetWorkoutWeek(int id)
+        {
+            return await _workoutRepository.GetWorkoutWeek(id);
+        }
+
+        public async Task<WorkoutSession> GetWorkoutSession(int id)
+        {
+            return await _workoutRepository.GetWorkoutSession(id);
+        }
+
+        public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
+        {
+            return await _workoutRepository.GetExcersizeMeta(id);
+        }
     }
 }

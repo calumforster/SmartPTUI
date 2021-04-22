@@ -3,6 +3,6 @@
 
 @for (int i = 0; i < Model.WorkoutWeek.Count; i++)
 {
-    <h1>Week @(i+1)</h1>
-    @await Html.PartialAsync("WorkoutWeek.cshtml", Model.WorkoutWeek[i])
+    <h1>Workout Weeks:</h1>
+    @Html.ActionLink("Week "+(i+1), "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek[i].Id })
 }

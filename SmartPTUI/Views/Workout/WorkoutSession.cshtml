@@ -3,6 +3,7 @@
 
 @for (int z = 0; z < Model.Excersizes.Count; z++)
 {
-    <h3>Excersize @(z+1):</h3>
-    @await Html.PartialAsync("Excersize.cshtml", Model.Excersizes[z])
+    <h3>Excersizes:</h3>
+    @Html.ActionLink("Excersize "+(z+1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].Id})
+
 }

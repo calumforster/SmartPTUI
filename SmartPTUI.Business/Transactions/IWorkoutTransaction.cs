@@ -12,5 +12,11 @@ namespace SmartPTUI.Business.Transactions
 
         public Task<int> CreateWorkout(QuestionnaireViewModel questionResults);
         public Task<WorkoutPlan> GetWorkout(int id);
+
+        public Task<WorkoutWeek> GetWorkoutWeek(int id);
+
+        public Task<WorkoutSession> GetWorkoutSession(int id);
+
+        public Task<ExcersizeMeta> GetExcersizeMeta(int id);
     }
 }

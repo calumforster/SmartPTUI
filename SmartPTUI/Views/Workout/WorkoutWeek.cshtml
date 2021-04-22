@@ -4,6 +4,6 @@
 
 @for (int j = 0; j < Model.Workout.Count; j++)
 {
-    <h2>Workout Day @(j+1)</h2>
-    @await Html.PartialAsync("WorkoutSession.cshtml", Model.Workout[j])
+    <h2>Workout Days:</h2>
+    @Html.ActionLink("Workout Day "+(j+1), "WorkoutSession","Workout", new { id = Model.Workout[j].Id })
 }
