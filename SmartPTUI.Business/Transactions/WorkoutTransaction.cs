@@ -24,40 +24,30 @@ namespace SmartPTUI.Business.Transactions
             public async Task<int> CreateWorkout(QuestionnaireViewModel questionResults)
         {
 
-            List<Task<Excersize>> taskList = new List<Task<Excersize>>();
-           // taskList.Add(_excersizeRepository.GetChestExcersize());
-           // taskList.Add(_excersizeRepository.GetBackExcersize());
-           // taskList.Add(_excersizeRepository.GetShouldersExcersize());
-            //taskList.Add(_excersizeRepository.GetLegsExcersize());
-
-
             var Workout = new WorkoutPlan();
+
             Workout.Customer = _mapper.Map<CustomerViewModel, Customer>(questionResults.Customer);
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;
             Workout.WorkoutWeek = new List<WorkoutWeek>();
+
             Workout.WorkoutWeek.Add(new WorkoutWeek() {
                 StartWeight = questionResults.WorkoutQuestion.StartWeight.Value,
                 EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
                 CaloriesConsumed = 0
             });
+
             Workout.WorkoutWeek[0].Workout = new List<WorkoutSession>();
+            var excersizeCycle = 0;
 
             for (int i = 0; i < questionResults.WorkoutQuestion.DaysPerWeek; i ++) 
-            {
-                var excersizeCycle = i;
-                if (i > 4)
-                {
-                    excersizeCycle = excersizeCycle - 4;
-                }
-                
-
+            {                             
                 WorkoutSession workoutSession = new WorkoutSession();
                 workoutSession.Excersizes = new List<ExcersizeMeta>();
                 workoutSession.Feedback = new WorkoutFeedback();
                 Random random = new Random();
 
                 for (int j = 0; j < 4; j++) {
-                    var excersize = await _excersizeRepository.GetChestExcersize();
+                    var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
                     int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
                     { 
@@ -67,6 +57,17 @@ namespace SmartPTUI.Business.Transactions
                      ExcersizeId = excersizeId
                     });
                 }
+
+
+                if ((i > 0) && (i % 3 == 0))
+                {
+                    excersizeCycle = excersizeCycle - 3;
+                }
+                else 
+                {
+                    excersizeCycle++;
+                }
+                
                 Workout.WorkoutWeek[0].Workout.Add(workoutSession);
             }
 
