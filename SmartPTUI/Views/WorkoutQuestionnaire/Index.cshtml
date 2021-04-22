@@ -6,44 +6,17 @@
 }
 
 <form asp-controller="WorkoutQuestionnaire" asp-action="SubmitForm">
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.FirstName);
-        @Html.TextBoxFor(m => m.Customer.FirstName, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.FirstName)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.LastName);
-        @Html.TextBoxFor(m => m.Customer.LastName, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.LastName)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.Gender)
-        @Html.DropDownListFor(m => m.Customer.Gender, Html.GetEnumSelectList(Model.Customer.Gender.GetType()), "Select Gender", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.Gender)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.Height);
-        @Html.TextBoxFor(m => m.Customer.Height, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.Height)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.DOB)
-        @Html.TextBoxFor(m => m.Customer.DOB, "{0:d MMM yyyy}", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.DOB)
-    </div>
+    @Html.HiddenFor(m => m.Customer.FirstName)
+    @Html.HiddenFor(m => m.Customer.LastName)
+    @Html.HiddenFor(m => m.Customer.Gender)
+    @Html.HiddenFor(m => m.Customer.DOB)
+    @Html.HiddenFor(m => m.Customer.Height)
 
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.CurrentHealth)
         @Html.DropDownListFor(m => m.Customer.CurrentHealth, Html.GetEnumSelectList(Model.Customer.CurrentHealth.GetType()), "Select Current Health Level", new { @class = formCssClass })
         @Html.ValidationMessageFor(m => m.Customer.CurrentHealth)
     </div>
-
-    <br>
-    <br>
 
     <div class="form-group">
         @Html.LabelFor(m => m.WorkoutQuestion.StartWeight);
@@ -65,7 +38,7 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { placeholder = "Placeholder"  , @class = formCssClass })
+        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { placeholder = "Placeholder", @class = formCssClass })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek)
     </div>
 
@@ -75,8 +48,8 @@
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.TimePerWorkout)
     </div>
     @{
-       
-     }
+
+    }
     <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>

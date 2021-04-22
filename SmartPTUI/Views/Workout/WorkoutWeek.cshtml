@@ -1,9 +1,8 @@
 ﻿@using SmartPTUI.Data.DomainModels
 @model WorkoutWeek
 
-
+<h2>Workout Days:</h2>
 @for (int j = 0; j < Model.Workout.Count; j++)
-{
-    <h2>Workout Days:</h2>
+{   
     @Html.ActionLink("Workout Day "+(j+1), "WorkoutSession","Workout", new { id = Model.Workout[j].Id })
 }

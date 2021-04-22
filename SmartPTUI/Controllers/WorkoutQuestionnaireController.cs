@@ -6,9 +6,6 @@ using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Business.Transactions;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Controllers

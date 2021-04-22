@@ -11,7 +11,7 @@ namespace SmartPTUI.Business
     {
         public AutoMapperConfig() 
         {
-            CreateMap<CustomerViewModel , Customer>();
+            CreateMap<CustomerViewModel , Customer>().ReverseMap();
         }
         
     }
