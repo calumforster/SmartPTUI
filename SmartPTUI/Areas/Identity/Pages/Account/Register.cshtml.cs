@@ -50,11 +50,15 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
+            [RegularExpression(@"^[a-zA-Z]*$", ErrorMessage = "Name must only contain letters")]
+            [StringLength(30, MinimumLength = 2, ErrorMessage = "Part numbers must be between 2 and 30 character in length.")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [RegularExpression(@"^[a-zA-Z]*$", ErrorMessage = "Name must only contain letters")]
+            [StringLength(30, MinimumLength = 2, ErrorMessage = "Part numbers must be between 2 and 30 character in length.")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
 

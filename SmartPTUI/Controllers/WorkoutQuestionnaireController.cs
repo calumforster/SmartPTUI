@@ -35,15 +35,13 @@ namespace SmartPTUI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> SubmitForm(QuestionnaireViewModel viewModel)
-        {
-            
-            if (ModelState.IsValid) 
+        {           
+            if (!ModelState.IsValid) 
             {
-                var model = viewModel;
-                var workoutId = await _workoutTransaction.CreateWorkout(viewModel);
-                return RedirectToAction("Index", "Workout", new { WorkoutId = workoutId});
+                return View("Index", viewModel);
             }
-            return View();
+            var workoutId = await _workoutTransaction.CreateWorkout(viewModel);
+            return RedirectToAction("Index", "Workout", new { WorkoutId = workoutId });
         }
     }
 }

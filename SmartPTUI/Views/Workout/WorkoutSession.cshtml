@@ -4,6 +4,6 @@
     <h3>Excersizes:</h3>
 @for (int z = 0; z < Model.Excersizes.Count; z++)
 {
-    @Html.ActionLink("Excersize "+(z+1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].Id})
+   <p> @Html.ActionLink("Excersize "+(z+1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].Id}) </p>
 
 }

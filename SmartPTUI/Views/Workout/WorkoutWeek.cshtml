@@ -4,5 +4,5 @@
 <h2>Workout Days:</h2>
 @for (int j = 0; j < Model.Workout.Count; j++)
 {   
-    @Html.ActionLink("Workout Day "+(j+1), "WorkoutSession","Workout", new { id = Model.Workout[j].Id })
+    <p>@Html.ActionLink("Workout Day "+(j+1), "WorkoutSession","Workout", new { id = Model.Workout[j].Id })</p>
 }
