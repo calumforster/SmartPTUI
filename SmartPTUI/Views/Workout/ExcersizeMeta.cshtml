@@ -3,6 +3,42 @@
 
 <h3>Excersize Info</h3>
 <p>Name: @Model.ExcersizeType.WorkoutName</p>
-<p>Sets: @Model.Sets</p>
-<p>Reps: @Model.Reps</p>
-<p>Weight: @Model.Weight</p>
+<p>Sets: @Model.SetsGoal</p>
+<p>Reps: @Model.RepsGoal</p>
+<p>Weight: @Model.WeightGoal</p>
+
+<h3>Excersize Results</h3>
+
+<form asp-controller="Workout" asp-action="SubmitExcersizeMeta">
+
+
+    @Html.HiddenFor(m => m.ExcersizeType.Id)
+    @Html.HiddenFor(m => m.SetsGoal)
+    @Html.HiddenFor(m => m.RepsGoal)
+    @Html.HiddenFor(m => m.WeightGoal)
+    @Html.HiddenFor(m => m.ExcersizeMetaId)
+    @Html.HiddenFor(m => m.Workout.Id)
+
+    @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SetsAchieved)
+        @Html.TextBoxFor(m => m.SetsAchieved, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SetsAchieved, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.RepsAchieved)
+        @Html.TextBoxFor(m => m.RepsAchieved, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RepsAchieved, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.WeightAchieved)
+        @Html.TextBoxFor(m => m.WeightAchieved, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WeightAchieved, null, new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

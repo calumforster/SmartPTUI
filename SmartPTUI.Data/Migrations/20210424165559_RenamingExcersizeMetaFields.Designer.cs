@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210424165559_RenamingExcersizeMetaFields")]
+    partial class RenamingExcersizeMetaFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,7 +282,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.ExcersizeMeta", b =>
                 {
-                    b.Property<int>("ExcersizeMetaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -309,7 +311,7 @@ namespace SmartPTUI.Migrations
                     b.Property<int?>("WorkoutId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExcersizeMetaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExcersizeId");
 

@@ -18,5 +18,7 @@ namespace SmartPTUI.Business.Transactions
         public Task<WorkoutSession> GetWorkoutSession(int id);
 
         public Task<ExcersizeMeta> GetExcersizeMeta(int id);
+
+        public Task<int> SaveExcersizeMeta(ExcersizeMeta excersizeMeta);
     }
 }

@@ -1,18 +1,33 @@
 ﻿using SmartPTUI.Data.DomainModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SmartPTUI.Data.DomainModels
 {
     public class ExcersizeMeta
     {
-        public int Id { get; set; }
+        public int ExcersizeMetaId { get; set; }
         public int ExcersizeId { get; set; }
-        public virtual Excersize ExcersizeType { get; set; }
-        public int Sets { get; set; }
-        public int Reps { get; set; }
-        public int Weight { get; set; }
-        public WorkoutSession Workout { get; set; }
+        #nullable enable
+        public virtual Excersize? ExcersizeType { get; set; }
+        public int SetsGoal { get; set; }
+        public int RepsGoal { get; set; }
+        public int WeightGoal { get; set; }
+        [Display(Name = "Weight Used (KG's)", Prompt = "e.g 50")]
+        [Range(0, 50, ErrorMessage = "Sets must be between 0 and 50")]
+        [Required]
+        public int SetsAchieved { get; set; }
+        [Display(Name = "Sets Completed", Prompt = "e.g 10")]
+        [Range(0, 50, ErrorMessage = "Reps must be between 0 and 50")]
+        [Required]
+        public int RepsAchieved { get; set; }
+        [Display(Name = "Reps Completed", Prompt = "e.g 15")]
+        [Range(0, 400, ErrorMessage = "Weight must be between 0 and 400")]
+        [Required]
+        public int WeightAchieved { get; set; }
+        #nullable enable
+        public virtual WorkoutSession? Workout { get; set; }
     }
 }

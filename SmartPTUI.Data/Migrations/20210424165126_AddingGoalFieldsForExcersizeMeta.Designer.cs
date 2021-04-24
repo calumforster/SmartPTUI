@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210424165126_AddingGoalFieldsForExcersizeMeta")]
+    partial class AddingGoalFieldsForExcersizeMeta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,7 +282,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.ExcersizeMeta", b =>
                 {
-                    b.Property<int>("ExcersizeMetaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -288,10 +290,10 @@ namespace SmartPTUI.Migrations
                     b.Property<int>("ExcersizeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RepsAchieved")
+                    b.Property<int>("RepsGoal")
                         .HasColumnType("int");
 
-                    b.Property<int>("RepsGoal")
+                    b.Property<int>("RepsGoalAchieved")
                         .HasColumnType("int");
 
                     b.Property<int>("SetsAchieved")
@@ -300,16 +302,16 @@ namespace SmartPTUI.Migrations
                     b.Property<int>("SetsGoal")
                         .HasColumnType("int");
 
-                    b.Property<int>("WeightAchieved")
+                    b.Property<int>("WeightGoal")
                         .HasColumnType("int");
 
-                    b.Property<int>("WeightGoal")
+                    b.Property<int>("WeightGoalAchieved")
                         .HasColumnType("int");
 
                     b.Property<int?>("WorkoutId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExcersizeMetaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExcersizeId");
 

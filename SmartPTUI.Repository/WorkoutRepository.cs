@@ -33,7 +33,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
         {
-            return await _context.ExcersizeMetas.Include(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.ExcersizeMetas.Include(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.ExcersizeMetaId == id);
         }
 
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)
@@ -42,6 +42,20 @@ namespace SmartPTUI.ContentRepository
             await _context.SaveChangesAsync();
             return workout.Id;
 
+        }
+
+        public async Task<int> SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
+        {
+            _context.Entry(excersizeMeta).Property(x => x.RepsAchieved).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.SetsAchieved).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.WeightAchieved).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+            //TODO Make stored PROC
+           var workoutSession = await _context.WorkoutSessions.FromSqlRaw("SELECT * FROM WorkoutSessions Inner JOIN ExcersizeMetas ON WorkoutSessions.Id = ExcersizeMetas.WorkoutId WHERE ExcersizeMetas.ExcersizeMetaId = {0}", excersizeMeta.ExcersizeMetaId).FirstOrDefaultAsync();
+
+            return workoutSession.Id;
         }
     }
 }

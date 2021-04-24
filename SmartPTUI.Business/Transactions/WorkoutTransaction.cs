@@ -51,9 +51,9 @@ namespace SmartPTUI.Business.Transactions
                     int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
                     { 
-                     Weight = (int) (0.7 * questionResults.WorkoutQuestion.StartWeight),
-                     Sets = random.Next(1,10),
-                     Reps = 12,
+                     WeightGoal = (int) (0.7 * questionResults.WorkoutQuestion.StartWeight),
+                     SetsGoal = random.Next(1,10),
+                     RepsGoal = 12,
                      ExcersizeId = excersizeId
                     });
                 }
@@ -93,6 +93,11 @@ namespace SmartPTUI.Business.Transactions
         public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
         {
             return await _workoutRepository.GetExcersizeMeta(id);
+        }
+
+        public async Task<int> SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
+        {
+            return await _workoutRepository.SaveExcersizeMeta(excersizeMeta);
         }
     }
 }

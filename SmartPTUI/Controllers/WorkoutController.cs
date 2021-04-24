@@ -49,5 +49,20 @@ namespace SmartPTUI.Controllers
 
             return View(excersizeMeta);
         }
+
+        [Authorize(Roles = "APPUSERROLE")]
+        [HttpPost]
+        public async Task<IActionResult> SubmitExcersizeMeta(ExcersizeMeta excersizeMeta)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View("ExcersizeMeta", excersizeMeta);
+            }
+
+            var workoutSessionId = await _workoutTransaction.SaveExcersizeMeta(excersizeMeta);
+
+            return RedirectToAction("WorkoutSession", "Workout", new {id = workoutSessionId });
+        }
     }
 }
