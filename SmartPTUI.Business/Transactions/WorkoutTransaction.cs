@@ -14,6 +14,7 @@ namespace SmartPTUI.Business.Transactions
         private readonly IWorkoutRepository _workoutRepository;
         private readonly IExcersizeRepository _excersizeRepository;
         private readonly IMapper _mapper;
+      
         public WorkoutTransaction(IWorkoutRepository workoutRepository, IMapper mapper, IExcersizeRepository excersizeRepository)
         {
             _workoutRepository = workoutRepository;
@@ -25,6 +26,7 @@ namespace SmartPTUI.Business.Transactions
         {
 
             var Workout = new WorkoutPlan();
+
 
             Workout.Customer = _mapper.Map<CustomerViewModel, Customer>(questionResults.Customer);
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;

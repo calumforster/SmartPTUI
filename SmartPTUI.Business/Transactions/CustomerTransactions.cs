@@ -24,6 +24,11 @@ namespace SmartPTUI.Business.Transactions
             await _customerRepository.SaveCustomer(customer);
         }
 
+        public async Task<Customer> UpdateCustomer(Customer customer)
+        {
+            return await _customerRepository.UpdateCustomer(customer);
+        }
+
 
     }
 }

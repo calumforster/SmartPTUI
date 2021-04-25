@@ -5,13 +5,14 @@
 }
 
 <form asp-controller="WorkoutQuestionnaire" asp-action="SubmitForm">
+    @Html.HiddenFor(m => m.Customer.Id)
     @Html.HiddenFor(m => m.Customer.FirstName)
     @Html.HiddenFor(m => m.Customer.LastName)
     @Html.HiddenFor(m => m.Customer.Gender)
     @Html.HiddenFor(m => m.Customer.DOB)
     @Html.HiddenFor(m => m.Customer.Height)
 
-    @Html.ValidationSummary(null, new {@class = "validation-summary-errors text-danger" })
+    @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
 
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.CurrentHealth)
@@ -39,7 +40,7 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek)
-        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek,new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek, null, new { @class = "text-danger" })
     </div>
 

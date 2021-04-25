@@ -3,6 +3,7 @@ using SmartPTUI.Data;
 using SmartPTUI.Data.DomainModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +39,11 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)
         {
+
+           var customer =  _context.Customers.Where(x => x.Id == workout.Customer.Id).FirstOrDefault();
+
+            workout.Customer = customer;
+           
             _context.Add(workout);
             await _context.SaveChangesAsync();
             return workout.Id;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,8 @@ using SmartPTUI.Areas.Identity.Data;
 using SmartPTUI.Business.Transactions;
 using SmartPTUI.Business.ViewModelRepo;
 using SmartPTUI.Business.ViewModels;
+using SmartPTUI.ContentRepository;
+using SmartPTUI.Data;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Controllers
@@ -15,15 +18,19 @@ namespace SmartPTUI.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IViewModelRepository _viewModelRepository;
         private readonly IQuestionnaireViewModel _questionnaireViewModel;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IWorkoutTransaction _workoutTransaction;
         private readonly UserManager<AppUser> _userManager;
-        public WorkoutQuestionnaireController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel, UserManager<AppUser> userManager, IWorkoutTransaction workoutTransaction)
+        private readonly IMapper _mapper;
+        public WorkoutQuestionnaireController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel, UserManager<AppUser> userManager, IWorkoutTransaction workoutTransaction, ICustomerRepository customerRepository, IMapper mapper)
         {
             _logger = logger;
             _viewModelRepository = viewModelRepository;
             _questionnaireViewModel = questionnaireViewModel;
             _userManager = userManager;
             _workoutTransaction = workoutTransaction;
+            _customerRepository = customerRepository;
+            _mapper = mapper;
         }
         [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> Index()
@@ -40,6 +47,11 @@ namespace SmartPTUI.Controllers
             {
                 return View("Index", viewModel);
             }
+
+            var updatedCustomer = await _customerRepository.UpdateCustomer(_mapper.Map<CustomerViewModel, Customer>(viewModel.Customer));
+
+            viewModel.Customer = _mapper.Map<Customer, CustomerViewModel>(updatedCustomer);
+
             var workoutId = await _workoutTransaction.CreateWorkout(viewModel);
             return RedirectToAction("Index", "Workout", new { WorkoutId = workoutId });
         }
