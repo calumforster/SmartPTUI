@@ -1,7 +1,9 @@
-﻿using SmartPTUI.Data.DomainModels;
+﻿using SmartPTUI.Data.Data.Enums.Feedback;
+using SmartPTUI.Data.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace SmartPTUI.Data.DomainModels
@@ -29,5 +31,11 @@ namespace SmartPTUI.Data.DomainModels
         public int WeightAchieved { get; set; }
         #nullable enable
         public virtual WorkoutSession? Workout { get; set; }
+        [Display(Name = "How do you feel after the excersize?")]
+        [Required]
+        public ExcersizeFeedbackRating? ExcersizeFeedbackRating { get; set; }
+        [Display(Name = "AdditionalNotes")]
+        public string? FurtherNotes { get; set; }
+        public bool isCompletedExcersizeMeta { get; set; }
     }
 }

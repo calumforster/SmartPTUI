@@ -7,17 +7,17 @@
 <p>Reps: @Model.RepsGoal</p>
 <p>Weight: @Model.WeightGoal</p>
 
-<h3>Excersize Results</h3>
 
 <form asp-controller="Workout" asp-action="SubmitExcersizeMeta">
-
+    <h3>Excersize Results</h3>
 
     @Html.HiddenFor(m => m.ExcersizeType.Id)
     @Html.HiddenFor(m => m.SetsGoal)
     @Html.HiddenFor(m => m.RepsGoal)
     @Html.HiddenFor(m => m.WeightGoal)
     @Html.HiddenFor(m => m.ExcersizeMetaId)
-    @Html.HiddenFor(m => m.Workout.Id)
+    @Html.HiddenFor(m => m.isCompletedExcersizeMeta)
+    @Html.HiddenFor(m => m.Workout.WorkoutSessionId)
 
     @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
 
@@ -39,6 +39,30 @@
         @Html.ValidationMessageFor(m => m.WeightAchieved, null, new { @class = "text-danger" })
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <h3>Feedback</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExcersizeFeedbackRating)
+        @Html.DropDownListFor(m => m.ExcersizeFeedbackRating, Html.GetEnumSelectList(Model.ExcersizeFeedbackRating.GetType()), "Select how you feel after the excersize", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ExcersizeFeedbackRating, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FurtherNotes)
+        @Html.TextBoxFor(m => m.FurtherNotes, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FurtherNotes, null, new { @class = "text-danger" })
+    </div>
+
+    @if (!Model.isCompletedExcersizeMeta)
+    {
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+
+
 
 </form>
+
+
+<button type="submit" class="btn btn-secondary">
+    @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId })
+</button>

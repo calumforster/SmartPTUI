@@ -11,7 +11,7 @@ namespace SmartPTUI.Business.Transactions
     {
 
         public Task<int> CreateWorkout(QuestionnaireViewModel questionResults);
-        public Task<WorkoutPlan> GetWorkout(int id);
+        public Task<WorkoutPlan> GetWorkoutPlan(int id);
 
         public Task<WorkoutWeek> GetWorkoutWeek(int id);
 
@@ -19,6 +19,12 @@ namespace SmartPTUI.Business.Transactions
 
         public Task<ExcersizeMeta> GetExcersizeMeta(int id);
 
-        public Task<int> SaveExcersizeMeta(ExcersizeMeta excersizeMeta);
+        public Task SaveExcersizeMeta(ExcersizeMeta excersizeMeta);
+
+        public Task SaveWorkoutSession(WorkoutSession workoutSession);
+
+        public Task SaveWorkoutWeek(WorkoutWeek workoutWeek);
+
+        public Task SaveWorkoutPlan(WorkoutPlan workoutPlan);
     }
 }

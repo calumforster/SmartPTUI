@@ -22,7 +22,6 @@ namespace SmartPTUI.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Excersize> ExcersizeStore { get; set; }
         public DbSet<ExcersizeMeta> ExcersizeMetas { get; set; }
-        public DbSet<WorkoutFeedback> WorkoutFeedbacks { get; set; }
         public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
         public DbSet<WorkoutWeek> WorkoutWeeks { get; set; }
         public DbSet<WorkoutSession> WorkoutSessions { get; set; }

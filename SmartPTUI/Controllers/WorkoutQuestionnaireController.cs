@@ -53,6 +53,7 @@ namespace SmartPTUI.Controllers
             viewModel.Customer = _mapper.Map<Customer, CustomerViewModel>(updatedCustomer);
 
             var workoutId = await _workoutTransaction.CreateWorkout(viewModel);
+
             return RedirectToAction("Index", "Workout", new { WorkoutId = workoutId });
         }
     }

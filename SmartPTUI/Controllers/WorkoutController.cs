@@ -21,10 +21,13 @@ namespace SmartPTUI.Controllers
         [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> Index(int workoutId)
         {
-            var workoutPlan = await _workoutTransaction.GetWorkout(workoutId);
+            var workoutPlan = await _workoutTransaction.GetWorkoutPlan(workoutId);
 
             return View(workoutPlan);
         }
+
+
+
 
         [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> WorkoutWeek(int id)
@@ -34,13 +37,20 @@ namespace SmartPTUI.Controllers
             return View(workoutWeek);
         }
 
+
+
+
         [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> WorkoutSession(int id)
         {
             var workoutSession = await _workoutTransaction.GetWorkoutSession(id);
 
+
             return View(workoutSession);
         }
+
+
+
 
         [Authorize(Roles = "APPUSERROLE")]
         public async Task<IActionResult> ExcersizeMeta(int id)
@@ -50,19 +60,148 @@ namespace SmartPTUI.Controllers
             return View(excersizeMeta);
         }
 
+
+
+
         [Authorize(Roles = "APPUSERROLE")]
         [HttpPost]
         public async Task<IActionResult> SubmitExcersizeMeta(ExcersizeMeta excersizeMeta)
         {
-
             if (!ModelState.IsValid)
             {
+                //Validation not working
                 return View("ExcersizeMeta", excersizeMeta);
             }
+            excersizeMeta.isCompletedExcersizeMeta = true;
+            await _workoutTransaction.SaveExcersizeMeta(excersizeMeta);
 
-            var workoutSessionId = await _workoutTransaction.SaveExcersizeMeta(excersizeMeta);
-
-            return RedirectToAction("WorkoutSession", "Workout", new {id = workoutSessionId });
+            return RedirectToAction("WorkoutSession", "Workout", new {id = excersizeMeta.Workout.WorkoutSessionId });
         }
+
+
+
+
+        [Authorize(Roles = "APPUSERROLE")]
+        [HttpPost]
+        public async Task<IActionResult> SubmitWorkoutSession(WorkoutSession workoutSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("WorkoutSession", workoutSession);
+            }
+
+            if (!await ValidateWorkoutSession(workoutSession.WorkoutSessionId))
+            {
+                //Error handle for uncompleted Excersize metas
+                return View("WorkoutSession", workoutSession);
+            }
+
+
+            workoutSession.isCompletedWorkoutSession = true;
+            await _workoutTransaction.SaveWorkoutSession(workoutSession);
+
+            return RedirectToAction("WorkoutSession", "Workout", new { id = workoutSession.WorkoutWeek.WorkoutWeekId});
+        }
+
+
+
+
+        [Authorize(Roles = "APPUSERROLE")]
+        [HttpPost]
+        public async Task<IActionResult> SubmitWorkoutWeek(WorkoutWeek workoutWeek)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("WorkoutWeek", workoutWeek);
+            }
+
+            if (!await ValidateWorkoutWeek(workoutWeek.WorkoutWeekId))
+            {
+                //Todo Error handling
+                return View("WorkoutWeek", workoutWeek);
+            }
+
+            workoutWeek.isCompletedWorkoutWeek = true;
+            await _workoutTransaction.SaveWorkoutWeek(workoutWeek);
+
+            return RedirectToAction("WorkoutPlan", "Workout", new { id = workoutWeek.WorkoutPlan.WorkoutPlanId});
+        }
+
+
+
+        [Authorize(Roles = "APPUSERROLE")]
+        [HttpPost]
+        public async Task<IActionResult> SubmitWorkoutPlan(WorkoutPlan workoutPlan)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("WorkoutPlan", workoutPlan);
+            }
+
+            if (!await ValidateWorkoutPlan(workoutPlan.WorkoutPlanId)) 
+            {
+                //Todo Error Handling
+                return View("WorkoutPlan", workoutPlan);
+            }
+
+            workoutPlan.isCompletedWorkoutPlan = true;
+            await _workoutTransaction.SaveWorkoutPlan(workoutPlan);
+
+            return RedirectToAction("WorkoutPlan", "Workout", new { id = workoutPlan.WorkoutPlanId });
+        }
+
+
+
+
+        private async Task<bool> ValidateWorkoutSession(int workoutSessionId)
+        {
+            var workoutSession = await _workoutTransaction.GetWorkoutSession(workoutSessionId);
+
+
+            foreach (var excersize in workoutSession.Excersizes) 
+            {
+                if (!excersize.isCompletedExcersizeMeta) 
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ValidateWorkoutWeek(int workoutWeekId)
+        {
+            var workoutWeek = await _workoutTransaction.GetWorkoutWeek(workoutWeekId);
+
+
+            foreach (var workoutSession in workoutWeek.Workout)
+            {
+                if (!workoutSession.isCompletedWorkoutSession)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ValidateWorkoutPlan(int workoutPlanId)
+        {
+            var workoutWeek = await _workoutTransaction.GetWorkoutPlan(workoutPlanId);
+
+
+            foreach (var workoutSession in workoutWeek.WorkoutWeek)
+            {
+                if (!workoutSession.isCompletedWorkoutWeek)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+
     }
 }

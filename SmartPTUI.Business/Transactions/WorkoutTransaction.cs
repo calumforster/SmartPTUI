@@ -45,10 +45,9 @@ namespace SmartPTUI.Business.Transactions
             {                             
                 WorkoutSession workoutSession = new WorkoutSession();
                 workoutSession.Excersizes = new List<ExcersizeMeta>();
-                workoutSession.Feedback = new WorkoutFeedback();
                 Random random = new Random();
 
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 1; j++) {
                     var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
                     int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
@@ -56,7 +55,8 @@ namespace SmartPTUI.Business.Transactions
                      WeightGoal = (int) (0.7 * questionResults.WorkoutQuestion.StartWeight),
                      SetsGoal = random.Next(1,10),
                      RepsGoal = 12,
-                     ExcersizeId = excersizeId
+                     ExcersizeId = excersizeId,
+                     ExcersizeFeedbackRating = 0
                     });
                 }
 
@@ -77,9 +77,9 @@ namespace SmartPTUI.Business.Transactions
             
         }
 
-        public async Task<WorkoutPlan> GetWorkout(int id)
+        public async Task<WorkoutPlan> GetWorkoutPlan(int id)
         {
-            return await _workoutRepository.GetWorkout(id);
+            return await _workoutRepository.GetWorkoutPlan(id);
         }
 
         public async Task<WorkoutWeek> GetWorkoutWeek(int id)
@@ -97,9 +97,24 @@ namespace SmartPTUI.Business.Transactions
             return await _workoutRepository.GetExcersizeMeta(id);
         }
 
-        public async Task<int> SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
+        public async Task SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
         {
-            return await _workoutRepository.SaveExcersizeMeta(excersizeMeta);
+             await _workoutRepository.SaveExcersizeMeta(excersizeMeta);
+        }
+
+        public async Task SaveWorkoutSession(WorkoutSession workoutSession)
+        {
+            await _workoutRepository.SaveWorkoutSession(workoutSession);
+        }
+
+        public async Task SaveWorkoutWeek(WorkoutWeek workoutWeek)
+        {
+            await _workoutRepository.SaveWorkoutWeek(workoutWeek);
+        }
+
+        public async Task SaveWorkoutPlan(WorkoutPlan workoutPlan)
+        {
+            await _workoutRepository.SaveWorkoutPlan(workoutPlan);
         }
     }
 }

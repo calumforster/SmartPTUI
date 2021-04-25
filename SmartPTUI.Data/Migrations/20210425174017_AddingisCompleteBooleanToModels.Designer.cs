@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210425174017_AddingisCompleteBooleanToModels")]
+    partial class AddingisCompleteBooleanToModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,7 +314,7 @@ namespace SmartPTUI.Migrations
                     b.Property<int>("WeightGoal")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WorkoutSessionId")
+                    b.Property<int?>("WorkoutId")
                         .HasColumnType("int");
 
                     b.Property<bool>("isCompletedExcersizeMeta")
@@ -322,14 +324,14 @@ namespace SmartPTUI.Migrations
 
                     b.HasIndex("ExcersizeId");
 
-                    b.HasIndex("WorkoutSessionId");
+                    b.HasIndex("WorkoutId");
 
                     b.ToTable("ExcersizeMetas");
                 });
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutPlan", b =>
                 {
-                    b.Property<int>("WorkoutPlanId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -343,7 +345,7 @@ namespace SmartPTUI.Migrations
                     b.Property<bool>("isCompletedWorkoutPlan")
                         .HasColumnType("bit");
 
-                    b.HasKey("WorkoutPlanId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -385,7 +387,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutSession", b =>
                 {
-                    b.Property<int>("WorkoutSessionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -396,7 +398,7 @@ namespace SmartPTUI.Migrations
                     b.Property<bool>("isCompletedWorkoutSession")
                         .HasColumnType("bit");
 
-                    b.HasKey("WorkoutSessionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("WorkoutWeekId");
 
@@ -405,7 +407,7 @@ namespace SmartPTUI.Migrations
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutWeek", b =>
                 {
-                    b.Property<int>("WorkoutWeekId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -425,7 +427,7 @@ namespace SmartPTUI.Migrations
                     b.Property<bool>("isCompletedWorkoutWeek")
                         .HasColumnType("bit");
 
-                    b.HasKey("WorkoutWeekId");
+                    b.HasKey("Id");
 
                     b.HasIndex("WorkoutPlanId");
 
@@ -502,7 +504,7 @@ namespace SmartPTUI.Migrations
 
                     b.HasOne("SmartPTUI.Data.DomainModels.WorkoutSession", "Workout")
                         .WithMany("Excersizes")
-                        .HasForeignKey("WorkoutSessionId");
+                        .HasForeignKey("WorkoutId");
 
                     b.Navigation("ExcersizeType");
 

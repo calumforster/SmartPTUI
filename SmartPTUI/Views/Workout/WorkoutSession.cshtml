@@ -7,3 +7,22 @@
    <p> @Html.ActionLink("Excersize "+(z+1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId}) </p>
 
 }
+
+<form asp-controller="Workout" asp-action="SubmitWorkoutSession">
+
+    @Html.HiddenFor(x => x.WorkoutSessionId)
+    @Html.HiddenFor(x => x.isCompletedWorkoutSession)
+    @Html.HiddenFor(x => x.WorkoutWeek.WorkoutWeekId)
+
+
+    @if (!Model.isCompletedWorkoutSession)
+    {
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+
+</form>
+
+
+<button type="submit" class="btn btn-secondary">
+    @Html.ActionLink("Back", "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek.WorkoutWeekId })
+</button>
