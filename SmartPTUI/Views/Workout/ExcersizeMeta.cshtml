@@ -1,6 +1,11 @@
 ﻿@using SmartPTUI.Data.DomainModels
 @model ExcersizeMeta
 
+@{ 
+    string readonlyValue = Model.isCompletedExcersizeMeta ? "readonly= readonly" : string.Empty;
+
+}
+
 <h3>Excersize Info</h3>
 <p>Name: @Model.ExcersizeType.WorkoutName</p>
 <p>Sets: @Model.SetsGoal</p>
@@ -24,10 +29,10 @@
     <div class="form-group">
         @Html.LabelFor(m => m.SetsAchieved)
         @Html.TextBoxFor(m => m.SetsAchieved, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.SetsAchieved, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.SetsAchieved, null, new { @class = "text-danger"})
     </div>
 
-    <div class="form-group">
+    <div class="form-group ">
         @Html.LabelFor(m => m.RepsAchieved)
         @Html.TextBoxFor(m => m.RepsAchieved, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.RepsAchieved, null, new { @class = "text-danger" })
@@ -44,7 +49,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.ExcersizeFeedbackRating)
         @Html.DropDownListFor(m => m.ExcersizeFeedbackRating, Html.GetEnumSelectList(Model.ExcersizeFeedbackRating.GetType()), "Select how you feel after the excersize", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.ExcersizeFeedbackRating, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.ExcersizeFeedbackRating, null, new { @class = "text-danger", })
     </div>
 
     <div class="form-group">
@@ -66,3 +71,12 @@
 <button type="submit" class="btn btn-secondary">
     @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId })
 </button>
+
+@if (Model.isCompletedExcersizeMeta)
+{
+    <h3>Workout Session Complete</h3>
+}
+else
+{
+    <h3> Workout Session Incomplete</h3>
+}

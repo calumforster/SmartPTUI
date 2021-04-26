@@ -15,18 +15,20 @@ namespace SmartPTUI.Data.DomainModels
         #nullable enable
         public virtual Excersize? ExcersizeType { get; set; }
         public int SetsGoal { get; set; }
-        public int RepsGoal { get; set; }
+        public int RepsGoal { get; set; }        
         public int WeightGoal { get; set; }
-        [Display(Name = "Weight Used (KG's)", Prompt = "e.g 50")]
-        [Range(0, 50, ErrorMessage = "Sets must be between 0 and 50")]
+   
+        [Display(Name = "Sets Completed", Prompt = "e.g 10")]
+        [Range(1, 50, ErrorMessage = "Reps must be between 1 and 50")]
         [Required]
         public int SetsAchieved { get; set; }
-        [Display(Name = "Sets Completed", Prompt = "e.g 10")]
-        [Range(0, 50, ErrorMessage = "Reps must be between 0 and 50")]
+        [Display(Name = "Reps Completed", Prompt = "e.g 15")]
+        [Range(1, 400, ErrorMessage = "Weight must be between 0 and 400")]
         [Required]
         public int RepsAchieved { get; set; }
-        [Display(Name = "Reps Completed", Prompt = "e.g 15")]
-        [Range(0, 400, ErrorMessage = "Weight must be between 0 and 400")]
+
+        [Display(Name = "Weight Used (KG's)", Prompt = "e.g 50")]
+        [Range(1, 50, ErrorMessage = "Sets must be between 1 and 50")]
         [Required]
         public int WeightAchieved { get; set; }
         #nullable enable
@@ -34,7 +36,7 @@ namespace SmartPTUI.Data.DomainModels
         [Display(Name = "How do you feel after the excersize?")]
         [Required]
         public ExcersizeFeedbackRating? ExcersizeFeedbackRating { get; set; }
-        [Display(Name = "AdditionalNotes")]
+        [Display(Name = "Additional Notes")]
         public string? FurtherNotes { get; set; }
         public bool isCompletedExcersizeMeta { get; set; }
     }

@@ -24,3 +24,12 @@
 <button type="submit" class="btn btn-secondary">
     @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId })
 </button>
+
+@if (Model.isCompletedWorkoutWeek)
+{
+    <h3>Workout Week Complete</h3>
+}
+else
+{
+    <h3> Workout Week Incomplete</h3>
+}
