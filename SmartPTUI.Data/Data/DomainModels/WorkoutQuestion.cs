@@ -33,5 +33,9 @@ namespace SmartPTUI.Data.DomainModels
         [Range(10, 200)]
         [Required]
         public int? TimePerWorkout { get; set; }
+
+        [Display(Name = "Workout Name", Prompt = "e.g My First Workout")]
+        [Required]
+        public string WorkoutName { get; set; }
     }
 }

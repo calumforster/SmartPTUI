@@ -15,6 +15,12 @@
     @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
 
     <div class="form-group">
+        @Html.LabelFor(m => m.WorkoutQuestion.WorkoutName)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.WorkoutName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.WorkoutName, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(m => m.Customer.CurrentHealth)
         @Html.DropDownListFor(m => m.Customer.CurrentHealth, Html.GetEnumSelectList(Model.Customer.CurrentHealth.GetType()), "Select Current Health Level", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Customer.CurrentHealth, null, new { @class = "text-danger" })
