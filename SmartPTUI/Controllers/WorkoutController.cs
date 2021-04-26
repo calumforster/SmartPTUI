@@ -85,6 +85,7 @@ namespace SmartPTUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitWorkoutSession(WorkoutSession workoutSession)
         {
+
             if (!ModelState.IsValid)
             {
                 return View("WorkoutSession", workoutSession);
@@ -93,14 +94,14 @@ namespace SmartPTUI.Controllers
             if (!await ValidateWorkoutSession(workoutSession.WorkoutSessionId))
             {
                 //Error handle for uncompleted Excersize metas
-                return View("WorkoutSession", workoutSession);
+                return RedirectToAction("WorkoutSession", "Workout", new { id = workoutSession.WorkoutSessionId });
             }
 
 
             workoutSession.isCompletedWorkoutSession = true;
             await _workoutTransaction.SaveWorkoutSession(workoutSession);
 
-            return RedirectToAction("WorkoutSession", "Workout", new { id = workoutSession.WorkoutWeek.WorkoutWeekId});
+            return RedirectToAction("WorkoutWeek", "Workout", new { id = workoutSession.WorkoutWeek.WorkoutWeekId });
         }
 
 
@@ -110,6 +111,7 @@ namespace SmartPTUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitWorkoutWeek(WorkoutWeek workoutWeek)
         {
+
             if (!ModelState.IsValid)
             {
                 return View("WorkoutWeek", workoutWeek);
@@ -118,13 +120,13 @@ namespace SmartPTUI.Controllers
             if (!await ValidateWorkoutWeek(workoutWeek.WorkoutWeekId))
             {
                 //Todo Error handling
-                return View("WorkoutWeek", workoutWeek);
+                return RedirectToAction("WorkoutWeek", "Workout", new { id = workoutWeek.WorkoutWeekId });
             }
 
             workoutWeek.isCompletedWorkoutWeek = true;
             await _workoutTransaction.SaveWorkoutWeek(workoutWeek);
 
-            return RedirectToAction("WorkoutPlan", "Workout", new { id = workoutWeek.WorkoutPlan.WorkoutPlanId});
+            return RedirectToAction("Index", "Workout", new { workoutId = workoutWeek.WorkoutPlan.WorkoutPlanId });
         }
 
 
@@ -133,6 +135,7 @@ namespace SmartPTUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitWorkoutPlan(WorkoutPlan workoutPlan)
         {
+
             if (!ModelState.IsValid)
             {
                 return View("WorkoutPlan", workoutPlan);
@@ -141,13 +144,13 @@ namespace SmartPTUI.Controllers
             if (!await ValidateWorkoutPlan(workoutPlan.WorkoutPlanId)) 
             {
                 //Todo Error Handling
-                return View("WorkoutPlan", workoutPlan);
+                return RedirectToAction("Index", "Workout", new { workoutId = workoutPlan.WorkoutPlanId });
             }
 
             workoutPlan.isCompletedWorkoutPlan = true;
             await _workoutTransaction.SaveWorkoutPlan(workoutPlan);
 
-            return RedirectToAction("WorkoutPlan", "Workout", new { id = workoutPlan.WorkoutPlanId });
+            return RedirectToAction("Index", "Workout", new { workoutId = workoutPlan.WorkoutPlanId });
         }
 
 

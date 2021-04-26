@@ -19,22 +19,24 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<WorkoutPlan> GetWorkoutPlan(int id)
         {
-           return await _context.WorkoutPlans.Include(x => x.WorkoutWeek).ThenInclude(x => x.Workout).ThenInclude(x => x.Excersizes).ThenInclude(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.WorkoutPlanId == id);
+           return await _context.WorkoutPlans.AsNoTracking().Include(x => x.WorkoutWeek).ThenInclude(x => x.Workout).ThenInclude(x => x.Excersizes).ThenInclude(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.WorkoutPlanId == id);
         }
 
         public async Task<WorkoutWeek> GetWorkoutWeek(int id)
         {
-            return await _context.WorkoutWeeks.Include(x => x.WorkoutPlan).Include(x => x.Workout).FirstOrDefaultAsync(x => x.WorkoutWeekId == id);
+            return await _context.WorkoutWeeks.AsNoTracking().Include(x => x.WorkoutPlan).Include(x => x.Workout).FirstOrDefaultAsync(x => x.WorkoutWeekId == id);
         }
 
         public async Task<WorkoutSession> GetWorkoutSession(int id)
         {
-            return await _context.WorkoutSessions.Include(x => x.WorkoutWeek).Include(x => x.Excersizes).FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
+
+           return await _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutWeek).Include(x => x.Excersizes).FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
+
         }
 
         public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
         {
-            return await _context.ExcersizeMetas.Include(x => x.Workout).Include(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.ExcersizeMetaId == id);
+            return await _context.ExcersizeMetas.AsNoTracking().Include(x => x.Workout).Include(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.ExcersizeMetaId == id);
         }
 
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)

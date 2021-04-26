@@ -43,7 +43,7 @@ namespace SmartPTUI
             services.AddAutoMapper(typeof(AutoMapperConfig));
 
             services.AddTransient<UserManager<AppUser>>();
-            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]), ServiceLifetime.Transient);
+            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]).EnableSensitiveDataLogging(), ServiceLifetime.Transient);
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IViewModelRepository, ViewModelRepository>();
             services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
