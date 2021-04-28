@@ -18,9 +18,10 @@ namespace SmartPTUI.Data.DomainModels
    
         #nullable enable
         public virtual WorkoutSession? Workout { get; set; }
-        [Display(Name = "How do you feel after the excersize?")]
+        [Display(Name = "How do you feel after the excersize? (1-10)")]
+        [Range(1, 10)]
         [Required]
-        public ExcersizeFeedbackRating? ExcersizeFeedbackRating { get; set; }
+        public int ExcersizeFeedbackRating { get; set; }
         [Display(Name = "Additional Notes")]
         public string? FurtherNotes { get; set; }
         public bool isCompletedExcersizeMeta { get; set; }

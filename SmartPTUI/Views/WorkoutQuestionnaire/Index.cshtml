@@ -45,6 +45,12 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(m => m.WorkoutQuestion.NumberOfWeeks)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.NumberOfWeeks, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.NumberOfWeeks, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek)
         @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek, null, new { @class = "text-danger" })

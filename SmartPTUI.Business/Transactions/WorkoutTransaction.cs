@@ -52,22 +52,19 @@ namespace SmartPTUI.Business.Transactions
                     int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
                     { 
-                     WeightGoal = (int) (0.7 * questionResults.WorkoutQuestion.StartWeight),
-                     SetsGoal = random.Next(1,10),
-                     RepsGoal = 12,
+                     WeightGoal = 0,
+                     SetsGoal = 1,
+                     RepsGoal = 10,
                      ExcersizeId = excersizeId,
                      ExcersizeFeedbackRating = 0
                     });
 
                     workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
 
-                    for (int x = 0;  x < 3; x++) {
+                    for (int x = 0;  x < 1; x++) {
                         workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
                         {
-                            SetName = $"Set {x+1}"
-                            //RepsAchieved = 0,
-                            // WeightAchieved = 0,
-                            //RepsInReserve = 0
+                            SetName = $"10 RM Max Set {x+1}"
                         });
 
                     }
