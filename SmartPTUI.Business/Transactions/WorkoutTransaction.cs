@@ -47,7 +47,7 @@ namespace SmartPTUI.Business.Transactions
                 workoutSession.Excersizes = new List<ExcersizeMeta>();
                 Random random = new Random();
 
-                for (int j = 0; j < 1; j++) {
+                for (int j = 0; j < 4; j++) {
                     var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
                     int excersizeId = excersize.Id;
                     workoutSession.Excersizes.Add(new ExcersizeMeta
@@ -58,6 +58,19 @@ namespace SmartPTUI.Business.Transactions
                      ExcersizeId = excersizeId,
                      ExcersizeFeedbackRating = 0
                     });
+
+                    workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
+
+                    for (int x = 0;  x < 3; x++) {
+                        workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
+                        {
+                            SetName = $"Set {x+1}"
+                            //RepsAchieved = 0,
+                            // WeightAchieved = 0,
+                            //RepsInReserve = 0
+                        });
+
+                    }
                 }
 
 

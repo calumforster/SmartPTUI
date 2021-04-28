@@ -2,11 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartPTUI.Areas.Identity.Data;
-using SmartPTUI.Data;
 using SmartPTUI.Data.DomainModels;
-using SmartPTUI.Data.Enums;
-using System;
-using System.Collections.Generic;
 
 namespace SmartPTUI.Data
 {
@@ -26,5 +22,6 @@ namespace SmartPTUI.Data
         public DbSet<WorkoutWeek> WorkoutWeeks { get; set; }
         public DbSet<WorkoutSession> WorkoutSessions { get; set; }
         public DbSet<WorkoutQuestion> WorkoutQuestions { get; set; }
+        public DbSet<ExcersizeSet> ExcersizeSets { get; set; }
     }
 }

@@ -29,14 +29,12 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<WorkoutSession> GetWorkoutSession(int id)
         {
-
            return await _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutWeek).Include(x => x.Excersizes).FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
-
         }
 
         public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
         {
-            return await _context.ExcersizeMetas.AsNoTracking().Include(x => x.Workout).Include(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.ExcersizeMetaId == id);
+            return await _context.ExcersizeMetas.AsNoTracking().Include(x => x.Workout).Include(x => x.ExcersizeType).Include(x => x.ExcersizeSet).FirstOrDefaultAsync(x => x.ExcersizeMetaId == id);
         }
 
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)
@@ -54,17 +52,30 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
         {
-            _context.Entry(excersizeMeta).Property(x => x.RepsAchieved).IsModified = true;
-            _context.Entry(excersizeMeta).Property(x => x.SetsAchieved).IsModified = true;
-            _context.Entry(excersizeMeta).Property(x => x.WeightAchieved).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.ExcersizeFeedbackRating).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.FurtherNotes).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.isCompletedExcersizeMeta).IsModified = true;
+            //_context.Entry(excersizeMeta).Collection(x => x.ExcersizeSet).IsModified = true;
+
+            await SaveExcersizeSet(excersizeMeta);
 
             await _context.SaveChangesAsync();
 
             //TODO Make stored PROC
           // var workoutSession = await _context.WorkoutSessions.FromSqlRaw("SELECT * FROM WorkoutSessions Inner JOIN ExcersizeMetas ON WorkoutSessions.Id = ExcersizeMetas.WorkoutId WHERE ExcersizeMetas.ExcersizeMetaId = {0}", excersizeMeta.ExcersizeMetaId).FirstOrDefaultAsync();
+        }
+
+
+        private async Task SaveExcersizeSet(ExcersizeMeta excersizeMeta)
+        {
+            foreach (var set in excersizeMeta.ExcersizeSet) 
+            {
+                _context.Entry(set).Property(x => x.RepsAchieved).IsModified = true;
+                _context.Entry(set).Property(x => x.RepsInReserve).IsModified = true;
+                _context.Entry(set).Property(x => x.WeightAchieved).IsModified = true;
+                await _context.SaveChangesAsync();
+            }
+            
         }
 
         public async Task SaveWorkoutSession(WorkoutSession workoutSession)
