@@ -52,7 +52,7 @@ namespace SmartPTUI
             services.AddScoped<IWorkoutRepository, WorkoutRepository>();
             services.AddScoped<IWorkoutTransaction, WorkoutTransaction>();
             services.AddScoped<IExcersizeRepository, ExcersizeRepository>();
-            //services.AddTransient<SmartPTUIContext>();
+            services.AddScoped<SmartPTUIContext>();
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();

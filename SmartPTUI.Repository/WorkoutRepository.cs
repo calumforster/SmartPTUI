@@ -55,14 +55,11 @@ namespace SmartPTUI.ContentRepository
             _context.Entry(excersizeMeta).Property(x => x.ExcersizeFeedbackRating).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.FurtherNotes).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.isCompletedExcersizeMeta).IsModified = true;
-            //_context.Entry(excersizeMeta).Collection(x => x.ExcersizeSet).IsModified = true;
 
             await SaveExcersizeSet(excersizeMeta);
 
             await _context.SaveChangesAsync();
 
-            //TODO Make stored PROC
-          // var workoutSession = await _context.WorkoutSessions.FromSqlRaw("SELECT * FROM WorkoutSessions Inner JOIN ExcersizeMetas ON WorkoutSessions.Id = ExcersizeMetas.WorkoutId WHERE ExcersizeMetas.ExcersizeMetaId = {0}", excersizeMeta.ExcersizeMetaId).FirstOrDefaultAsync();
         }
 
 
@@ -97,6 +94,7 @@ namespace SmartPTUI.ContentRepository
             _context.Entry(workoutPlan).Property(x => x.isCompletedWorkoutPlan).IsModified = true;
             await _context.SaveChangesAsync();
         }
+
 
     }
 }

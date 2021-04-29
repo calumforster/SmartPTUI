@@ -32,57 +32,58 @@ namespace SmartPTUI.Business.Transactions
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;
             Workout.WorkoutWeek = new List<WorkoutWeek>();
 
-            Workout.WorkoutWeek.Add(new WorkoutWeek() {
-                StartWeight = questionResults.WorkoutQuestion.StartWeight.Value,
-                EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
-                CaloriesConsumed = 0
-            });
+            for (int x = 0; x < questionResults.WorkoutQuestion.NumberOfWeeks; x++) {
 
-            Workout.WorkoutWeek[0].Workout = new List<WorkoutSession>();
-            var excersizeCycle = 0;
+                Workout.WorkoutWeek.Add(new WorkoutWeek() {
+                    StartWeight = questionResults.WorkoutQuestion.StartWeight.Value,
+                    EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
+                    CaloriesConsumed = 0
+                });
 
-            for (int i = 0; i < questionResults.WorkoutQuestion.DaysPerWeek; i ++) 
-            {                             
-                WorkoutSession workoutSession = new WorkoutSession();
-                workoutSession.Excersizes = new List<ExcersizeMeta>();
-                Random random = new Random();
+                Workout.WorkoutWeek[x].Workout = new List<WorkoutSession>();
+                var excersizeCycle = 0;
 
-                for (int j = 0; j < 4; j++) {
-                    var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
-                    int excersizeId = excersize.Id;
-                    workoutSession.Excersizes.Add(new ExcersizeMeta
-                    { 
-                     WeightGoal = 0,
-                     SetsGoal = 1,
-                     RepsGoal = 10,
-                     ExcersizeId = excersizeId,
-                     ExcersizeFeedbackRating = 0
-                    });
+                for (int i = 0; i < questionResults.WorkoutQuestion.DaysPerWeek; i++)
+                {
+                    WorkoutSession workoutSession = new WorkoutSession();
+                    workoutSession.Excersizes = new List<ExcersizeMeta>();
 
-                    workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
-
-                    for (int x = 0;  x < 1; x++) {
-                        workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
+                    for (int j = 0; j < 1; j++) {
+                        var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
+                        int excersizeId = excersize.Id;
+                        workoutSession.Excersizes.Add(new ExcersizeMeta
                         {
-                            SetName = $"10 RM Max Set {x+1}"
+                            WeightGoal = 0,
+                            SetsGoal = 1,
+                            RepsGoal = 10,
+                            ExcersizeId = excersizeId,
+                            ExcersizeFeedbackRating = 0
                         });
 
+                        workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
+
+                        for (int z = 0; z < 1; z++) {
+                            workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
+                            {
+                                SetName = $"10 RM Max Set {z + 1}"
+                            });
+
+                        }
                     }
-                }
 
 
-                if ((i > 0) && (i % 3 == 0))
-                {
-                    excersizeCycle = excersizeCycle - 3;
+                    if ((i > 0) && (i % 3 == 0))
+                    {
+                        excersizeCycle = excersizeCycle - 3;
+                    }
+                    else
+                    {
+                        excersizeCycle++;
+                    }
+
+                    Workout.WorkoutWeek[x].Workout.Add(workoutSession);
                 }
-                else 
-                {
-                    excersizeCycle++;
-                }
-                
-                Workout.WorkoutWeek[0].Workout.Add(workoutSession);
             }
-
             return await _workoutRepository.SaveInitialWorkout(Workout);
             
         }
