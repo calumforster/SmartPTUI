@@ -13,6 +13,7 @@ namespace SmartPTUI.Data.DomainModels
         public string WorkoutName { get; set; }
         public string WorkoutDescription { get; set; }
         public WorkoutArea CoreArea { get; set; }
+        public int Difficulty { get; set; }
 
     }
 }

@@ -13,7 +13,7 @@ namespace SmartPTUI.Data.DomainModels
         [Range(1, 100)]
         [Required]
         public int RepsAchieved { get; set; }
-        [Display(Name = "Weight Achieved")]
+        [Display(Name = "Weight Achieved KG's")]
         [Range(1, 400)]
         [Required]
         public int WeightAchieved { get; set; }

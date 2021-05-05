@@ -5,6 +5,7 @@ using SmartPTUI.Data;
 using SmartPTUI.Data.DomainModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Business.Transactions
@@ -31,7 +32,7 @@ namespace SmartPTUI.Business.Transactions
             Workout.Customer = _mapper.Map<CustomerViewModel, Customer>(questionResults.Customer);
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;
             Workout.WorkoutWeek = new List<WorkoutWeek>();
-
+            var excersizeList = new List<List<Excersize>>();
             for (int x = 0; x < questionResults.WorkoutQuestion.NumberOfWeeks; x++) {
 
                 Workout.WorkoutWeek.Add(new WorkoutWeek() {
@@ -39,6 +40,8 @@ namespace SmartPTUI.Business.Transactions
                     EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
                     CaloriesConsumed = 0
                 });
+
+
 
                 Workout.WorkoutWeek[x].Workout = new List<WorkoutSession>();
                 var excersizeCycle = 0;
@@ -48,8 +51,16 @@ namespace SmartPTUI.Business.Transactions
                     WorkoutSession workoutSession = new WorkoutSession();
                     workoutSession.Excersizes = new List<ExcersizeMeta>();
 
-                    for (int j = 0; j < 1; j++) {
-                        var excersize = await _excersizeRepository.GetExcersizeWithWorkoutArea(excersizeCycle);
+
+                    if (x == 0) {
+                        excersizeList.Add(GenerateFinalExcersizeList(await _excersizeRepository.GetExcersizesWithWorkoutArea(excersizeCycle), questionResults.WorkoutQuestion.TimePerWorkout.Value));
+                    }
+                   
+
+                    Random ran = new Random();
+                    var excersizeListOfExcersize = excersizeList[excersizeCycle];
+                    for (int j = 0; j < excersizeListOfExcersize.Count; j++) {
+                        var excersize = excersizeListOfExcersize[j];
                         int excersizeId = excersize.Id;
                         workoutSession.Excersizes.Add(new ExcersizeMeta
                         {
@@ -61,15 +72,14 @@ namespace SmartPTUI.Business.Transactions
                         });
 
                         workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
-
-                        for (int z = 0; z < 1; z++) {
+                                                                                                            
                             workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
-                            {
-                                SetName = $"10 RM Max Set {z + 1}"
-                            });
-
-                        }
+                                {
+                                    SetName = $"10 RM Max Set"
+                                });
                     }
+
+                    workoutSession.Excersizes.Reverse();
 
 
                     if ((i > 0) && (i % 3 == 0))
@@ -83,9 +93,59 @@ namespace SmartPTUI.Business.Transactions
 
                     Workout.WorkoutWeek[x].Workout.Add(workoutSession);
                 }
+                Workout.WorkoutWeek[x].Workout.Reverse();
             }
+            Workout.WorkoutWeek.Reverse();
             return await _workoutRepository.SaveInitialWorkout(Workout);
             
+        }
+
+        private List<Excersize> GenerateFinalExcersizeList(List<Excersize> excersizeList, int numberOfExcersizes)
+        {
+
+            var returnedExcersizeLift = new List<Excersize>();
+
+            var compoundLift = excersizeList.Where(x => x.Difficulty == 1).FirstOrDefault();
+            var secondaryLift = excersizeList.Where(x => x.Difficulty == 2).ToList();
+            var tertiaryLift = excersizeList.Where(x => x.Difficulty == 3).ToList();
+
+            Random ran = new Random();
+            List<int> secondaryListNumbers = new List<int>();
+            List<int> tertiaryListNumbers = new List<int>();
+
+
+            for (int i = 0; i < numberOfExcersizes; i++)
+            {
+                if (i < 1)
+                {
+                    returnedExcersizeLift.Add(compoundLift);
+                }
+                else if (i < 3)
+                {
+                    int seconrdaryNumber;
+                    do
+                    {
+                        seconrdaryNumber = ran.Next(0, secondaryLift.Count);
+                    } while (secondaryListNumbers.Contains(seconrdaryNumber));
+                    secondaryListNumbers.Add(seconrdaryNumber);
+                    returnedExcersizeLift.Add(secondaryLift[seconrdaryNumber]);
+                }
+                else if(i > 2){
+
+                    int tertiaryNumber;
+                    do
+                    {
+                        tertiaryNumber = ran.Next(0, tertiaryLift.Count);
+                    } while (tertiaryListNumbers.Contains(tertiaryNumber));
+                    tertiaryListNumbers.Add(tertiaryNumber);
+                    returnedExcersizeLift.Add(tertiaryLift[tertiaryNumber]);
+                }
+            }
+
+            returnedExcersizeLift.Reverse();
+
+            return returnedExcersizeLift;
+
         }
 
         public async Task<WorkoutPlan> GetWorkoutPlan(int id)

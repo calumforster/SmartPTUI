@@ -34,8 +34,8 @@ namespace SmartPTUI.Data.DomainModels
         [Required]
         public int? DaysPerWeek { get; set; }
 
-        [Display(Name = "Time Per workout", Prompt = "How much time per workout")]
-        [Range(10, 200)]
+        [Display(Name = "Amount Of Workouts Per session", Prompt = "4-10")]
+        [Range(4, 10)]
         [Required]
         public int? TimePerWorkout { get; set; }
 

@@ -13,5 +13,7 @@ namespace SmartPTUI.ContentRepository
         public Task<Excersize> GetShouldersExcersize();
         public Task<Excersize> GetLegsExcersize();
         public Task<Excersize> GetExcersizeWithWorkoutArea(int workoutArea);
+
+        public Task<List<Excersize>> GetExcersizesWithWorkoutArea(int workoutAreaId);
     }
 }
