@@ -1,7 +1,7 @@
 ﻿@using SmartPTUI.Data.DomainModels
 @model ExcersizeMeta
 
-@{ 
+@{
     string readonlyValue = Model.isCompletedExcersizeMeta ? "disabled='disable'" : string.Empty;
 
 }
@@ -10,8 +10,18 @@
 <p>Name: @Model.ExcersizeType.WorkoutName</p>
 <p>Sets: @Model.SetsGoal</p>
 <p>Reps: @Model.RepsGoal</p>
-<p>Weight: @Model.WeightGoal</p>
+@if (!(Model.WeightGoal == 0))
+{
+    <p>Reps: @Model.RepsGoal</p>
+    <p>Weight: @Model.WeightGoal</p>
+}
+else
+{
+    Model.RepsGoal = 10;
+    <p>Reps: 10</p>
+    <p>This is your 10 Rep max set - see here for more info</p>
 
+}
 
 <form asp-controller="Workout" asp-action="SubmitExcersizeMeta">
     <fieldset @readonlyValue>
@@ -35,12 +45,23 @@
 
             <h3>@Model.ExcersizeSet[i].SetName</h3>
 
+            if (!(Model.WeightGoal == 0))
+            {
+                @Html.HiddenFor(m => m.ExcersizeSet[i].RepsAchieved);
 
-            <div class="form-group ">
-                @Html.LabelFor(m => m.ExcersizeSet[i].RepsAchieved)
-                @Html.TextBoxFor(m => m.ExcersizeSet[i].RepsAchieved, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ExcersizeSet[i].RepsAchieved, null, new { @class = "text-danger" })
-            </div>
+            }
+            else
+            {
+                Model.ExcersizeSet[i].RepsAchieved = 10;
+                <div class="form-group ">
+                    @Html.LabelFor(m => m.ExcersizeSet[i].RepsAchieved)
+                    @Html.TextBoxFor(m => m.ExcersizeSet[i].RepsAchieved, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ExcersizeSet[i].RepsAchieved, null, new { @class = "text-danger" })
+                </div>
+
+
+            }
+
 
             <div class="form-group">
                 @Html.LabelFor(m => m.ExcersizeSet[i].RepsInReserve)

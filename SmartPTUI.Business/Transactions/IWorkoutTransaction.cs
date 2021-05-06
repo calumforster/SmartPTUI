@@ -26,5 +26,7 @@ namespace SmartPTUI.Business.Transactions
         public Task SaveWorkoutWeek(WorkoutWeek workoutWeek);
 
         public Task SaveWorkoutPlan(WorkoutPlan workoutPlan);
+
+        public Task CalculateNextWorkoutWeek(int workoutPlanId);
     }
 }

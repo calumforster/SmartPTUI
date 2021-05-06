@@ -55,18 +55,21 @@ namespace SmartPTUI.ContentRepository
             _context.Entry(excersizeMeta).Property(x => x.ExcersizeFeedbackRating).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.FurtherNotes).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.isCompletedExcersizeMeta).IsModified = true;
-
-            await SaveExcersizeSet(excersizeMeta);
+            _context.Entry(excersizeMeta).Property(x => x.RepsGoal).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.SetsGoal).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.WeightGoal).IsModified = true;
+            await SaveExcersizeSets(excersizeMeta);
 
             await _context.SaveChangesAsync();
 
         }
 
 
-        private async Task SaveExcersizeSet(ExcersizeMeta excersizeMeta)
+        private async Task SaveExcersizeSets(ExcersizeMeta excersizeMeta)
         {
             foreach (var set in excersizeMeta.ExcersizeSet) 
             {
+                _context.Entry(set).Property(x => x.SetName).IsModified = true;
                 _context.Entry(set).Property(x => x.RepsAchieved).IsModified = true;
                 _context.Entry(set).Property(x => x.RepsInReserve).IsModified = true;
                 _context.Entry(set).Property(x => x.WeightAchieved).IsModified = true;
@@ -74,6 +77,14 @@ namespace SmartPTUI.ContentRepository
             }
             
         }
+
+
+        public async Task SaveExcersizeSetWorkoutCalc(ExcersizeSet excersizeSet, int excersizeMetaId)
+        {
+           await _context.Database.ExecuteSqlRawAsync("Insert Into ExcersizeSets Values('"+excersizeSet.SetName+"', 0, 0, 0, "+ excersizeMetaId + "); ");
+        }
+
+
 
         public async Task SaveWorkoutSession(WorkoutSession workoutSession)
         {

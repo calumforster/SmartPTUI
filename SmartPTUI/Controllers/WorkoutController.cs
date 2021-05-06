@@ -126,6 +126,8 @@ namespace SmartPTUI.Controllers
             workoutWeek.isCompletedWorkoutWeek = true;
             await _workoutTransaction.SaveWorkoutWeek(workoutWeek);
 
+            await _workoutTransaction.CalculateNextWorkoutWeek(workoutWeek.WorkoutPlan.WorkoutPlanId);
+
             return RedirectToAction("Index", "Workout", new { workoutId = workoutWeek.WorkoutPlan.WorkoutPlanId });
         }
 

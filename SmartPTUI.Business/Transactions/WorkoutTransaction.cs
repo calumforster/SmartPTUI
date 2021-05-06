@@ -3,6 +3,7 @@ using SmartPTUI.Business.ViewModels;
 using SmartPTUI.ContentRepository;
 using SmartPTUI.Data;
 using SmartPTUI.Data.DomainModels;
+using SmartPTUI.Data.Enums.WorkoutPlan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace SmartPTUI.Business.Transactions
         private readonly IWorkoutRepository _workoutRepository;
         private readonly IExcersizeRepository _excersizeRepository;
         private readonly IMapper _mapper;
+
+        private static readonly int oneRepMaximumCoEfficient = 75;
       
         public WorkoutTransaction(IWorkoutRepository workoutRepository, IMapper mapper, IExcersizeRepository excersizeRepository)
         {
@@ -23,7 +26,7 @@ namespace SmartPTUI.Business.Transactions
             _excersizeRepository = excersizeRepository;
         }
 
-            public async Task<int> CreateWorkout(QuestionnaireViewModel questionResults)
+        public async Task<int> CreateWorkout(QuestionnaireViewModel questionResults)
         {
 
             var Workout = new WorkoutPlan();
@@ -98,6 +101,196 @@ namespace SmartPTUI.Business.Transactions
             Workout.WorkoutWeek.Reverse();
             return await _workoutRepository.SaveInitialWorkout(Workout);
             
+        }
+
+        public async Task CalculateNextWorkoutWeek(int workoutPlanId)
+        {
+           var workoutPlan = await _workoutRepository.GetWorkoutPlan(workoutPlanId);
+
+             if (!workoutPlan.WorkoutWeek[1].isCompletedWorkoutWeek)
+            {
+                await CalculateSecondWorkoutWeek(workoutPlan);
+            }
+             else if (!workoutPlan.WorkoutWeek[workoutPlan.WorkoutWeek.Count-1].isCompletedWorkoutWeek)
+            {
+                var workoutWeekList = workoutPlan.WorkoutWeek.ToList();
+
+                int previousWeek = 0;
+                int currentWeek = 0;
+
+                for (int h = 1; h < workoutWeekList.Count; h++) {
+                    if (workoutWeekList[h].isCompletedWorkoutWeek)
+                    {
+                        previousWeek = h;
+                        currentWeek = h+1;
+
+                    }                             
+                }
+
+                var workoutWeek = workoutPlan.WorkoutWeek[currentWeek];
+                var previousWorkoutWeek = workoutPlan.WorkoutWeek[previousWeek];
+
+
+                for (int i = 0; i < workoutWeek.Workout.Count; i++)
+                {
+                    var workout = workoutWeek.Workout[i];
+                    var prevWorkout = previousWorkoutWeek.Workout[i];
+                    for (int j = 0; j < workout.Excersizes.Count; j++)
+                    {
+                        var excersize = workout.Excersizes[j];
+
+                        var tempExcersize = await _workoutRepository.GetExcersizeMeta(excersize.ExcersizeMetaId);
+
+                        var prevExcersize = prevWorkout.Excersizes.Where(x => x.ExcersizeType.Id == tempExcersize.ExcersizeType.Id).FirstOrDefault();
+
+                        var previousExcersizeMeta = await _workoutRepository.GetExcersizeMeta(prevExcersize.ExcersizeMetaId);
+
+                        int avarageRepsInReserve = 0;
+                        foreach (var sets in previousExcersizeMeta.ExcersizeSet)
+                        {
+                            avarageRepsInReserve += sets.RepsInReserve;                        
+                        }
+
+                        avarageRepsInReserve = avarageRepsInReserve / previousExcersizeMeta.ExcersizeSet.Count;
+
+                        //Add in further workout edits
+                       var excersizeIncrease = CalculateFollowingWeekWeightRepsSets(previousExcersizeMeta.WeightGoal, previousExcersizeMeta.RepsGoal, previousExcersizeMeta.SetsGoal, avarageRepsInReserve, previousExcersizeMeta.ExcersizeFeedbackRating);
+
+                        tempExcersize.WeightGoal = excersizeIncrease.Item1;
+                        tempExcersize.RepsGoal = excersizeIncrease.Item2;
+                        tempExcersize.SetsGoal = excersizeIncrease.Item3;
+                        tempExcersize.ExcersizeSet[0].SetName = "Set 1";
+                        
+
+                        for (int z = 1; z < tempExcersize.SetsGoal; z++)
+                        {
+
+                            await _workoutRepository.SaveExcersizeSetWorkoutCalc(new ExcersizeSet
+                            {
+                                SetName = $"Set {z + 1}"
+                            }, tempExcersize.ExcersizeMetaId);
+
+                        }
+                        await _workoutRepository.SaveExcersizeMeta(tempExcersize);
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        private async Task CalculateSecondWorkoutWeek(WorkoutPlan workoutPlan)
+        {
+            var workoutWeek = workoutPlan.WorkoutWeek[1];
+            var previousWorkoutWeek = workoutPlan.WorkoutWeek[0];
+
+
+            for (int i = 0; i < workoutWeek.Workout.Count; i++)
+            {
+                var workout = workoutWeek.Workout[i];
+                var prevWorkout = previousWorkoutWeek.Workout[i];
+                for (int j = 0; j < workout.Excersizes.Count; j++) 
+                {
+                    var excersize = workout.Excersizes[j];
+                    
+                    var tempExcersize = await _workoutRepository.GetExcersizeMeta(excersize.ExcersizeMetaId);
+
+                    var prevExcersize = prevWorkout.Excersizes.Where(x => x.ExcersizeType.Id == tempExcersize.ExcersizeType.Id).FirstOrDefault();
+
+                    var previousExcersizeMeta = await _workoutRepository.GetExcersizeMeta(prevExcersize.ExcersizeMetaId);
+
+                    var weightRepSetCalculation = SecondWeekWeightRepsSets(previousExcersizeMeta.ExcersizeSet[0].WeightAchieved,workoutPlan.WorkoutQuestion.Goal);
+
+                    tempExcersize.WeightGoal = weightRepSetCalculation.Item1;
+                    tempExcersize.RepsGoal = weightRepSetCalculation.Item2;
+                    tempExcersize.SetsGoal = weightRepSetCalculation.Item3;
+                    tempExcersize.ExcersizeSet[0].SetName = "Set 1";
+
+                    for (int z = 1; z < weightRepSetCalculation.Item3; z++)
+                    {
+
+                       await _workoutRepository.SaveExcersizeSetWorkoutCalc(new ExcersizeSet
+                        {
+                            SetName = $"Set {z + 1}"
+                        }, tempExcersize.ExcersizeMetaId);
+
+                    }
+                    await _workoutRepository.SaveExcersizeMeta(tempExcersize);
+                }
+            
+            
+            }
+
+        }
+
+        private Tuple<int, int, int> SecondWeekWeightRepsSets(int weight, Goals workoutGoal)
+        {
+
+            if (workoutGoal == Goals.WeightGain)
+            {
+                double weightGainWeight = (double) CalculateOneRepMaximum(weight);
+                double strenthPercent = 89;
+                double actualWeight =  (strenthPercent / weightGainWeight) * 100;
+
+                return new Tuple<int, int, int>((int) actualWeight,5,3);
+            }
+
+            if (workoutGoal == Goals.WeightLoss)
+            {
+                double weightGainWeight = (double)CalculateOneRepMaximum(weight);
+                double strenthPercent = 70;
+                double actualWeight = (strenthPercent / weightGainWeight) * 100;
+
+                return new Tuple<int, int, int>((int)actualWeight, 13, 2);
+            }
+
+            if (workoutGoal == Goals.Fitness)
+            {
+                double weightGainWeight = (double)CalculateOneRepMaximum(weight);
+                double strenthPercent = 67;
+                double actualWeight = (strenthPercent / weightGainWeight) * 100;
+
+                return new Tuple<int, int, int>((int)actualWeight, 15, 3);
+            }
+            else return default;
+        
+        }
+
+        private Tuple<int, int, int> CalculateFollowingWeekWeightRepsSets(int weight, int reps, int sets, int rIr, int feedbackRating)
+        {
+            if (feedbackRating < 4)
+            {
+                return new Tuple<int, int, int>(weight,reps,sets);
+            }
+
+            if (rIr > 5 && feedbackRating > 7)
+            {
+                double weightIncreasePercent = weight / 10;
+                weight += (int)Math.Round(weightIncreasePercent, 0);
+                return new Tuple<int, int, int>(weight, reps, sets+1);
+            }
+
+            if (rIr > 5 && feedbackRating > 5)
+            {
+                double weightIncreasePercent = weight / 10;
+                weight += (int) Math.Round(weightIncreasePercent, 0);
+                return new Tuple<int, int, int>(weight, reps, sets);
+            }
+
+            if (rIr > 2 && feedbackRating >5) 
+            {
+                return new Tuple<int, int, int>(weight, reps+2, sets);
+            }
+
+
+            return new Tuple<int, int, int>(weight, reps + 1, sets);
+        }
+
+        private int CalculateOneRepMaximum(int weightAchieved)
+        {
+            return (weightAchieved * 100) / oneRepMaximumCoEfficient;
         }
 
         private List<Excersize> GenerateFinalExcersizeList(List<Excersize> excersizeList, int numberOfExcersizes)
