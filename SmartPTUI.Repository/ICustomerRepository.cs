@@ -16,5 +16,8 @@ namespace SmartPTUI.ContentRepository
         public Task<Customer> GetCustomerViaEmail(string email);
 
         public Task SavePT(PersonalTrainer pt);
+
+        public Task<PersonalTrainer> GetPTById(int id);
+        public Task<PersonalTrainer> GetPTByUserId(string id);
     }
 }

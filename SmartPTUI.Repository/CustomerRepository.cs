@@ -26,9 +26,23 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<Customer> GetCustomerById(string id)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId.Equals(id));
+            var customer = await _context.Customers.Include(x=> x.PersonalTrainer).FirstOrDefaultAsync(x => x.UserId.Equals(id));
   
             return customer;
+        }
+
+        public async Task<PersonalTrainer> GetPTById(int id)
+        {
+            var pt = await _context.PersonalTrainer.FirstOrDefaultAsync(x => x.Id == id);
+
+            return pt;
+        }
+
+        public async Task<PersonalTrainer> GetPTByUserId(string id)
+        {
+            var pt = await _context.PersonalTrainer.FirstOrDefaultAsync(x => x.UserId.Equals(id));
+
+            return pt;
         }
 
         public async Task<Customer> GetCustomerViaEmail(string email)

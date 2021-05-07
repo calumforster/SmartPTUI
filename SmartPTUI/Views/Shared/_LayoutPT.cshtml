@@ -1,11 +1,35 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@using SmartPTUI.Areas.Identity.Data;
+@using SmartPTUI.ContentRepository;
+
+@inject UserManager<AppUser> _userManager
+@inject ICustomerRepository _customerRepo
+
+@{
+    var customStyling = new CustomStylingModel();
+
+    var user = await _userManager.GetUserAsync(this.User);
+    var pt = await _customerRepo.GetPTByUserId(user.Id);
+
+    customStyling.BackgorundColour = pt.BackgorundColour;
+    customStyling.TextColour = pt.TextColour;
+    customStyling.TitleColour = pt.TitleColour;
+    customStyling.TopBarColour = pt.TopBarColour;
+    customStyling.SiteName = pt.SiteName;
+    customStyling.WelcomeMessage = pt.WelcomeMessage;
+
+
+}
+
+@await Html.PartialAsync("CustomStyling.cshtml", customStyling);
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SmartPTUI</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/PTStyle.css" />
+    <title>@ViewData["Title"] - @customStyling.SiteName</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
@@ -17,7 +41,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial"/>
+                    <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
