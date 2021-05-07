@@ -1,18 +1,29 @@
-﻿using SmartPTUI.Data.DomainModels;
+﻿using SmartPTUI.Data.Data.Enums.Feedback;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartPTUI.Data.DomainModels
 {
     public class ExcersizeMeta
     {
-        public int Id { get; set; }
+        public int ExcersizeMetaId { get; set; }
         public int ExcersizeId { get; set; }
-        public virtual Excersize ExcersizeType { get; set; }
-        public int Sets { get; set; }
-        public int Reps { get; set; }
-        public int Weight { get; set; }
-        public WorkoutSession Workout { get; set; }
+        public List<ExcersizeSet> ExcersizeSet { get; set; }
+        #nullable enable
+        public virtual Excersize? ExcersizeType { get; set; }
+        public int SetsGoal { get; set; }
+        public int RepsGoal { get; set; }        
+        public int WeightGoal { get; set; }
+   
+        #nullable enable
+        public virtual WorkoutSession? Workout { get; set; }
+        [Display(Name = "How do you feel after the excersize? (1-10)")]
+        [Range(1, 10)]
+        [Required]
+        public int ExcersizeFeedbackRating { get; set; }
+        [Display(Name = "Additional Notes")]
+        public string? FurtherNotes { get; set; }
+        public bool isCompletedExcersizeMeta { get; set; }
     }
 }

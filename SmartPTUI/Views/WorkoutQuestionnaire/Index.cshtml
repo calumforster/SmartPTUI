@@ -2,81 +2,65 @@
 @model QuestionnaireViewModel
 
 @{ 
-    const string formCssClass = "form-control";
 }
 
 <form asp-controller="WorkoutQuestionnaire" asp-action="SubmitForm">
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.FirstName);
-        @Html.TextBoxFor(m => m.Customer.FirstName, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.FirstName)
-    </div>
+    @Html.HiddenFor(m => m.Customer.Id)
+    @Html.HiddenFor(m => m.Customer.FirstName)
+    @Html.HiddenFor(m => m.Customer.LastName)
+    @Html.HiddenFor(m => m.Customer.Gender)
+    @Html.HiddenFor(m => m.Customer.DOB)
+    @Html.HiddenFor(m => m.Customer.Height)
+
+    @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Customer.LastName);
-        @Html.TextBoxFor(m => m.Customer.LastName, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.LastName)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.Gender)
-        @Html.DropDownListFor(m => m.Customer.Gender, Html.GetEnumSelectList(Model.Customer.Gender.GetType()), "Select Gender", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.Gender)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.Height);
-        @Html.TextBoxFor(m => m.Customer.Height, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.Height)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.DOB)
-        @Html.TextBoxFor(m => m.Customer.DOB, "{0:d MMM yyyy}", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.DOB)
+        @Html.LabelFor(m => m.WorkoutQuestion.WorkoutName)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.WorkoutName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.WorkoutName, null, new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.CurrentHealth)
-        @Html.DropDownListFor(m => m.Customer.CurrentHealth, Html.GetEnumSelectList(Model.Customer.CurrentHealth.GetType()), "Select Current Health Level", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.Customer.CurrentHealth)
-    </div>
-
-    <br>
-    <br>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.StartWeight);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.StartWeight, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.WorkoutQuestion.StartWeight)
+        @Html.DropDownListFor(m => m.Customer.CurrentHealth, Html.GetEnumSelectList(Model.Customer.CurrentHealth.GetType()), "Select Current Health Level", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.CurrentHealth, null, new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.EndWeight);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.EndWeight, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.WorkoutQuestion.EndWeight)
+        @Html.LabelFor(m => m.WorkoutQuestion.StartWeight)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.StartWeight, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.StartWeight, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.WorkoutQuestion.EndWeight)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.EndWeight, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.EndWeight, null, new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.WorkoutQuestion.Goal)
-        @Html.DropDownListFor(m => m.WorkoutQuestion.Goal, Html.GetEnumSelectList(Model.WorkoutQuestion.Goal.GetType()), "Select Current Health Level", new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.WorkoutQuestion.Goal)
+        @Html.DropDownListFor(m => m.WorkoutQuestion.Goal, Html.GetEnumSelectList(Model.WorkoutQuestion.Goal.GetType()), "Select your Workout Goal", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.Goal, null, new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { placeholder = "Placeholder"  , @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek)
+        @Html.LabelFor(m => m.WorkoutQuestion.NumberOfWeeks)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.NumberOfWeeks, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.NumberOfWeeks, null, new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.WorkoutQuestion.TimePerWorkout);
-        @Html.TextBoxFor(m => m.WorkoutQuestion.TimePerWorkout, new { @class = formCssClass })
-        @Html.ValidationMessageFor(m => m.WorkoutQuestion.TimePerWorkout)
+        @Html.LabelFor(m => m.WorkoutQuestion.DaysPerWeek)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.DaysPerWeek, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.DaysPerWeek, null, new { @class = "text-danger" })
     </div>
-    @{
-       
-     }
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.WorkoutQuestion.TimePerWorkout)
+        @Html.TextBoxFor(m => m.WorkoutQuestion.TimePerWorkout, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WorkoutQuestion.TimePerWorkout, null, new { @class = "text-danger" })
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>

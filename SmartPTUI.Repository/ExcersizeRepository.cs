@@ -4,7 +4,7 @@ using SmartPTUI.Data.DomainModels;
 using SmartPTUI.Data.Enums.WorkoutPlan;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.ContentRepository
@@ -36,6 +36,20 @@ namespace SmartPTUI.ContentRepository
         public async Task<Excersize> GetLegsExcersize()
         {
             return await _context.ExcersizeStore.FirstOrDefaultAsync(x => x.CoreArea.Equals(WorkoutArea.Legs));
+        }
+
+        public async Task<Excersize> GetExcersizeWithWorkoutArea(int workoutAreaId)
+        {
+
+            WorkoutArea workoutEnum = (WorkoutArea)workoutAreaId;
+            return await _context.ExcersizeStore.FirstOrDefaultAsync(x => x.CoreArea == workoutEnum);
+        }
+        public async Task<List<Excersize>> GetExcersizesWithWorkoutArea(int workoutAreaId)
+        {
+
+            WorkoutArea workoutEnum = (WorkoutArea)workoutAreaId;            
+
+            return await _context.ExcersizeStore.Where(x => x.CoreArea == workoutEnum).ToListAsync();
         }
 
 

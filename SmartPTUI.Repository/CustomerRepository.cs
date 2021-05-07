@@ -31,6 +31,16 @@ namespace SmartPTUI.ContentRepository
             return customer;
         }
 
+        public async Task<Customer> UpdateCustomer(Customer customer)
+        {
+
+            var returnedCustomer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId.Equals(customer.Id));
+            returnedCustomer = customer;
+            _context.SaveChanges();
+
+            return customer;
+        }
+
         public async Task SaveCustomer(Customer customer)
         {
             _context.Add(customer);

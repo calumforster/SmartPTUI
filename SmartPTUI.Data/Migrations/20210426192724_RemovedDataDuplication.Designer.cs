@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210426192724_RemovedDataDuplication")]
+    partial class RemovedDataDuplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,9 +266,6 @@ namespace SmartPTUI.Migrations
                     b.Property<int>("CoreArea")
                         .HasColumnType("int");
 
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("int");
-
                     b.Property<int>("TimePerRep")
                         .HasColumnType("int");
 
@@ -297,10 +296,19 @@ namespace SmartPTUI.Migrations
                     b.Property<string>("FurtherNotes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RepsAchieved")
+                        .HasColumnType("int");
+
                     b.Property<int>("RepsGoal")
                         .HasColumnType("int");
 
+                    b.Property<int>("SetsAchieved")
+                        .HasColumnType("int");
+
                     b.Property<int>("SetsGoal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeightAchieved")
                         .HasColumnType("int");
 
                     b.Property<int>("WeightGoal")
@@ -319,35 +327,6 @@ namespace SmartPTUI.Migrations
                     b.HasIndex("WorkoutSessionId");
 
                     b.ToTable("ExcersizeMetas");
-                });
-
-            modelBuilder.Entity("SmartPTUI.Data.DomainModels.ExcersizeSet", b =>
-                {
-                    b.Property<int>("ExcersizeSetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ExcersizeMetaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepsAchieved")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepsInReserve")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SetName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WeightAchieved")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExcersizeSetId");
-
-                    b.HasIndex("ExcersizeMetaId");
-
-                    b.ToTable("ExcersizeSets");
                 });
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutPlan", b =>
@@ -391,10 +370,6 @@ namespace SmartPTUI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Goal")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NumberOfWeeks")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("StartWeight")
@@ -540,13 +515,6 @@ namespace SmartPTUI.Migrations
                     b.Navigation("Workout");
                 });
 
-            modelBuilder.Entity("SmartPTUI.Data.DomainModels.ExcersizeSet", b =>
-                {
-                    b.HasOne("SmartPTUI.Data.DomainModels.ExcersizeMeta", null)
-                        .WithMany("ExcersizeSet")
-                        .HasForeignKey("ExcersizeMetaId");
-                });
-
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutPlan", b =>
                 {
                     b.HasOne("SmartPTUI.Data.Customer", "Customer")
@@ -578,11 +546,6 @@ namespace SmartPTUI.Migrations
                         .HasForeignKey("WorkoutPlanId");
 
                     b.Navigation("WorkoutPlan");
-                });
-
-            modelBuilder.Entity("SmartPTUI.Data.DomainModels.ExcersizeMeta", b =>
-                {
-                    b.Navigation("ExcersizeSet");
                 });
 
             modelBuilder.Entity("SmartPTUI.Data.DomainModels.WorkoutPlan", b =>

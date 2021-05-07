@@ -1,6 +1,7 @@
 ﻿using SmartPTUI.Data.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SmartPTUI.Business.ViewModels
@@ -13,6 +14,8 @@ namespace SmartPTUI.Business.ViewModels
         public Gender Gender { get; set; }
         public int Height { get; set; }
         public DateTime DOB { get; set; }
+        [Display(Name = "Your Current Health Rating")]
+        [Required]
         public CurrentHealthRating CurrentHealth { get; set; }
     }
 }

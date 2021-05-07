@@ -1,6 +1,7 @@
 ﻿using SmartPTUI.Data.Enums.WorkoutPlan;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace SmartPTUI.Data.DomainModels
@@ -12,6 +13,7 @@ namespace SmartPTUI.Data.DomainModels
         public string WorkoutName { get; set; }
         public string WorkoutDescription { get; set; }
         public WorkoutArea CoreArea { get; set; }
+        public int Difficulty { get; set; }
 
     }
 }

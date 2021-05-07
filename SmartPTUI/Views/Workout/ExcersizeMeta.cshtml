@@ -1,0 +1,119 @@
+﻿@using SmartPTUI.Data.DomainModels
+@model ExcersizeMeta
+
+@{
+    string readonlyValue = Model.isCompletedExcersizeMeta ? "disabled='disable'" : string.Empty;
+
+}
+
+<h3>Excersize Info</h3>
+<p>Name: @Model.ExcersizeType.WorkoutName</p>
+<p>Sets: @Model.SetsGoal</p>
+<p>Reps: @Model.RepsGoal</p>
+@if (Model.WeightGoal != 0)
+{
+    <p>Reps: @Model.RepsGoal</p>
+    <p>Weight: @Model.WeightGoal</p>
+}
+else
+{
+    Model.RepsGoal = 10;
+    <p>Reps: 10</p>
+    <p>This is your 10 Rep max set - see here for more info</p>
+
+}
+
+<form asp-controller="Workout" asp-action="SubmitExcersizeMeta">
+    <fieldset @readonlyValue>
+        <h3>Excersize Results</h3>
+
+        @Html.HiddenFor(m => m.ExcersizeType.Id)
+        @Html.HiddenFor(m => m.SetsGoal)
+        @Html.HiddenFor(m => m.RepsGoal)
+        @Html.HiddenFor(m => m.WeightGoal)
+        @Html.HiddenFor(m => m.ExcersizeMetaId)
+        @Html.HiddenFor(m => m.isCompletedExcersizeMeta)
+        @Html.HiddenFor(m => m.Workout.WorkoutSessionId)
+
+        @Html.ValidationSummary(null, new { @class = "validation-summary-errors text-danger" })
+
+
+        @for (int i = 0; i < Model.ExcersizeSet.Count; i++)
+        {
+            @Html.HiddenFor(m => m.ExcersizeSet[i].ExcersizeSetId)
+            @Html.HiddenFor(m => m.ExcersizeSet[i].SetName)
+
+            <h3>@Model.ExcersizeSet[i].SetName</h3>
+
+            if (Model.WeightGoal == 0)
+            {
+                Model.ExcersizeSet[i].RepsAchieved = 10;
+                @Html.HiddenFor(m => m.ExcersizeSet[i].RepsAchieved);
+
+            }
+            else
+            {
+                <div class="form-group ">
+                    @Html.LabelFor(m => m.ExcersizeSet[i].RepsAchieved)
+                    @Html.TextBoxFor(m => m.ExcersizeSet[i].RepsAchieved, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ExcersizeSet[i].RepsAchieved, null, new { @class = "text-danger" })
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ExcersizeSet[i].RepsInReserve)
+                    @Html.TextBoxFor(m => m.ExcersizeSet[i].RepsInReserve, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ExcersizeSet[i].RepsInReserve, null, new { @class = "text-danger" })
+                </div>
+
+            }
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ExcersizeSet[i].WeightAchieved)
+                @Html.TextBoxFor(m => m.ExcersizeSet[i].WeightAchieved, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ExcersizeSet[i].WeightAchieved, null, new { @class = "text-danger" })
+            </div>
+
+
+        }
+
+
+
+        <h3>Feedback</h3>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExcersizeFeedbackRating)
+            @Html.TextBoxFor(m => m.ExcersizeFeedbackRating, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ExcersizeFeedbackRating, null, new { @class = "text-danger", })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FurtherNotes)
+            @Html.TextBoxFor(m => m.FurtherNotes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FurtherNotes, null, new { @class = "text-danger" })
+        </div>
+
+        @if (!Model.isCompletedExcersizeMeta)
+        {
+            <button type="submit" class="btn btn-primary">Submit</button>
+        }
+
+
+    </fieldset>
+</form>
+
+
+<button type="submit" class="btn btn-secondary">
+    @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId })
+</button>
+
+@if (Model.isCompletedExcersizeMeta)
+{
+    <h3>Workout Session Complete</h3>
+}
+else
+{
+    <h3> Workout Session Incomplete</h3>
+}

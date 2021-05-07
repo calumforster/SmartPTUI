@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartPTUI.Data;
 
 namespace SmartPTUI.Migrations
 {
     [DbContext(typeof(SmartPTUIContext))]
-    partial class SmartPTUIContextModelSnapshot : ModelSnapshot
+    [Migration("20210428202324_AddingExcersizeReps")]
+    partial class AddingExcersizeReps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,9 +266,6 @@ namespace SmartPTUI.Migrations
                     b.Property<int>("CoreArea")
                         .HasColumnType("int");
 
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("int");
-
                     b.Property<int>("TimePerRep")
                         .HasColumnType("int");
 
@@ -391,10 +390,6 @@ namespace SmartPTUI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Goal")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NumberOfWeeks")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("StartWeight")

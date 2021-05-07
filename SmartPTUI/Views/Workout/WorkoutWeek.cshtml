@@ -1,9 +1,35 @@
 ﻿@using SmartPTUI.Data.DomainModels
 @model WorkoutWeek
 
-
+<h2>Workout Days:</h2>
 @for (int j = 0; j < Model.Workout.Count; j++)
 {
-    <h2>Workout Day @(j+1)</h2>
-    @await Html.PartialAsync("WorkoutSession.cshtml", Model.Workout[j])
+    <p>@Html.ActionLink("Workout Day " + (j + 1), "WorkoutSession", "Workout", new { id = Model.Workout[j].WorkoutSessionId })</p>
+}
+
+<form asp-controller="Workout" asp-action="SubmitWorkoutWeek">
+
+    @Html.HiddenFor(x => x.WorkoutWeekId)
+    @Html.HiddenFor(x => x.isCompletedWorkoutWeek)
+    @Html.HiddenFor(x => x.WorkoutPlan.WorkoutPlanId)
+
+
+    @if (!Model.isCompletedWorkoutWeek)
+    {
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+
+</form>
+
+<button type="submit" class="btn btn-secondary">
+    @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId })
+</button>
+
+@if (Model.isCompletedWorkoutWeek)
+{
+    <h3>Workout Week Complete</h3>
+}
+else
+{
+    <h3> Workout Week Incomplete</h3>
 }
