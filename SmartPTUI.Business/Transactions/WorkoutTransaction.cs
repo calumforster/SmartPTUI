@@ -207,6 +207,7 @@ namespace SmartPTUI.Business.Transactions
                     tempExcersize.RepsGoal = weightRepSetCalculation.Item2;
                     tempExcersize.SetsGoal = weightRepSetCalculation.Item3;
                     tempExcersize.ExcersizeSet[0].SetName = "Set 1";
+                    tempExcersize.ExcersizeSet[0].RepsAchieved = 0;
 
                     for (int z = 1; z < weightRepSetCalculation.Item3; z++)
                     {
@@ -232,25 +233,25 @@ namespace SmartPTUI.Business.Transactions
             {
                 double weightGainWeight = (double) CalculateOneRepMaximum(weight);
                 double strenthPercent = 89;
-                double actualWeight =  (strenthPercent / weightGainWeight) * 100;
+                double actualWeight = (strenthPercent / 100) * weightGainWeight;
 
                 return new Tuple<int, int, int>((int) actualWeight,5,3);
             }
 
             if (workoutGoal == Goals.WeightLoss)
             {
-                double weightGainWeight = (double)CalculateOneRepMaximum(weight);
+                double weighLossWeight = (double)CalculateOneRepMaximum(weight);
                 double strenthPercent = 70;
-                double actualWeight = (strenthPercent / weightGainWeight) * 100;
+                double actualWeight = (strenthPercent / 100) * weighLossWeight;
 
                 return new Tuple<int, int, int>((int)actualWeight, 13, 2);
             }
 
             if (workoutGoal == Goals.Fitness)
             {
-                double weightGainWeight = (double)CalculateOneRepMaximum(weight);
+                double weightFitnessWeight = (double)CalculateOneRepMaximum(weight);
                 double strenthPercent = 67;
-                double actualWeight = (strenthPercent / weightGainWeight) * 100;
+                double actualWeight = (strenthPercent / 100) * weightFitnessWeight;
 
                 return new Tuple<int, int, int>((int)actualWeight, 15, 3);
             }
@@ -288,7 +289,7 @@ namespace SmartPTUI.Business.Transactions
             return new Tuple<int, int, int>(weight, reps + 1, sets);
         }
 
-        private int CalculateOneRepMaximum(int weightAchieved)
+        private double CalculateOneRepMaximum(int weightAchieved)
         {
             return (weightAchieved * 100) / oneRepMaximumCoEfficient;
         }

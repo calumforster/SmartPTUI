@@ -18,7 +18,7 @@ namespace SmartPTUI.Data.DomainModels
         [Required]
         public int WeightAchieved { get; set; }
         [Display(Name = "Reps In Reserve")]
-        [Range(1, 20)]
+        [Range(0, 20)]
         [Required]
         public int RepsInReserve { get; set; }
     }
