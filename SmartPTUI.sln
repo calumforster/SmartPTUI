@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.Data", "SmartPTUI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.Business", "SmartPTUI.Business\SmartPTUI.Business.csproj", "{1A0F8046-5571-48BC-BEA4-9B759C9167A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPTUI.ContentRepository", "SmartPTUI.Repository\SmartPTUI.ContentRepository.csproj", "{AB5E2116-3F67-4049-8189-33584435D12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.ContentRepository", "SmartPTUI.Repository\SmartPTUI.ContentRepository.csproj", "{AB5E2116-3F67-4049-8189-33584435D12E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,10 @@ namespace SmartPTUI.Business.Transactions
 {
     public interface ICustomerTransactions
     {
-        Task SaveCustomer(Customer customer);
+        public Task SaveCustomer(Customer customer);
         public Task<Customer> UpdateCustomer(Customer customer);
+
+        public Task<Customer> GetCustomerViaEmail(string customerEmail);
+        public Task SavePT(PersonalTrainer pt);
     }
 }

@@ -23,5 +23,6 @@ namespace SmartPTUI.Data
         public DbSet<WorkoutSession> WorkoutSessions { get; set; }
         public DbSet<WorkoutQuestion> WorkoutQuestions { get; set; }
         public DbSet<ExcersizeSet> ExcersizeSets { get; set; }
+        public DbSet<PersonalTrainer> PersonalTrainer { get; set; }
     }
 }

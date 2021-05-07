@@ -12,5 +12,9 @@ namespace SmartPTUI.ContentRepository
         Task<Customer> GetCustomerById(string id);
         Task SaveCustomer(Customer Customer);
         public Task<Customer> UpdateCustomer(Customer customer);
+
+        public Task<Customer> GetCustomerViaEmail(string email);
+
+        public Task SavePT(PersonalTrainer pt);
     }
 }

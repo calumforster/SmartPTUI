@@ -31,6 +31,13 @@ namespace SmartPTUI.ContentRepository
             return customer;
         }
 
+        public async Task<Customer> GetCustomerViaEmail(string email)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.User.Email == email);
+
+            return customer;
+        }
+
         public async Task<Customer> UpdateCustomer(Customer customer)
         {
 
@@ -42,6 +49,12 @@ namespace SmartPTUI.ContentRepository
         }
 
         public async Task SaveCustomer(Customer customer)
+        {
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SavePT(PersonalTrainer customer)
         {
             _context.Add(customer);
             await _context.SaveChangesAsync();

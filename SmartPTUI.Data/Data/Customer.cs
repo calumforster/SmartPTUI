@@ -18,5 +18,6 @@ namespace SmartPTUI.Data
         public string UserId { get; set; }
 
         public virtual AppUser User { get; set; }
+        public virtual PersonalTrainer? PersonalTrainer { get; set; }
     }
 }
