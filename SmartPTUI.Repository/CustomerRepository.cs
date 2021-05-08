@@ -33,14 +33,14 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<PersonalTrainer> GetPTById(int id)
         {
-            var pt = await _context.PersonalTrainer.FirstOrDefaultAsync(x => x.Id == id);
+            var pt = await _context.PersonalTrainer.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
             return pt;
         }
 
         public async Task<PersonalTrainer> GetPTByUserId(string id)
         {
-            var pt = await _context.PersonalTrainer.FirstOrDefaultAsync(x => x.UserId.Equals(id));
+            var pt = await _context.PersonalTrainer.Include(x => x.Customers).FirstOrDefaultAsync(x => x.UserId.Equals(id));
 
             return pt;
         }
@@ -68,9 +68,15 @@ namespace SmartPTUI.ContentRepository
             await _context.SaveChangesAsync();
         }
 
-        public async Task SavePT(PersonalTrainer customer)
+        public async Task SavePT(PersonalTrainer pt)
         {
-            _context.Add(customer);
+            _context.Add(pt);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdatePT(PersonalTrainer pt)
+        {
+           _context.Entry(pt).Collection(x => x.Customers).IsModified = true;
             await _context.SaveChangesAsync();
         }
 

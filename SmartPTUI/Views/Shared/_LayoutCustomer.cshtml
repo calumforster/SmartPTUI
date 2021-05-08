@@ -7,18 +7,33 @@
 
 @{
     var customStyling = new CustomStylingModel();
+    try
+    {
+        var user = await _userManager.GetUserAsync(this.User);
+        var customer = await _customerRepo.GetCustomerById(user.Id);      
 
-    var user = await _userManager.GetUserAsync(this.User);
-    var customer = await _customerRepo.GetCustomerById(user.Id);
-    var ptId = customer.PersonalTrainer.Id;
-    var pt = await _customerRepo.GetPTById(ptId);
+        var ptId = customer.PersonalTrainer.Id;
+        var pt = await _customerRepo.GetPTById(ptId);
 
-    customStyling.BackgorundColour = pt.BackgorundColour;
-    customStyling.TextColour = pt.TextColour;
-    customStyling.TitleColour = pt.TitleColour;
-    customStyling.TopBarColour = pt.TopBarColour;
-    customStyling.SiteName = pt.SiteName;
-    customStyling.WelcomeMessage = pt.WelcomeMessage;
+        customStyling.BackgorundColour = pt.BackgorundColour;
+        customStyling.TextColour = pt.TextColour;
+        customStyling.TitleColour = pt.TitleColour;
+        customStyling.TopBarColour = pt.TopBarColour;
+        customStyling.SiteName = pt.SiteName;
+        customStyling.WelcomeMessage = pt.WelcomeMessage;
+    }
+    catch (Exception e) {
+        customStyling.BackgorundColour = "#ffffff";
+        customStyling.TextColour = "#000000";
+        customStyling.TitleColour = "#000000";
+        customStyling.TopBarColour = "#ffffff";
+        customStyling.SiteName = "Base Site";
+        customStyling.WelcomeMessage = "Hello";
+
+
+
+
+    }
 
 
 }

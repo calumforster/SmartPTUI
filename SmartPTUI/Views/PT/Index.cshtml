@@ -1,8 +1,31 @@
-﻿
+﻿@model PTPageViewModel
+
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Welcome PT!</h1>
 
+<form asp-controller="PT" asp-action="SubmitCustomerAddition">
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerEmail)
+            @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CustomerEmail, null, new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </fieldset>
+
+</form>
+
+
+
+<h3>Clients:</h3>
+
+@foreach (var customer in Model.PersonalTrainer.Customers)
+{
+    <p> @customer.FirstName @customer.LastName </p>
+    <br>
+
+}

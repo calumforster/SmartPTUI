@@ -19,5 +19,7 @@ namespace SmartPTUI.ContentRepository
 
         public Task<PersonalTrainer> GetPTById(int id);
         public Task<PersonalTrainer> GetPTByUserId(string id);
+
+        public Task UpdatePT(PersonalTrainer pt);
     }
 }
