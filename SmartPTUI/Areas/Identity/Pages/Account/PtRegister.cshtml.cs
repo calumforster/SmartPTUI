@@ -78,17 +78,25 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Custom Title Colour")]
+            [RegularExpression(@"^#[a-fA-F0-9]{6}$", ErrorMessage = "Must be a valid colour hex code")]
+            [StringLength(7, MinimumLength = 7, ErrorMessage = "Must be a valid hex colour code")]
             public string TitleColour { get; set; }
 
             [Required]
+            [RegularExpression(@"^#[a-fA-F0-9]{6}$", ErrorMessage = "Must be a valid colour hex code")]
+            [StringLength(7, MinimumLength = 7, ErrorMessage = "Must be a valid hex colour code")]
             [Display(Name = "Custom Text Colour")]
             public string TextColour { get; set; }
 
             [Required]
+            [RegularExpression(@"^#[a-fA-F0-9]{6}$", ErrorMessage = "Must be a valid colour hex code")]
+            [StringLength(7, MinimumLength = 7, ErrorMessage = "Must be a valid hex colour code")]
             [Display(Name = "Custom Background Colour")]
             public string BackgroundColour { get; set; }
 
             [Required]
+            [RegularExpression(@"^#[a-fA-F0-9]{6}$", ErrorMessage = "Must be a valid colour hex code")]
+            [StringLength(7, MinimumLength = 7, ErrorMessage = "Must be a valid hex colour code")]
             [Display(Name = "Custom Title Bar Colour")]
             public string TopBarColour { get; set; }
 

@@ -1,0 +1,26 @@
+﻿@model AdminViewModel
+<h1>Welcome Admin!</h1>
+
+<form asp-controller="Admin" asp-action="SubmitCustomerUpdate">
+    <fieldset>
+
+
+        @for (int i = 0; i < Model.CustomerList.Count; i++)
+        {
+            @Html.HiddenFor(x => x.CustomerList[i].Id);
+            <p>  @Model.CustomerList[i].User.Email </p>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CustomerList[i].isDisabled)
+                @Html.CheckBoxFor(m => m.CustomerList[i].isDisabled)
+            </div>
+
+        }
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+    </fieldset>
+
+</form>

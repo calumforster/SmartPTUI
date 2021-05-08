@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SmartPTUI.Areas.Identity.Data;
+using SmartPTUI.Business.Transactions;
 
 namespace SmartPTUI.Areas.Identity.Pages.Account
 {
@@ -20,14 +21,17 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ICustomerTransactions _customerTransaction;
 
         public LoginModel(SignInManager<AppUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            ICustomerTransactions customerTransaction)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _customerTransaction = customerTransaction;
         }
 
         [BindProperty]
@@ -85,10 +89,21 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
-                    var userRole = await _userManager.GetRolesAsync(user);
-                    string userRoleString = userRole.FirstOrDefault();
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+
+                    var customer = await _customerTransaction.GetCustomerViaEmail(Input.Email);
+
+                    if (customer.isDisabled)
+                    {
+                        ModelState.AddModelError("DisabledUser", "Your Account Has Been Disabled");
+                    }
+                    else {
+                        var userRole = await _userManager.GetRolesAsync(user);
+                        string userRoleString = userRole.FirstOrDefault();
+                        _logger.LogInformation("User logged in.");
+                        return LocalRedirect(returnUrl);
+
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

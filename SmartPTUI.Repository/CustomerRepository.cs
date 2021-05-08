@@ -20,15 +20,22 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<IEnumerable<Customer>> GetCustomersAsync()
         {
-            var customers = await _context.Customers.ToListAsync();
+            var customers = await _context.Customers.AsNoTracking().ToListAsync();
             return customers;
         }
 
         public async Task<Customer> GetCustomerById(string id)
         {
-            var customer = await _context.Customers.Include(x=> x.PersonalTrainer).FirstOrDefaultAsync(x => x.UserId.Equals(id));
+            var customer = await _context.Customers.AsNoTracking().Include(x=> x.PersonalTrainer).FirstOrDefaultAsync(x => x.UserId.Equals(id));
   
             return customer;
+        }
+
+        public async Task<List<Customer>> GetAllCustomers()
+        {
+            var customerList = await _context.Customers.AsNoTracking().Include(x => x.User).ToListAsync();
+
+            return customerList;
         }
 
         public async Task<PersonalTrainer> GetPTById(int id)
@@ -38,16 +45,23 @@ namespace SmartPTUI.ContentRepository
             return pt;
         }
 
+        public async Task<Customer> GetCustomerByDBId(int id)
+        {
+            var customer = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+            return customer;
+        }
+
         public async Task<PersonalTrainer> GetPTByUserId(string id)
         {
-            var pt = await _context.PersonalTrainer.Include(x => x.Customers).FirstOrDefaultAsync(x => x.UserId.Equals(id));
+            var pt = await _context.PersonalTrainer.AsNoTracking().Include(x => x.Customers).FirstOrDefaultAsync(x => x.UserId.Equals(id));
 
             return pt;
         }
 
         public async Task<Customer> GetCustomerViaEmail(string email)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.User.Email == email);
+            var customer = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.User.Email == email);
 
             return customer;
         }
@@ -55,11 +69,18 @@ namespace SmartPTUI.ContentRepository
         public async Task<Customer> UpdateCustomer(Customer customer)
         {
 
-            var returnedCustomer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId.Equals(customer.Id));
+            var returnedCustomer = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.UserId.Equals(customer.Id));
             returnedCustomer = customer;
             _context.SaveChanges();
 
             return customer;
+        }
+
+        public async Task UpdateCustomerAdmin(Customer customer)
+        {
+                _context.Entry(customer).Property(x => x.isDisabled).IsModified = true;
+                await _context.SaveChangesAsync();
+           
         }
 
         public async Task SaveCustomer(Customer customer)

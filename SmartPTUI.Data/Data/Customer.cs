@@ -19,5 +19,7 @@ namespace SmartPTUI.Data
 
         public virtual AppUser User { get; set; }
         public virtual PersonalTrainer? PersonalTrainer { get; set; }
+
+        public bool isDisabled { get; set; } = false;
     }
 }
