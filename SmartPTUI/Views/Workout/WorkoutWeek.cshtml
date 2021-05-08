@@ -21,9 +21,7 @@
 
 </form>
 
-<button type="submit" class="btn btn-secondary">
-    @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId })
-</button>
+@Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId }, new { @class = "btn btn-secondary" })
 
 @if (Model.isCompletedWorkoutWeek)
 {

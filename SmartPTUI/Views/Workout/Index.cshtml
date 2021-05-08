@@ -12,9 +12,9 @@
     }
     else
     {
-        if(Model.WorkoutWeek[i-1].isCompletedWorkoutWeek)
-        { 
-        <p> @Html.ActionLink("Week " + (i + 1), "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek[i].WorkoutWeekId })</p>
+        if (Model.WorkoutWeek[i - 1].isCompletedWorkoutWeek)
+        {
+            <p> @Html.ActionLink("Week " + (i + 1), "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek[i].WorkoutWeekId })</p>
         }
 
     }
@@ -34,10 +34,8 @@
 
 </form>
 
-<button type="submit" class="btn btn-secondary">
-    @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlanId })
-</button>
 
+@Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlanId }, new { @class = "btn btn-secondary" })
 
 @if (Model.isCompletedWorkoutPlan)
 {

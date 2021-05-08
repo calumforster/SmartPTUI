@@ -104,10 +104,8 @@ else
     </fieldset>
 </form>
 
+    @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId}, new {@class = "btn btn-secondary" })
 
-<button type="submit" class="btn btn-secondary">
-    @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId })
-</button>
 
 @if (Model.isCompletedExcersizeMeta)
 {
