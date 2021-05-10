@@ -142,68 +142,86 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email
                 };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+
+                try
                 {
 
-                    await _userManager.AddToRoleAsync(user, "SMARTPTUIPTROLE");
-                    _logger.LogInformation("User created a new account with password.");
+                    var customerList = new List<Customer>();
+                    var customer = await _customerTransaction.GetCustomerViaEmail(Input.CustomerEmail);
+                    if (customer != null)
+                    { 
 
-                    //Search customer email address + add boolean if not found to invalidate
 
-                    try
-                    {
-                        
-                        var customerList = new List<Customer>();
-                        customerList.Add(await _customerTransaction.GetCustomerViaEmail(Input.CustomerEmail));
 
-                        var pt = new PersonalTrainer()
+                        var result = await _userManager.CreateAsync(user, Input.Password);
+                        if (result.Succeeded)
                         {
-                            FirstName = Input.FirstName,
-                            LastName = Input.LastName,
-                            Gender = Input.Gender,
-                            DOB = Input.DOB,
-                            UserId = user.Id,
-                            Customers = customerList,
-                            TitleColour = Input.TitleColour,
-                            TextColour = Input.TextColour,
-                            BackgorundColour = Input.BackgroundColour,
-                            TopBarColour = Input.TopBarColour,
-                            SiteName = Input.SiteName,
-                            WelcomeMessage = Input.WelcomeMessage
 
-                        };
+                            await _userManager.AddToRoleAsync(user, "SMARTPTUIPTROLE");
+                            _logger.LogInformation("User created a new account with password.");
 
-                        await _customerTransaction.SavePT(pt);
-
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                            protocol: Request.Scheme);
+                            //Search customer email address + add boolean if not found to invalidate
 
 
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                        {
-                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+
+                            var pt = new PersonalTrainer()
+                            {
+                                FirstName = Input.FirstName,
+                                LastName = Input.LastName,
+                                Gender = Input.Gender,
+                                DOB = Input.DOB,
+                                UserId = user.Id,
+                                Customers = customerList,
+                                TitleColour = Input.TitleColour,
+                                TextColour = Input.TextColour,
+                                BackgorundColour = Input.BackgroundColour,
+                                TopBarColour = Input.TopBarColour,
+                                SiteName = Input.SiteName,
+                                WelcomeMessage = Input.WelcomeMessage
+
+                            };
+
+                            await _customerTransaction.SavePT(pt);
+
+                            customerList.Add(customer);
+
+                            await _customerTransaction.UpdatePT(pt);
+
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                            }
+                            else
+                            {
+                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                return LocalRedirect(returnUrl);
+                            }
+
                         }
-                        else
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
+
                     }
-                    catch (Exception e) {
+                    else
+                    {
 
                         ModelState.AddModelError("CustomerNotFoundError", "Could Not find the customer you entered");
                     }
-
                 }
-                foreach (var error in result.Errors)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+
+                    ModelState.AddModelError("CustomerNotFoundError", "Could Not find the customer you entered");
                 }
             }
 

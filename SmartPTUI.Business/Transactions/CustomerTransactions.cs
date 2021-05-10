@@ -40,6 +40,12 @@ namespace SmartPTUI.Business.Transactions
             await _customerRepository.SavePT(pt);
         }
 
+        public async Task UpdatePT(PersonalTrainer pt)
+        {
+
+            await _customerRepository.UpdatePT(pt);
+        }
+
 
     }
 }

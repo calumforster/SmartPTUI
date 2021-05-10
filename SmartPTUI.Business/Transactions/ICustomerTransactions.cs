@@ -10,5 +10,7 @@ namespace SmartPTUI.Business.Transactions
 
         public Task<Customer> GetCustomerViaEmail(string customerEmail);
         public Task SavePT(PersonalTrainer pt);
+
+        public Task UpdatePT(PersonalTrainer pt);
     }
 }

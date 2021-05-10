@@ -69,7 +69,7 @@ namespace SmartPTUI.ContentRepository
         public async Task<Customer> UpdateCustomer(Customer customer)
         {
 
-            var returnedCustomer = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.UserId.Equals(customer.Id));
+            var returnedCustomer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId.Equals(customer.Id));
             returnedCustomer = customer;
             _context.SaveChanges();
 
