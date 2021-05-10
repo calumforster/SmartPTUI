@@ -54,7 +54,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<PersonalTrainer> GetPTByUserId(string id)
         {
-            var pt = await _context.PersonalTrainer.AsNoTracking().Include(x => x.Customers).FirstOrDefaultAsync(x => x.UserId.Equals(id));
+            var pt = await _context.PersonalTrainer.Include(x => x.Customers).FirstOrDefaultAsync(x => x.UserId.Equals(id));
 
             return pt;
         }

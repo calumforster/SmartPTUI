@@ -90,20 +90,34 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
 
-
-                    var customer = await _customerTransaction.GetCustomerViaEmail(Input.Email);
-
-                    if (customer.isDisabled)
+                    try
                     {
-                        ModelState.AddModelError("DisabledUser", "Your Account Has Been Disabled");
+                        var customer = await _customerTransaction.GetCustomerViaEmail(Input.Email);
+
+                        if (customer.isDisabled)
+                        {
+                            ModelState.AddModelError("DisabledUser", "Your Account Has Been Disabled");
+                        }
+                        else
+                        {
+                            var userRole = await _userManager.GetRolesAsync(user);
+                            string userRoleString = userRole.FirstOrDefault();
+                            _logger.LogInformation("User logged in.");
+                            return LocalRedirect(returnUrl);
+
+                        }
+
+
                     }
-                    else {
+                    catch (Exception e) 
+                    {
                         var userRole = await _userManager.GetRolesAsync(user);
                         string userRoleString = userRole.FirstOrDefault();
                         _logger.LogInformation("User logged in.");
                         return LocalRedirect(returnUrl);
 
                     }
+
                 }
                 if (result.RequiresTwoFactor)
                 {
