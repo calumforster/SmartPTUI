@@ -1,0 +1,11 @@
+﻿@model DashboardViewModel
+
+
+<h1>Workout Plans:</h1>
+
+
+@foreach (var workoutPlan in Model.WorkoutPlans)
+{
+
+    @Html.ActionLink(workoutPlan.WorkoutQuestion.WorkoutName, "Index", "Workout", new { workoutId = workoutPlan.WorkoutPlanId }, new { @class = "btn btn-secondary" })
+}

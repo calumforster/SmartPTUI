@@ -347,6 +347,11 @@ namespace SmartPTUI.Business.Transactions
             return await _workoutRepository.GetWorkoutPlan(id);
         }
 
+        public async Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId) 
+        {
+            return await _workoutRepository.GetWorkoutPlansForCustomer(customerId);
+        }
+
         public async Task<WorkoutWeek> GetWorkoutWeek(int id)
         {
             return await _workoutRepository.GetWorkoutWeek(id);

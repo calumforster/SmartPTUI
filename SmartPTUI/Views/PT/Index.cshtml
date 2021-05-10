@@ -25,7 +25,6 @@
 
 @foreach (var customer in Model.PersonalTrainer.Customers)
 {
-    <p> @customer.FirstName @customer.LastName </p>
-    <br>
+    @Html.ActionLink(customer.FirstName+" "+customer.LastName, "PTndex", "Dashboard", new { userId = customer.Id }, new { @class = "btn btn-secondary" })
 
 }

@@ -16,6 +16,12 @@
 
     @if (!Model.isCompletedWorkoutWeek)
     {
+        <div class="form-group ">
+            @Html.LabelFor(m => m.CaloriesConsumed)
+            @Html.TextBoxFor(m => m.CaloriesConsumed, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CaloriesConsumed, null, new { @class = "text-danger" })
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     }
 

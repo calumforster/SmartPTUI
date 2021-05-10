@@ -10,6 +10,8 @@ namespace SmartPTUI.ContentRepository
     {
         public Task<int> SaveInitialWorkout(WorkoutPlan workout);
         public Task<WorkoutPlan> GetWorkoutPlan(int id);
+
+        public Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId);
         public Task<WorkoutWeek> GetWorkoutWeek(int id);
 
         public Task<WorkoutSession> GetWorkoutSession(int id);
