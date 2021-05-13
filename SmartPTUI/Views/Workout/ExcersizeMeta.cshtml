@@ -6,26 +6,29 @@
 
 }
 
-<h3>Excersize Info</h3>
-<p>Name: @Model.ExcersizeType.WorkoutName</p>
-<p>Sets: @Model.SetsGoal</p>
-<p>Reps: @Model.RepsGoal</p>
-@if (Model.WeightGoal != 0)
-{
+<div class="info-panel p-3 m-2">
+    <h2 class="text-center">Excersize Info</h2>
+    <p>Name: @Model.ExcersizeType.WorkoutName</p>
+    <p>Sets: @Model.SetsGoal</p>
     <p>Reps: @Model.RepsGoal</p>
-    <p>Weight: @Model.WeightGoal</p>
-}
-else
-{
-    Model.RepsGoal = 10;
-    <p>Reps: 10</p>
-    <p>This is your 10 Rep max set - see here for more info</p>
+    @if (Model.WeightGoal != 0)
+    {
+        <p>Reps: @Model.RepsGoal</p>
+        <p>Weight: @Model.WeightGoal</p>
+    }
+    else
+    {
+        Model.RepsGoal = 10;
+        <p>Reps: 10</p>
+        <p>This is your 10 Rep max set - see here for more info</p>
 
-}
+    }
+</div>
 
-<form asp-controller="Workout" asp-action="SubmitExcersizeMeta">
+
+<form id="ExerciseMetaForm" asp-controller="Workout" asp-action="SubmitExcersizeMeta" class="form p-3 m-2">
     <fieldset @readonlyValue>
-        <h3>Excersize Results</h3>
+        <h2 class="text-center">Excersize Results</h2>
 
         @Html.HiddenFor(m => m.ExcersizeType.Id)
         @Html.HiddenFor(m => m.SetsGoal)
@@ -94,24 +97,28 @@ else
             @Html.TextBoxFor(m => m.FurtherNotes, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.FurtherNotes, null, new { @class = "text-danger" })
         </div>
-
+    </fieldset>
+    <div class="row justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start mb-3">
         @if (!Model.isCompletedExcersizeMeta)
         {
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="col-4" align="center">
+
+                <button type="submit" form="ExerciseMetaForm" class="btn btn-primary">Submit</button>
+            </div>
         }
-
-
-    </fieldset>
+        <div class="col-3" align="center">
+            @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId }, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
 </form>
 
-    @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId}, new {@class = "btn btn-secondary" })
-
-
-@if (Model.isCompletedExcersizeMeta)
-{
-    <h3>Workout Session Complete</h3>
-}
-else
-{
-    <h3> Workout Session Incomplete</h3>
-}
+<div class="m-2">
+    @if (Model.isCompletedExcersizeMeta)
+    {
+        <h3>Workout Session Complete</h3>
+    }
+    else
+    {
+        <h3> Workout Session Incomplete</h3>
+    }
+</div>

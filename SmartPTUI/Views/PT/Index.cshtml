@@ -3,28 +3,33 @@
 @{
 }
 
-<h1>Welcome PT!</h1>
+<h1 class="text-center">Welcome PT!</h1>
 
-<form asp-controller="PT" asp-action="SubmitCustomerAddition">
-    <fieldset>
-        <div class="form-group">
-            @Html.LabelFor(m => m.CustomerEmail)
-            @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.CustomerEmail, null, new { @class = "text-danger" })
-        </div>
+<div class="form p-3 m-2">
+    <h2 class="text-center">Add new client</h2>
+    <form asp-controller="PT" asp-action="SubmitCustomerAddition">
+        <fieldset>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CustomerEmail)
+                @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CustomerEmail, null, new { @class = "text-danger" })
+            </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
 
     </fieldset>
 
-</form>
+    </form>
+</div>
 
+<div class="info-panel p-3 m-2">
+    <h2 class="text-center">Existing clients</h2>
 
+    <ul class="list-group">
+        @foreach (var customer in Model.PersonalTrainer.Customers)
+        {
+            <li class="list-group-item"> @customer.FirstName @customer.LastName </li>
+        }
+    </ul>
+</div>
 
-<h3>Clients:</h3>
-
-@foreach (var customer in Model.PersonalTrainer.Customers)
-{
-    @Html.ActionLink(customer.FirstName+" "+customer.LastName, "PTndex", "Dashboard", new { userId = customer.Id }, new { @class = "btn btn-secondary" })
-
-}

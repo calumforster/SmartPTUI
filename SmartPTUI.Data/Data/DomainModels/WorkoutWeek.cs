@@ -14,7 +14,7 @@ namespace SmartPTUI.Data.DomainModels
         [Display(Name = "How Many Calories have you consumed (End Of The Week)")]
         [Range(1, 50000)]
         [Required]
-        public int CaloriesConsumed { get; set; }
+        public int? CaloriesConsumed { get; set; }
         public IList<WorkoutSession> Workout { get; set; }
         public WorkoutPlan WorkoutPlan { get; set; }
         public bool isCompletedWorkoutWeek { get; set; }

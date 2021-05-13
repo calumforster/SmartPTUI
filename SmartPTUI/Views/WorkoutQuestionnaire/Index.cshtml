@@ -4,7 +4,7 @@
 @{ 
 }
 
-<form asp-controller="WorkoutQuestionnaire" asp-action="SubmitForm">
+<form asp-controller="WorkoutQuestionnaire" asp-action="SubmitForm" class="form p-3 m-2">
     @Html.HiddenFor(m => m.Customer.Id)
     @Html.HiddenFor(m => m.Customer.FirstName)
     @Html.HiddenFor(m => m.Customer.LastName)

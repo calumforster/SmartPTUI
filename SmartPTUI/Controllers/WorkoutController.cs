@@ -86,11 +86,6 @@ namespace SmartPTUI.Controllers
         public async Task<IActionResult> SubmitWorkoutSession(WorkoutSession workoutSession)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return View("WorkoutSession", workoutSession);
-            }
-
             if (!await ValidateWorkoutSession(workoutSession.WorkoutSessionId))
             {
                 //Error handle for uncompleted Excersize metas
@@ -114,7 +109,7 @@ namespace SmartPTUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View("WorkoutWeek", workoutWeek);
+                return RedirectToAction("WorkoutWeek", "Workout", new { id = workoutWeek.WorkoutWeekId });
             }
 
             if (!await ValidateWorkoutWeek(workoutWeek.WorkoutWeekId))
