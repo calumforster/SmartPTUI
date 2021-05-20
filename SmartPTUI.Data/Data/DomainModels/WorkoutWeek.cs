@@ -11,7 +11,7 @@ namespace SmartPTUI.Data.DomainModels
         public int WorkoutWeekId { get; set; }
         public int StartWeight { get; set; }
         public int EndWeight { get; set; }
-        [Display(Name = "How Many Calories have you consumed (End Of The Week)")]
+        [Display(Name = "Amount of calories consumed this week:")]
         [Range(1, 50000)]
         [Required]
         public int? CaloriesConsumed { get; set; }

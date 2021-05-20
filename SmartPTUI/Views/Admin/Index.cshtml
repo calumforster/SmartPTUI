@@ -11,8 +11,9 @@
             <p>  @Model.CustomerList[i].User.Email </p>
 
             <div class="form-group">
+                <p>Type: Customer</p>
                 @Html.LabelFor(m => m.CustomerList[i].isDisabled)
-                @Html.CheckBoxFor(m => m.CustomerList[i].isDisabled)
+                @Html.CheckBoxFor(m => m.CustomerList[i].isDisabled)                
             </div>
 
         }

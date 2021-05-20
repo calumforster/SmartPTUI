@@ -2,43 +2,62 @@
 @model WorkoutWeek
 
 <h2>Workout Days:</h2>
-@for (int j = 0; j < Model.Workout.Count; j++)
-{
-    <p>@Html.ActionLink("Workout Day " + (j + 1), "WorkoutSession", "Workout", new { id = Model.Workout[j].WorkoutSessionId })</p>
-}
 
-<div class="row justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start">
-    <div class="col-4" align="center">
-        <form asp-controller="Workout" asp-action="SubmitWorkoutWeek">
+<div class="info-panel p-3">
 
-            @Html.HiddenFor(x => x.WorkoutWeekId)
-            @Html.HiddenFor(x => x.isCompletedWorkoutWeek)
-            @Html.HiddenFor(x => x.WorkoutPlan.WorkoutPlanId)
+    <ul class="list-group">
+        @for (int j = 0; j < Model.Workout.Count; j++)
+        {
+            <li class="list-group-item"> @Html.ActionLink("Workout Day " + (j + 1), "WorkoutSession", "Workout", new { id = Model.Workout[j].WorkoutSessionId }) </li>
+        }
+    </ul>
 
 
-    @if (!Model.isCompletedWorkoutWeek)
-    {
-        <div class="form-group ">
-            @Html.LabelFor(m => m.CaloriesConsumed)
-            @Html.TextBoxFor(m => m.CaloriesConsumed, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.CaloriesConsumed, null, new { @class = "text-danger" })
+    <br>
+    <br>
+
+    <form asp-controller="Workout" asp-action="SubmitWorkoutWeek">
+
+        @Html.HiddenFor(x => x.WorkoutWeekId)
+        @Html.HiddenFor(x => x.isCompletedWorkoutWeek)
+        @Html.HiddenFor(x => x.WorkoutPlan.WorkoutPlanId)
+
+
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                @Html.LabelFor(m => m.CaloriesConsumed)
+                @Html.TextBoxFor(m => m.CaloriesConsumed, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CaloriesConsumed, null, new { @class = "text-danger" })
+            </li>
+        </ul>
+
+        <br>
+        <br>
+
+        <div class="row justify-content-center" align="center">
+            @if (!Model.isCompletedWorkoutWeek)
+            {
+                <button type="submit" class="btn btn-primary">Submit</button>
+            }
+            <div class="col-4" align="center">
+
+                @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId }, new { @class = "btn btn-secondary" })
+            </div>
+
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+
+    @if (Model.isCompletedWorkoutWeek)
+    {
+        <h3 style="color:green;">Workout Week Complete</h3>
+    }
+    else
+    {
+        <h3 style="color:red;">Workout Week Incomplete</h3>
     }
 
-        </form>
-    </div>
-    <div class="col-3" align="center">
-        @Html.ActionLink("Back", "Index", "Workout", new { workoutId = Model.WorkoutPlan.WorkoutPlanId }, new { @class = "btn btn-secondary" })
-    </div>
 </div>
-
-@if (Model.isCompletedWorkoutWeek)
-{
-    <h3>Workout Week Complete</h3>
-}
-else
-{
-    <h3> Workout Week Incomplete</h3>
-}

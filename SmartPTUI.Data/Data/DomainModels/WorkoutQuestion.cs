@@ -25,16 +25,16 @@ namespace SmartPTUI.Data.DomainModels
         public Goals Goal { get; set; }
 
         [Display(Name = "Number Of Weeks For Workout", Prompt = "How many Weeks you have for a workout")]
-        [Range(5, 12)]
+        [Range(6, 12)]
         [Required]
         public int? NumberOfWeeks { get; set; }
 
         [Display(Name = "Days a week for Workout", Prompt = "How many Days you have for a workout")]
-        [Range(3, 7)]
+        [Range(4, 7)]
         [Required]
         public int? DaysPerWeek { get; set; }
 
-        [Display(Name = "Amount Of Workouts Per session", Prompt = "4-10")]
+        [Display(Name = "Amount Of Exercises Per session", Prompt = "4-10")]
         [Range(4, 10)]
         [Required]
         public int? TimePerWorkout { get; set; }

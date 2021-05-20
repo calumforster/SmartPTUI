@@ -68,7 +68,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
 
             [Required]
             [Range(100, 250)]
-            [Display(Name = "Height")]
+            [Display(Name = "Height (cm's)")]
             public int Height { get; set; }
 
             [Required]

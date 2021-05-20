@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.Business", "Smart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.ContentRepository", "SmartPTUI.Repository\SmartPTUI.ContentRepository.csproj", "{AB5E2116-3F67-4049-8189-33584435D12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPTUI.Test", "SmartPTUI.Test\SmartPTUI.Test.csproj", "{77BF3D87-AFD8-44CA-8DBD-5E9472996212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPTUI.Test", "SmartPTUI.Test\SmartPTUI.Test.csproj", "{77BF3D87-AFD8-44CA-8DBD-5E9472996212}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPTUI.Test.Unit", "SmartPTUI.Test.Unit\SmartPTUI.Test.Unit.csproj", "{A7591934-2222-4F0A-BC0C-F019D21A4766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{77BF3D87-AFD8-44CA-8DBD-5E9472996212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77BF3D87-AFD8-44CA-8DBD-5E9472996212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77BF3D87-AFD8-44CA-8DBD-5E9472996212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7591934-2222-4F0A-BC0C-F019D21A4766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7591934-2222-4F0A-BC0C-F019D21A4766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7591934-2222-4F0A-BC0C-F019D21A4766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7591934-2222-4F0A-BC0C-F019D21A4766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

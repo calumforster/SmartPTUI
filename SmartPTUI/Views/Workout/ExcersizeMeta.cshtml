@@ -3,6 +3,7 @@
 
 @{
     string readonlyValue = Model.isCompletedExcersizeMeta ? "disabled='disable'" : string.Empty;
+    string tenRmUrl = "https://www.verywellfit.com/what-is-repetition-maximum-and-1rm-3498379#:~:text=A%20repetition%20maximum%20(RM)%20is,follow%20your%20weight%20training%20program.";
 
 }
 
@@ -10,7 +11,6 @@
     <h2 class="text-center">Excersize Info</h2>
     <p>Name: @Model.ExcersizeType.WorkoutName</p>
     <p>Sets: @Model.SetsGoal</p>
-    <p>Reps: @Model.RepsGoal</p>
     @if (Model.WeightGoal != 0)
     {
         <p>Reps: @Model.RepsGoal</p>
@@ -20,11 +20,11 @@
     {
         Model.RepsGoal = 10;
         <p>Reps: 10</p>
-        <p>This is your 10 Rep max set - see here for more info</p>
-
+        <a href="@tenRmUrl">10 Rep Maximum Description</a>
+        <br>
+        <br>
     }
 
-    <p>How To:</p>
     <a href="@Model.ExcersizeType.WorkoutDescription">Video How To</a>
 </div>
 
@@ -113,15 +113,14 @@
             @Html.ActionLink("Back", "WorkoutSession", "Workout", new { id = Model.Workout.WorkoutSessionId }, new { @class = "btn btn-secondary" })
         </div>
     </div>
+    <div class="m-2">
+        @if (Model.isCompletedExcersizeMeta)
+        {
+            <h3 style="color:green;">Exercise Complete</h3>
+        }
+        else
+        {
+            <h3 style="color:red;">Exercise Incomplete</h3>
+        }
+    </div>
 </form>
-
-<div class="m-2">
-    @if (Model.isCompletedExcersizeMeta)
-    {
-        <h3>Workout Session Complete</h3>
-    }
-    else
-    {
-        <h3> Workout Session Incomplete</h3>
-    }
-</div>

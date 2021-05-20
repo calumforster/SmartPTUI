@@ -48,6 +48,7 @@ namespace SmartPTUI.Controllers
                 return View("Index", viewModel);
             }
 
+
             var updatedCustomer = await _customerRepository.UpdateCustomer(_mapper.Map<CustomerViewModel, Customer>(viewModel.Customer));
 
             viewModel.Customer = _mapper.Map<Customer, CustomerViewModel>(updatedCustomer);

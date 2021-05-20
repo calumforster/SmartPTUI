@@ -28,7 +28,7 @@
     <ul class="list-group">
         @foreach (var customer in Model.PersonalTrainer.Customers)
         {
-            <li class="list-group-item"> @customer.FirstName @customer.LastName </li>
+            <li class="list-group-item"> @Html.ActionLink(customer.FirstName+" "+customer.LastName, "PTndex", "Dashboard", new { userId = customer.Id })</li>
         }
     </ul>
 </div>

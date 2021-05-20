@@ -2,40 +2,53 @@
 @model WorkoutSession
 
 <h3>Excersizes:</h3>
-@for (int z = 0; z < Model.Excersizes.Count; z++)
-{
-    <p> @Html.ActionLink("Excersize " + (z + 1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId }) </p>
 
-}
+<div class="info-panel p-3">
+
+    <ul class="list-group">
+
+        @for (int z = 0; z < Model.Excersizes.Count; z++)
+        {
+            <li class="list-group-item"> @Html.ActionLink("Excersize " + (z + 1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId }) </li>
+
+        }
+    </ul>
+
+    <br>
+    <br>
+
+    <div class="row justify-content-center">
+
+        @if (!Model.isCompletedWorkoutSession)
+        {
+            <div class="col-4" align="center">
+                <form asp-controller="Workout" asp-action="SubmitWorkoutSession">
+
+                    @Html.HiddenFor(x => x.WorkoutSessionId)
+                    @Html.HiddenFor(x => x.isCompletedWorkoutSession)
+                    @Html.HiddenFor(x => x.WorkoutWeek.WorkoutWeekId)
+                    @Html.HiddenFor(x => x.WorkoutWeek.CaloriesConsumed)
 
 
-<div class="row justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start">
-    @if (!Model.isCompletedWorkoutSession) {
+                    <button type="submit" class="btn btn-primary">Submit</button>
 
-        <div class="col-4" align="center">
-            <form asp-controller="Workout" asp-action="SubmitWorkoutSession">
 
-                @Html.HiddenFor(x => x.WorkoutSessionId)
-                @Html.HiddenFor(x => x.isCompletedWorkoutSession)
-                @Html.HiddenFor(x => x.WorkoutWeek.WorkoutWeekId)
-                @Html.HiddenFor(x => x.WorkoutWeek.CaloriesConsumed)
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-
-            </form>
+                </form>
+            </div>
+        }
+        <div class="col-3" align="center">
+            @Html.ActionLink("Back", "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek.WorkoutWeekId }, new { @class = "btn btn-secondary" })
         </div>
-    }
 
-    <div class="col-3" align="center">
-        @Html.ActionLink("Back", "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek.WorkoutWeekId }, new { @class = "btn btn-secondary" })
+
     </div>
-</div>
 
-@if (Model.isCompletedWorkoutSession)
-{
-    <h3>Workout Session Complete</h3>
-}
-else
-{
-    <h3> Workout Session Incomplete</h3>
-}
+    @if (Model.isCompletedWorkoutSession)
+    {
+        <h3 style="color:green;">Workout Session Complete</h3>
+    }
+    else
+    {
+        <h3 style="color:red;">Workout Session Incomplete</h3>
+    }
+</div>
