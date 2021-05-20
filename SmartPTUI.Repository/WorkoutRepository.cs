@@ -24,7 +24,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId)
         {
-            return await _context.WorkoutPlans.AsNoTracking().Include(x => x.WorkoutQuestion).Include(x => x.Customer).Where(x => x.Customer.Id == customerId).ToListAsync();
+            return await _context.WorkoutPlans.AsNoTracking().Include(x => x.WorkoutWeek).Include(x => x.WorkoutQuestion).Include(x => x.Customer).Where(x => x.Customer.Id == customerId).ToListAsync();
 
         }
 
@@ -102,6 +102,7 @@ namespace SmartPTUI.ContentRepository
         public async Task SaveWorkoutWeek(WorkoutWeek workoutWeek)
         {
             _context.Entry(workoutWeek).Property(x => x.isCompletedWorkoutWeek).IsModified = true;
+            _context.Entry(workoutWeek).Property(x => x.CaloriesConsumed).IsModified = true;
             await _context.SaveChangesAsync();
 
         }
