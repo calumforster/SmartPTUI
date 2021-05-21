@@ -26,5 +26,7 @@ namespace SmartPTUI.ContentRepository
 
         public Task SaveWorkoutPlan(WorkoutPlan workoutPlan);
         public Task SaveExcersizeSetWorkoutCalc(ExcersizeSet excersizeSet, int excersizeMetaId);
+
+        public Task SaveExcersizeMetaRevised(ExcersizeMeta excersizeMeta);
     }
 }

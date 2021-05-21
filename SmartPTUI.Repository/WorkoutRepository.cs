@@ -70,6 +70,17 @@ namespace SmartPTUI.ContentRepository
 
         }
 
+        public async Task SaveExcersizeMetaRevised(ExcersizeMeta excersizeMeta)
+        {
+            _context.Entry(excersizeMeta).Property(x => x.ExcersizeId).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.RepsGoal).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.SetsGoal).IsModified = true;
+            _context.Entry(excersizeMeta).Property(x => x.WeightGoal).IsModified = true;
+            await SaveExcersizeSets(excersizeMeta);
+
+            await _context.SaveChangesAsync();
+
+        }
 
         private async Task SaveExcersizeSets(ExcersizeMeta excersizeMeta)
         {

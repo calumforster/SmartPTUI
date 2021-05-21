@@ -17,6 +17,9 @@
             {
                 <li class="list-group-item"> @Html.ActionLink("Week " + (i + 1), "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek[i].WorkoutWeekId })</li>
             }
+            else { 
+    <li class="list-group-item"> @Html.ActionLink("Week " + (i + 1), "WorkoutWeek", "Workout", new { id = Model.WorkoutWeek[i].WorkoutWeekId })</li>
+            }
 
         }
     </ul>

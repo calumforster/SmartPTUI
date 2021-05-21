@@ -9,7 +9,7 @@
 
         @for (int z = 0; z < Model.Excersizes.Count; z++)
         {
-            <li class="list-group-item"> @Html.ActionLink("Excersize " + (z + 1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId }) </li>
+            <li class="list-group-item"> @Html.ActionLink("Exercise " + (z + 1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId }) </li>
 
         }
     </ul>

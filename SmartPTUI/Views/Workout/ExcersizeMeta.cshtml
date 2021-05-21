@@ -8,7 +8,7 @@
 }
 
 <div class="info-panel p-3 m-2">
-    <h2 class="text-center">Excersize Info</h2>
+    <h2 class="text-center">Exercise Info</h2>
     <p>Name: @Model.ExcersizeType.WorkoutName</p>
     <p>Sets: @Model.SetsGoal</p>
     @if (Model.WeightGoal != 0)
@@ -31,8 +31,8 @@
 
 <form id="ExerciseMetaForm" asp-controller="Workout" asp-action="SubmitExcersizeMeta" class="form p-3 m-2">
     <fieldset @readonlyValue>
-        <h2 class="text-center">Excersize Results</h2>
-
+        <h2 class="text-center">Exercise Results</h2>
+        @Html.HiddenFor(m => m.ExcersizeId)
         @Html.HiddenFor(m => m.ExcersizeType.Id)
         @Html.HiddenFor(m => m.SetsGoal)
         @Html.HiddenFor(m => m.RepsGoal)
@@ -116,11 +116,11 @@
     <div class="m-2">
         @if (Model.isCompletedExcersizeMeta)
         {
-            <h3 style="color:green;">Exercise Complete</h3>
+        <h3 style="color:green;">Exercise Complete</h3>
         }
         else
         {
-            <h3 style="color:red;">Exercise Incomplete</h3>
+        <h3 style="color:red;">Exercise Incomplete</h3>
         }
     </div>
 </form>

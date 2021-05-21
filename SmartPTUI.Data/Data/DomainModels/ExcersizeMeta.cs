@@ -18,7 +18,7 @@ namespace SmartPTUI.Data.DomainModels
    
         #nullable enable
         public virtual WorkoutSession? Workout { get; set; }
-        [Display(Name = "How do you feel after the excersize? 1 - Very Tired, 10 - No impact at all")]
+        [Display(Name = "How do you feel after the exercise? 1 - Very Tired, 10 - No impact at all")]
         [Range(1, 10)]
         [Required]
         public int ExcersizeFeedbackRating { get; set; }
