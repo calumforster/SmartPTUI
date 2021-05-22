@@ -1,10 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+describe('My First Test', () => {
+    it('Does not do much!', () => {
+        cy.visit('https://localhost:5001/');
+        cy.get('body').click();
+        cy.get('.navbar').click();
+        cy.get('#login').click();
+        cy.url().should('contains', 'https://localhost:5001/Identity/Account/Login');
+        cy.get('#Input_Email').click();
+        cy.get('#Input_Email').type('admintest@test.com');
+        cy.get('#Input_Password').click();
+        cy.get('#Input_Password').type('Welcome123!');
+        cy.get('.btn').click();
+        cy.url().should('contains', 'https://localhost:5001/');
+        cy.get('#manage').click();
+        cy.url().should('contains', 'https://localhost:5001/Identity/Account/Manage');
+        cy.get('#personal-data').click();
+        cy.url().should('contains', 'https://localhost:5001/Identity/Account/Manage/PersonalData');
+        cy.get('.btn-primary').click();
+        cy.get('#logout').click();
+        cy.url().should('contains', 'https://localhost:5001/');
 
-namespace SmartPTUI.Test.cypress.integration.cypress.integration.cypress.integration.SmartPtUITests
-{
-    class US6_Download_User_Data_Admin
-    {
-    }
-}
+        expect(true).to.equal(true);
+    })
+})

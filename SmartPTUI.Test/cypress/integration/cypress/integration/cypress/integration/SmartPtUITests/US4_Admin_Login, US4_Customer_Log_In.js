@@ -1,10 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+describe('My First Test', () => {
+    it('Does not do much!', () => {
 
-namespace SmartPTUI.Test.cypress.integration.cypress.integration.cypress.integration.SmartPtUITests
-{
-    class US4_Admin_Login__US4_Customer_Log_In
-    {
-    }
-}
+        cy.visit('https://localhost:5001/');
+        cy.get('body').click();
+        cy.get('#login').click();
+        cy.url().should('contains', 'https://localhost:5001/Identity/Account/Login');
+        cy.get('#Input_Email').click();
+        cy.get('#Input_Email').type('admintest@test.com');
+        cy.get('#Input_Password').click();
+        cy.get('#Input_Password').type('Welcome123!');
+        cy.get('.btn').click();
+        cy.url().should('contains', 'https://localhost:5001/');
+        cy.get('#logout').click();
+        cy.url().should('contains', 'https://localhost:5001/');
+        cy.get('#login').click();
+        cy.url().should('contains', 'https://localhost:5001/Identity/Account/Login');
+        cy.get('#Input_Email').click();
+        cy.get('#Input_Email').type('eddietest@test.com');
+        cy.get('#Input_Password').click();
+        cy.get('#Input_Password').type('{backspace}');
+        cy.get('#Input_Password').type('{backspace}');
+        cy.get('#Input_Password').type('{backspace}');
+        cy.get('#Input_Password').type('Welcome123!');
+        cy.get('.btn').click();
+        cy.url().should('contains', 'https://localhost:5001/');
+        cy.get('#logout').click();
+        cy.url().should('contains', 'https://localhost:5001/');
+
+
+        expect(true).to.equal(true);
+    })
+})
+
+
+
