@@ -26,8 +26,8 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<Customer> GetCustomerById(string id)
         {
-            var customer = await _context.Customers.AsNoTracking().Include(x=> x.PersonalTrainer).FirstOrDefaultAsync(x => x.UserId.Equals(id));
-  
+            var customer = await _context.Customers.AsNoTracking().Include(x => x.PersonalTrainer).FirstOrDefaultAsync(x => x.UserId.Equals(id));
+
             return customer;
         }
 
@@ -78,9 +78,9 @@ namespace SmartPTUI.ContentRepository
 
         public async Task UpdateCustomerAdmin(Customer customer)
         {
-                _context.Entry(customer).Property(x => x.isDisabled).IsModified = true;
-                await _context.SaveChangesAsync();
-           
+            _context.Entry(customer).Property(x => x.isDisabled).IsModified = true;
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task SaveCustomer(Customer customer)
@@ -97,7 +97,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task UpdatePT(PersonalTrainer pt)
         {
-           _context.Entry(pt).Collection(x => x.Customers).IsModified = true;
+            _context.Entry(pt).Collection(x => x.Customers).IsModified = true;
             await _context.SaveChangesAsync();
         }
 

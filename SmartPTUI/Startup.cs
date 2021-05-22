@@ -43,7 +43,7 @@ namespace SmartPTUI
             services.AddAutoMapper(typeof(AutoMapperConfig));
 
             services.AddTransient<UserManager<AppUser>>();
-            services.AddDbContext<SmartPTUIContext> (options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]).EnableSensitiveDataLogging(), ServiceLifetime.Transient);
+            services.AddDbContext<SmartPTUIContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]).EnableSensitiveDataLogging(), ServiceLifetime.Transient);
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IViewModelRepository, ViewModelRepository>();
             services.AddScoped<IQuestionnaireViewModel, QuestionnaireViewModel>();
@@ -56,13 +56,14 @@ namespace SmartPTUI
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, SmartPTUIContext dbContext ,UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, SmartPTUIContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -81,7 +82,7 @@ namespace SmartPTUI
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-         
+
 
             app.UseEndpoints(endpoints =>
             {

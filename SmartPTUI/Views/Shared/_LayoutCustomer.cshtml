@@ -10,7 +10,7 @@
     try
     {
         var user = await _userManager.GetUserAsync(this.User);
-        var customer = await _customerRepo.GetCustomerById(user.Id);      
+        var customer = await _customerRepo.GetCustomerById(user.Id);
 
         var ptId = customer.PersonalTrainer.Id;
         var pt = await _customerRepo.GetPTById(ptId);
@@ -22,7 +22,8 @@
         customStyling.SiteName = pt.SiteName;
         customStyling.WelcomeMessage = pt.WelcomeMessage;
     }
-    catch (Exception e) {
+    catch (Exception e)
+    {
         customStyling.BackgorundColour = "#ffffff";
         customStyling.TextColour = "#000000";
         customStyling.TitleColour = "#000000";

@@ -54,7 +54,7 @@ namespace SmartPTUI.Controllers
 
             var viewModel = await GetWorkoutPlans(customer.Id);
 
-            return View("Index",viewModel);
+            return View("Index", viewModel);
         }
 
 
@@ -65,7 +65,7 @@ namespace SmartPTUI.Controllers
                 WorkoutPlans = await _workoutTransaction.GetWorkoutPlansForCustomer(customerId)
             };
             return DashboardVm;
-        
+
         }
 
 

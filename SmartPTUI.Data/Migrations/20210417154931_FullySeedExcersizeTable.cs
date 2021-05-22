@@ -6,7 +6,7 @@ namespace SmartPTUI.Migrations
 {
     public partial class FullySeedExcersizeTable : Migration
     {
-        
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 
@@ -48,7 +48,7 @@ namespace SmartPTUI.Migrations
 
 
 
-            foreach (var excersize in SeedExcersize) 
+            foreach (var excersize in SeedExcersize)
             {
                 migrationBuilder.InsertData(
                     table: "ExcersizeStore",

@@ -42,12 +42,13 @@ namespace SmartPTUI.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pt = await _customerRepository.GetPTByUserId(user.Id);
-            var ptViewModel = new PTPageViewModel() { 
+            var ptViewModel = new PTPageViewModel()
+            {
                 PersonalTrainer = pt,
                 CustomerEmail = ""
             };
 
-            
+
             return View(ptViewModel);
         }
 
@@ -66,11 +67,12 @@ namespace SmartPTUI.Controllers
                 pt.Customers.Add(await _customerRepository.GetCustomerViaEmail(customerEmail));
                 await _customerRepository.UpdatePT(pt);
             }
-            catch (Exception e) { 
-            
-            
+            catch (Exception e)
+            {
+
+
             }
-            
+
 
             return RedirectToAction("Index", "PT");
         }

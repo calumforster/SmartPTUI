@@ -47,7 +47,7 @@ namespace SmartPTUI.ContentRepository
         public async Task<List<Excersize>> GetExcersizesWithWorkoutArea(int workoutAreaId)
         {
 
-            WorkoutArea workoutEnum = (WorkoutArea)workoutAreaId;            
+            WorkoutArea workoutEnum = (WorkoutArea)workoutAreaId;
 
             return await _context.ExcersizeStore.Where(x => x.CoreArea == workoutEnum).ToListAsync();
         }

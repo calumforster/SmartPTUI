@@ -149,7 +149,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
                     var customerList = new List<Customer>();
                     var customer = await _customerTransaction.GetCustomerViaEmail(Input.CustomerEmail);
                     if (customer != null)
-                    { 
+                    {
 
 
 

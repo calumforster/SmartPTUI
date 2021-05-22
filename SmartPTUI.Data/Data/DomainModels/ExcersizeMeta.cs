@@ -10,13 +10,13 @@ namespace SmartPTUI.Data.DomainModels
         public int ExcersizeMetaId { get; set; }
         public int ExcersizeId { get; set; }
         public List<ExcersizeSet> ExcersizeSet { get; set; }
-        #nullable enable
+#nullable enable
         public virtual Excersize? ExcersizeType { get; set; }
         public int SetsGoal { get; set; }
-        public int RepsGoal { get; set; }        
+        public int RepsGoal { get; set; }
         public int WeightGoal { get; set; }
-   
-        #nullable enable
+
+#nullable enable
         public virtual WorkoutSession? Workout { get; set; }
         [Display(Name = "How do you feel after the exercise? 1 - Very Tired, 10 - No impact at all")]
         [Range(1, 10)]

@@ -42,8 +42,8 @@ namespace SmartPTUI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> SubmitForm(QuestionnaireViewModel viewModel)
-        {           
-            if (!ModelState.IsValid) 
+        {
+            if (!ModelState.IsValid)
             {
                 return View("Index", viewModel);
             }

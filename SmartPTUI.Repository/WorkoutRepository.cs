@@ -19,7 +19,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<WorkoutPlan> GetWorkoutPlan(int id)
         {
-           return await _context.WorkoutPlans.AsNoTracking().Include(x => x.Customer).Include(x => x.WorkoutQuestion).Include(x => x.WorkoutWeek).ThenInclude(x => x.Workout).ThenInclude(x => x.Excersizes).ThenInclude(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.WorkoutPlanId == id);
+            return await _context.WorkoutPlans.AsNoTracking().Include(x => x.Customer).Include(x => x.WorkoutQuestion).Include(x => x.WorkoutWeek).ThenInclude(x => x.Workout).ThenInclude(x => x.Excersizes).ThenInclude(x => x.ExcersizeType).FirstOrDefaultAsync(x => x.WorkoutPlanId == id);
         }
 
         public async Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId)
@@ -35,7 +35,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task<WorkoutSession> GetWorkoutSession(int id)
         {
-           return await _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutWeek).Include(x => x.Excersizes).FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
+            return await _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutWeek).Include(x => x.Excersizes).FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
         }
 
         public async Task<ExcersizeMeta> GetExcersizeMeta(int id)
@@ -46,10 +46,10 @@ namespace SmartPTUI.ContentRepository
         public async Task<int> SaveInitialWorkout(WorkoutPlan workout)
         {
 
-           var customer =  _context.Customers.Where(x => x.Id == workout.Customer.Id).FirstOrDefault();
+            var customer = _context.Customers.Where(x => x.Id == workout.Customer.Id).FirstOrDefault();
 
             workout.Customer = customer;
-           
+
             _context.Add(workout);
             await _context.SaveChangesAsync();
             return workout.WorkoutPlanId;
@@ -84,7 +84,7 @@ namespace SmartPTUI.ContentRepository
 
         private async Task SaveExcersizeSets(ExcersizeMeta excersizeMeta)
         {
-            foreach (var set in excersizeMeta.ExcersizeSet) 
+            foreach (var set in excersizeMeta.ExcersizeSet)
             {
                 _context.Entry(set).Property(x => x.SetName).IsModified = true;
                 _context.Entry(set).Property(x => x.RepsAchieved).IsModified = true;
@@ -92,13 +92,13 @@ namespace SmartPTUI.ContentRepository
                 _context.Entry(set).Property(x => x.WeightAchieved).IsModified = true;
                 await _context.SaveChangesAsync();
             }
-            
+
         }
 
 
         public async Task SaveExcersizeSetWorkoutCalc(ExcersizeSet excersizeSet, int excersizeMetaId)
         {
-           await _context.Database.ExecuteSqlRawAsync("Insert Into ExcersizeSets Values('"+excersizeSet.SetName+"', 0, 0, 0, "+ excersizeMetaId + "); ");
+            await _context.Database.ExecuteSqlRawAsync("Insert Into ExcersizeSets Values('" + excersizeSet.SetName + "', 0, 0, 0, " + excersizeMetaId + "); ");
         }
 
 

@@ -23,7 +23,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly ICustomerTransactions _customerTransaction;
 
-        public LoginModel(SignInManager<AppUser> signInManager, 
+        public LoginModel(SignInManager<AppUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<AppUser> userManager,
             ICustomerTransactions customerTransaction)
@@ -80,7 +80,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -109,7 +109,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
 
 
                     }
-                    catch (Exception e) 
+                    catch (Exception e)
                     {
                         var userRole = await _userManager.GetRolesAsync(user);
                         string userRoleString = userRole.FirstOrDefault();

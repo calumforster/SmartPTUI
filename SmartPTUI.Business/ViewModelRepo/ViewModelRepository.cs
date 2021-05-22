@@ -28,8 +28,8 @@ namespace SmartPTUI.Business.ViewModelRepo
 
             return new QuestionnaireViewModel()
             {
-            Customer = _mapper.Map<Customer, CustomerViewModel>(customer),
-            WorkoutQuestion = new WorkoutQuestion()              
+                Customer = _mapper.Map<Customer, CustomerViewModel>(customer),
+                WorkoutQuestion = new WorkoutQuestion()
             };
         }
     }

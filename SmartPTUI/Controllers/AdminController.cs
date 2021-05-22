@@ -40,7 +40,7 @@ namespace SmartPTUI.Controllers
         [Authorize(Roles = "SMARTPTUIADMINROLE")]
         public async Task<IActionResult> Index()
         {
-           var customerList =  await _customerRepository.GetAllCustomers();
+            var customerList = await _customerRepository.GetAllCustomers();
 
             var viewModel = new AdminViewModel()
             {
@@ -56,7 +56,7 @@ namespace SmartPTUI.Controllers
 
             for (int i = 0; i < adminViewModel.CustomerList.Count; i++)
             {
-               var customer =  await _customerRepository.GetCustomerByDBId(adminViewModel.CustomerList[i].Id);
+                var customer = await _customerRepository.GetCustomerByDBId(adminViewModel.CustomerList[i].Id);
                 if (customer.isDisabled != adminViewModel.CustomerList[i].isDisabled)
                 {
                     customer.isDisabled = !customer.isDisabled;

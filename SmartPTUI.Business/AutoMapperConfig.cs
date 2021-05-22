@@ -7,12 +7,12 @@ using SmartPTUI.Data;
 
 namespace SmartPTUI.Business
 {
-    public class AutoMapperConfig : Profile 
+    public class AutoMapperConfig : Profile
     {
-        public AutoMapperConfig() 
+        public AutoMapperConfig()
         {
-            CreateMap<CustomerViewModel , Customer>().ReverseMap();
+            CreateMap<CustomerViewModel, Customer>().ReverseMap();
         }
-        
+
     }
 }

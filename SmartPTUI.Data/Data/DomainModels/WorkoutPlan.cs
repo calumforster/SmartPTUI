@@ -12,7 +12,7 @@ namespace SmartPTUI.Data.DomainModels
     {
         public int WorkoutPlanId { get; set; }
 
-        public WorkoutQuestion WorkoutQuestion { get; set; } 
+        public WorkoutQuestion WorkoutQuestion { get; set; }
         public IList<WorkoutWeek> WorkoutWeek { get; set; }
         public virtual Customer Customer { get; set; }
         public bool isCompletedWorkoutPlan { get; set; }

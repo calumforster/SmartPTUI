@@ -12,7 +12,7 @@ namespace SmartPTUI.Data
         public SmartPTUIContext(DbContextOptions<SmartPTUIContext> options)
             : base(options)
         {
-        
+
         }
 
         public DbSet<Customer> Customers { get; set; }

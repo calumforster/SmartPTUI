@@ -18,7 +18,7 @@ namespace SmartPTUI.Business.Transactions
         private readonly IMapper _mapper;
 
         private static readonly int oneRepMaximumCoEfficient = 75;
-      
+
         public WorkoutTransaction(IWorkoutRepository workoutRepository, IMapper mapper, IExcersizeRepository excersizeRepository)
         {
             _workoutRepository = workoutRepository;
@@ -36,9 +36,11 @@ namespace SmartPTUI.Business.Transactions
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;
             Workout.WorkoutWeek = new List<WorkoutWeek>();
             var excersizeList = new List<List<Excersize>>();
-            for (int x = 0; x < questionResults.WorkoutQuestion.NumberOfWeeks; x++) {
+            for (int x = 0; x < questionResults.WorkoutQuestion.NumberOfWeeks; x++)
+            {
 
-                Workout.WorkoutWeek.Add(new WorkoutWeek() {
+                Workout.WorkoutWeek.Add(new WorkoutWeek()
+                {
                     StartWeight = questionResults.WorkoutQuestion.StartWeight.Value,
                     EndWeight = questionResults.WorkoutQuestion.StartWeight.Value - 1,
                     CaloriesConsumed = 0
@@ -84,32 +86,33 @@ namespace SmartPTUI.Business.Transactions
                         Workout.WorkoutWeek[0].Workout.Add(workoutSession);
 
                     }
-                    else {
-                            WorkoutSession workoutSessionFollowing = new WorkoutSession();
-                            workoutSessionFollowing.Excersizes = new List<ExcersizeMeta>();
+                    else
+                    {
+                        WorkoutSession workoutSessionFollowing = new WorkoutSession();
+                        workoutSessionFollowing.Excersizes = new List<ExcersizeMeta>();
 
-                            for (int h = 0; h < Workout.WorkoutWeek[0].Workout[i].Excersizes.Count; h++)
+                        for (int h = 0; h < Workout.WorkoutWeek[0].Workout[i].Excersizes.Count; h++)
+                        {
+                            var excersizeB = Workout.WorkoutWeek[0].Workout[i].Excersizes[h];
+                            int excersizeIdB = excersizeB.ExcersizeId;
+                            workoutSessionFollowing.Excersizes.Add(new ExcersizeMeta
                             {
-                                var excersizeB = Workout.WorkoutWeek[0].Workout[i].Excersizes[h];
-                                int excersizeIdB = excersizeB.ExcersizeId;
-                                workoutSessionFollowing.Excersizes.Add(new ExcersizeMeta
-                                {
-                                    WeightGoal = 0,
-                                    SetsGoal = 1,
-                                    RepsGoal = 10,
-                                    ExcersizeId = excersizeIdB,
-                                    ExcersizeFeedbackRating = 0
-                                });
+                                WeightGoal = 0,
+                                SetsGoal = 1,
+                                RepsGoal = 10,
+                                ExcersizeId = excersizeIdB,
+                                ExcersizeFeedbackRating = 0
+                            });
 
-                                workoutSessionFollowing.Excersizes[h].ExcersizeSet = new List<ExcersizeSet>();
+                            workoutSessionFollowing.Excersizes[h].ExcersizeSet = new List<ExcersizeSet>();
 
-                                workoutSessionFollowing.Excersizes[h].ExcersizeSet.Add(new ExcersizeSet()
-                                {
-                                    SetName = $"10 RM Max Set"
-                                });
-                            }
+                            workoutSessionFollowing.Excersizes[h].ExcersizeSet.Add(new ExcersizeSet()
+                            {
+                                SetName = $"10 RM Max Set"
+                            });
+                        }
 
-                            Workout.WorkoutWeek[x].Workout.Add(workoutSessionFollowing);
+                        Workout.WorkoutWeek[x].Workout.Add(workoutSessionFollowing);
                     }
 
 
@@ -128,31 +131,32 @@ namespace SmartPTUI.Business.Transactions
             Workout.WorkoutWeek.Reverse();
 
             return await _workoutRepository.SaveInitialWorkout(Workout);
-            
+
         }
 
         public async Task CalculateNextWorkoutWeek(int workoutPlanId)
         {
-           var workoutPlan = await _workoutRepository.GetWorkoutPlan(workoutPlanId);
+            var workoutPlan = await _workoutRepository.GetWorkoutPlan(workoutPlanId);
 
-             if (!workoutPlan.WorkoutWeek[1].isCompletedWorkoutWeek)
+            if (!workoutPlan.WorkoutWeek[1].isCompletedWorkoutWeek)
             {
                 await CalculateSecondWorkoutWeek(workoutPlan);
             }
-             else if (!workoutPlan.WorkoutWeek[workoutPlan.WorkoutWeek.Count-1].isCompletedWorkoutWeek)
+            else if (!workoutPlan.WorkoutWeek[workoutPlan.WorkoutWeek.Count - 1].isCompletedWorkoutWeek)
             {
                 var workoutWeekList = workoutPlan.WorkoutWeek.ToList();
 
                 int previousWeek = 0;
                 int currentWeek = 0;
 
-                for (int h = 1; h < workoutWeekList.Count; h++) {
+                for (int h = 1; h < workoutWeekList.Count; h++)
+                {
                     if (workoutWeekList[h].isCompletedWorkoutWeek)
                     {
                         previousWeek = h;
-                        currentWeek = h+1;
+                        currentWeek = h + 1;
 
-                    }                             
+                    }
                 }
 
                 var workoutWeek = workoutPlan.WorkoutWeek[currentWeek];
@@ -176,13 +180,13 @@ namespace SmartPTUI.Business.Transactions
                         int avarageRepsInReserve = 0;
                         foreach (var sets in previousExcersizeMeta.ExcersizeSet)
                         {
-                            avarageRepsInReserve += sets.RepsInReserve;                        
+                            avarageRepsInReserve += sets.RepsInReserve;
                         }
 
                         avarageRepsInReserve = avarageRepsInReserve / previousExcersizeMeta.ExcersizeSet.Count;
 
                         //Add in further workout edits
-                       var excersizeIncrease = CalculateFollowingWeekWeightRepsSets(previousExcersizeMeta.WeightGoal, previousExcersizeMeta.RepsGoal, previousExcersizeMeta.SetsGoal, avarageRepsInReserve, previousExcersizeMeta.ExcersizeFeedbackRating);
+                        var excersizeIncrease = CalculateFollowingWeekWeightRepsSets(previousExcersizeMeta.WeightGoal, previousExcersizeMeta.RepsGoal, previousExcersizeMeta.SetsGoal, avarageRepsInReserve, previousExcersizeMeta.ExcersizeFeedbackRating);
 
 
                         tempExcersize.ExcersizeId = previousExcersizeMeta.ExcersizeId;
@@ -191,7 +195,7 @@ namespace SmartPTUI.Business.Transactions
                         tempExcersize.RepsGoal = excersizeIncrease.Item2;
                         tempExcersize.SetsGoal = excersizeIncrease.Item3;
                         tempExcersize.ExcersizeSet[0].SetName = "Set 1";
-                        
+
 
                         for (int z = 1; z < tempExcersize.SetsGoal; z++)
                         {
@@ -222,7 +226,7 @@ namespace SmartPTUI.Business.Transactions
             {
                 var workout = workoutWeek.Workout[i];
                 var prevWorkout = previousWorkoutWeek.Workout[i];
-                for (int j = 0; j < workout.Excersizes.Count; j++) 
+                for (int j = 0; j < workout.Excersizes.Count; j++)
                 {
                     var excersize = workout.Excersizes[j];
 
@@ -230,11 +234,11 @@ namespace SmartPTUI.Business.Transactions
 
                     var tempExcersize = await _workoutRepository.GetExcersizeMeta(excersize.ExcersizeMetaId);
 
-            
+
 
                     var previousExcersizeMeta = await _workoutRepository.GetExcersizeMeta(prevEx.ExcersizeMetaId);
 
-                    var weightRepSetCalculation = SecondWeekWeightRepsSets(previousExcersizeMeta.ExcersizeSet[0].WeightAchieved,workoutPlan.WorkoutQuestion.Goal);
+                    var weightRepSetCalculation = SecondWeekWeightRepsSets(previousExcersizeMeta.ExcersizeSet[0].WeightAchieved, workoutPlan.WorkoutQuestion.Goal);
 
                     tempExcersize.ExcersizeId = previousExcersizeMeta.ExcersizeId;
 
@@ -247,7 +251,7 @@ namespace SmartPTUI.Business.Transactions
                     for (int z = 1; z < weightRepSetCalculation.Item3; z++)
                     {
 
-                       await _workoutRepository.SaveExcersizeSetWorkoutCalc(new ExcersizeSet
+                        await _workoutRepository.SaveExcersizeSetWorkoutCalc(new ExcersizeSet
                         {
                             SetName = $"Set {z + 1}"
                         }, tempExcersize.ExcersizeMetaId);
@@ -255,8 +259,8 @@ namespace SmartPTUI.Business.Transactions
                     }
                     await _workoutRepository.SaveExcersizeMetaRevised(tempExcersize);
                 }
-            
-            
+
+
             }
 
         }
@@ -266,11 +270,11 @@ namespace SmartPTUI.Business.Transactions
 
             if (workoutGoal == Goals.WeightGain)
             {
-                double weightGainWeight = (double) CalculateOneRepMaximum(weight);
+                double weightGainWeight = (double)CalculateOneRepMaximum(weight);
                 double strenthPercent = 89;
                 double actualWeight = (strenthPercent / 100) * weightGainWeight;
 
-                return new Tuple<int, int, int>((int) actualWeight,5,3);
+                return new Tuple<int, int, int>((int)actualWeight, 5, 3);
             }
 
             if (workoutGoal == Goals.WeightLoss)
@@ -291,33 +295,33 @@ namespace SmartPTUI.Business.Transactions
                 return new Tuple<int, int, int>((int)actualWeight, 15, 3);
             }
             else return default;
-        
+
         }
 
         private Tuple<int, int, int> CalculateFollowingWeekWeightRepsSets(int weight, int reps, int sets, int rIr, int feedbackRating)
         {
             if (feedbackRating < 4)
             {
-                return new Tuple<int, int, int>(weight,reps,sets);
+                return new Tuple<int, int, int>(weight, reps, sets);
             }
 
             if (rIr > 5 && feedbackRating > 7)
             {
                 double weightIncreasePercent = weight / 10;
                 weight += (int)Math.Round(weightIncreasePercent, 0);
-                return new Tuple<int, int, int>(weight, reps, sets+1);
+                return new Tuple<int, int, int>(weight, reps, sets + 1);
             }
 
             if (rIr > 5 && feedbackRating > 5)
             {
                 double weightIncreasePercent = weight / 10;
-                weight += (int) Math.Round(weightIncreasePercent, 0);
+                weight += (int)Math.Round(weightIncreasePercent, 0);
                 return new Tuple<int, int, int>(weight, reps, sets);
             }
 
-            if (rIr > 2 && feedbackRating >5) 
+            if (rIr > 2 && feedbackRating > 5)
             {
-                return new Tuple<int, int, int>(weight, reps+2, sets);
+                return new Tuple<int, int, int>(weight, reps + 2, sets);
             }
 
 
@@ -359,7 +363,8 @@ namespace SmartPTUI.Business.Transactions
                     secondaryListNumbers.Add(seconrdaryNumber);
                     returnedExcersizeLift.Add(secondaryLift[seconrdaryNumber]);
                 }
-                else if(i > 2){
+                else if (i > 2)
+                {
 
                     int tertiaryNumber;
                     do
@@ -382,7 +387,7 @@ namespace SmartPTUI.Business.Transactions
             return await _workoutRepository.GetWorkoutPlan(id);
         }
 
-        public async Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId) 
+        public async Task<List<WorkoutPlan>> GetWorkoutPlansForCustomer(int customerId)
         {
             return await _workoutRepository.GetWorkoutPlansForCustomer(customerId);
         }
@@ -404,7 +409,7 @@ namespace SmartPTUI.Business.Transactions
 
         public async Task SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
         {
-             await _workoutRepository.SaveExcersizeMeta(excersizeMeta);
+            await _workoutRepository.SaveExcersizeMeta(excersizeMeta);
         }
 
         public async Task SaveWorkoutSession(WorkoutSession workoutSession)

@@ -31,7 +31,7 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            ICustomerTransactions customerTransaction )
+            ICustomerTransactions customerTransaction)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -109,16 +109,17 @@ namespace SmartPTUI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser {
-                    UserName = Input.Email, 
-                    Email = Input.Email 
+                var user = new AppUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
 
-                    
-                    
+
+
                     await _userManager.AddToRoleAsync(user, "AppUserRole");
                     _logger.LogInformation("User created a new account with password.");
 

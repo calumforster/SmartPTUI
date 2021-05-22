@@ -75,7 +75,7 @@ namespace SmartPTUI.Controllers
             excersizeMeta.isCompletedExcersizeMeta = true;
             await _workoutTransaction.SaveExcersizeMeta(excersizeMeta);
 
-            return RedirectToAction("WorkoutSession", "Workout", new {id = excersizeMeta.Workout.WorkoutSessionId });
+            return RedirectToAction("WorkoutSession", "Workout", new { id = excersizeMeta.Workout.WorkoutSessionId });
         }
 
 
@@ -138,7 +138,7 @@ namespace SmartPTUI.Controllers
                 return View("WorkoutPlan", workoutPlan);
             }
 
-            if (!await ValidateWorkoutPlan(workoutPlan.WorkoutPlanId)) 
+            if (!await ValidateWorkoutPlan(workoutPlan.WorkoutPlanId))
             {
                 //Todo Error Handling
                 return RedirectToAction("Index", "Workout", new { workoutId = workoutPlan.WorkoutPlanId });
@@ -158,9 +158,9 @@ namespace SmartPTUI.Controllers
             var workoutSession = await _workoutTransaction.GetWorkoutSession(workoutSessionId);
 
 
-            foreach (var excersize in workoutSession.Excersizes) 
+            foreach (var excersize in workoutSession.Excersizes)
             {
-                if (!excersize.isCompletedExcersizeMeta) 
+                if (!excersize.isCompletedExcersizeMeta)
                 {
                     return false;
                 }

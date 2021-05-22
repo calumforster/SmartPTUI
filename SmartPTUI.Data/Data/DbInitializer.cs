@@ -14,13 +14,13 @@ namespace SmartPTUI.Data.Data
 {
     public class DbInitializer
     {
-       
+
         public static async Task InitializeAsync(SmartPTUIContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var _context = context;
             var _userManager = userManager;
             var _roleManager = roleManager;
-            string[] emails = { "admintest@test.com","customertest@test.com", "pttest@test.com" };
+            string[] emails = { "admintest@test.com", "customertest@test.com", "pttest@test.com" };
             List<IdentityRole> roles = new List<IdentityRole>();
             roles.Add(new IdentityRole()
             {
@@ -103,9 +103,9 @@ namespace SmartPTUI.Data.Data
                 }
 
             }
-            
-         
-            
+
+
+
 
         }
 

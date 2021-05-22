@@ -8,6 +8,6 @@ namespace SmartPTUI.Models
 {
     public class AdminViewModel
     {
-       public List<Customer> CustomerList { get; set; }
+        public List<Customer> CustomerList { get; set; }
     }
 }
