@@ -6,6 +6,7 @@
 @inject ICustomerRepository _customerRepo
 
 @{
+    //Query's the customer table to see if a PT is linked and if styling should be grabbed from PT table
     var customStyling = new CustomStylingModel();
     try
     {
@@ -34,6 +35,8 @@
 
 
 }
+
+@* Styling model is passed to partial view to build css *@
 
 @await Html.PartialAsync("CustomStyling.cshtml", customStyling)
 <!DOCTYPE html>

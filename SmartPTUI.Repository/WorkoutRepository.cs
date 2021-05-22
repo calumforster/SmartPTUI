@@ -58,6 +58,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveExcersizeMeta(ExcersizeMeta excersizeMeta)
         {
+            //Defines what data is to be overwritten
             _context.Entry(excersizeMeta).Property(x => x.ExcersizeFeedbackRating).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.FurtherNotes).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.isCompletedExcersizeMeta).IsModified = true;
@@ -72,6 +73,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveExcersizeMetaRevised(ExcersizeMeta excersizeMeta)
         {
+            //Defines what data is to be overwritten
             _context.Entry(excersizeMeta).Property(x => x.ExcersizeId).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.RepsGoal).IsModified = true;
             _context.Entry(excersizeMeta).Property(x => x.SetsGoal).IsModified = true;
@@ -86,6 +88,7 @@ namespace SmartPTUI.ContentRepository
         {
             foreach (var set in excersizeMeta.ExcersizeSet)
             {
+                //Defines what data is to be overwritten
                 _context.Entry(set).Property(x => x.SetName).IsModified = true;
                 _context.Entry(set).Property(x => x.RepsAchieved).IsModified = true;
                 _context.Entry(set).Property(x => x.RepsInReserve).IsModified = true;
@@ -105,6 +108,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveWorkoutSession(WorkoutSession workoutSession)
         {
+            //Defines what data is to be overwritten
             _context.Entry(workoutSession).Property(x => x.isCompletedWorkoutSession).IsModified = true;
             await _context.SaveChangesAsync();
 
@@ -112,6 +116,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveWorkoutWeek(WorkoutWeek workoutWeek)
         {
+            //Defines what data is to be overwritten
             _context.Entry(workoutWeek).Property(x => x.isCompletedWorkoutWeek).IsModified = true;
             _context.Entry(workoutWeek).Property(x => x.CaloriesConsumed).IsModified = true;
             await _context.SaveChangesAsync();
@@ -120,6 +125,7 @@ namespace SmartPTUI.ContentRepository
 
         public async Task SaveWorkoutPlan(WorkoutPlan workoutPlan)
         {
+            //Defines what data is to be overwritten
             _context.Entry(workoutPlan).Property(x => x.isCompletedWorkoutPlan).IsModified = true;
             await _context.SaveChangesAsync();
         }

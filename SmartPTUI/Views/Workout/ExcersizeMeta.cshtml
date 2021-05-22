@@ -2,6 +2,7 @@
 @model ExcersizeMeta
 
 @{
+    //sets reused values - readOnlyValue locks the form if the page has already been submitted
     string readonlyValue = Model.isCompletedExcersizeMeta ? "disabled='disable'" : string.Empty;
     string tenRmUrl = "https://www.verywellfit.com/what-is-repetition-maximum-and-1rm-3498379#:~:text=A%20repetition%20maximum%20(RM)%20is,follow%20your%20weight%20training%20program.";
 
@@ -11,6 +12,7 @@
     <h2 class="text-center">Exercise Info</h2>
     <p>Name: @Model.ExcersizeType.WorkoutName</p>
     <p>Sets: @Model.SetsGoal</p>
+    @* Checks to see if first 10RM week to display alternative info *@
     @if (Model.WeightGoal != 0)
     {
         <p>Reps: @Model.RepsGoal</p>
@@ -32,6 +34,7 @@
 <form id="ExerciseMetaForm" asp-controller="Workout" asp-action="SubmitExcersizeMeta" class="form p-3 m-2">
     <fieldset @readonlyValue>
         <h2 class="text-center">Exercise Results</h2>
+        @* To ensure controller has these values retuned for server side logic and persistence *@
         @Html.HiddenFor(m => m.ExcersizeId)
         @Html.HiddenFor(m => m.ExcersizeType.Id)
         @Html.HiddenFor(m => m.SetsGoal)
@@ -102,6 +105,7 @@
         </div>
     </fieldset>
     <div class="row justify-content-center justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start mb-3">
+        @* Logic to show/hide submit button depending on completion status *@
         @if (!Model.isCompletedExcersizeMeta)
         {
             <div class="col-4" align="center">

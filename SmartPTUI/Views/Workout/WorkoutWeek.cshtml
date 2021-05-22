@@ -4,7 +4,7 @@
 <h2>Workout Days:</h2>
 
 <div class="info-panel p-3">
-
+    @* List of workout days *@
     <ul class="list-group">
         @for (int j = 0; j < Model.Workout.Count; j++)
         {
@@ -36,6 +36,7 @@
         <br>
 
         <div class="row justify-content-center" align="center">
+            @* Show/Hide submit button *@
             @if (!Model.isCompletedWorkoutWeek)
             {
                 <button type="submit" class="btn btn-primary">Submit</button>

@@ -10,11 +10,9 @@ namespace SmartPTUI.Controllers
 {
     public class WorkoutController : Controller
     {
-        private readonly ILogger<WorkoutController> _logger;
         private readonly IWorkoutTransaction _workoutTransaction;
-        public WorkoutController(ILogger<WorkoutController> logger, IViewModelRepository viewModelRepository, IWorkoutTransaction workoutTransaction)
+        public WorkoutController(IWorkoutTransaction workoutTransaction)
         {
-            _logger = logger;
             _workoutTransaction = workoutTransaction;
         }
 
@@ -69,9 +67,10 @@ namespace SmartPTUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //Validation not working
                 return View("ExcersizeMeta", excersizeMeta);
             }
+
+            //If the form has no validation issues set flag as complete, save to db and return to workout session parent page
             excersizeMeta.isCompletedExcersizeMeta = true;
             await _workoutTransaction.SaveExcersizeMeta(excersizeMeta);
 
@@ -85,10 +84,10 @@ namespace SmartPTUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitWorkoutSession(WorkoutSession workoutSession)
         {
-
+            
+            //Performs validation to ensure nested Excersize Meta's are complete
             if (!await ValidateWorkoutSession(workoutSession.WorkoutSessionId))
             {
-                //Error handle for uncompleted Excersize metas
                 return RedirectToAction("WorkoutSession", "Workout", new { id = workoutSession.WorkoutSessionId });
             }
 
@@ -112,15 +111,16 @@ namespace SmartPTUI.Controllers
                 return RedirectToAction("WorkoutWeek", "Workout", new { id = workoutWeek.WorkoutWeekId });
             }
 
+            //Performs validation to ensure nested workout sessions are complete
             if (!await ValidateWorkoutWeek(workoutWeek.WorkoutWeekId))
             {
-                //Todo Error handling
                 return RedirectToAction("WorkoutWeek", "Workout", new { id = workoutWeek.WorkoutWeekId });
             }
 
             workoutWeek.isCompletedWorkoutWeek = true;
             await _workoutTransaction.SaveWorkoutWeek(workoutWeek);
 
+            //Based on this workout week's data next week's is calculated
             await _workoutTransaction.CalculateNextWorkoutWeek(workoutWeek.WorkoutPlan.WorkoutPlanId);
 
             return RedirectToAction("Index", "Workout", new { workoutId = workoutWeek.WorkoutPlan.WorkoutPlanId });
@@ -138,9 +138,9 @@ namespace SmartPTUI.Controllers
                 return View("WorkoutPlan", workoutPlan);
             }
 
+            //Performs validation ensuring nested workout weeks are complete
             if (!await ValidateWorkoutPlan(workoutPlan.WorkoutPlanId))
             {
-                //Todo Error Handling
                 return RedirectToAction("Index", "Workout", new { workoutId = workoutPlan.WorkoutPlanId });
             }
 

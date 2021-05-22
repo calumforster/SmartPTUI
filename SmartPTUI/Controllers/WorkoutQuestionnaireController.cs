@@ -15,18 +15,14 @@ namespace SmartPTUI.Controllers
 {
     public class WorkoutQuestionnaireController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IViewModelRepository _viewModelRepository;
-        private readonly IQuestionnaireViewModel _questionnaireViewModel;
         private readonly ICustomerRepository _customerRepository;
         private readonly IWorkoutTransaction _workoutTransaction;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public WorkoutQuestionnaireController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel, UserManager<AppUser> userManager, IWorkoutTransaction workoutTransaction, ICustomerRepository customerRepository, IMapper mapper)
+        public WorkoutQuestionnaireController(IViewModelRepository viewModelRepository, UserManager<AppUser> userManager, IWorkoutTransaction workoutTransaction, ICustomerRepository customerRepository, IMapper mapper)
         {
-            _logger = logger;
             _viewModelRepository = viewModelRepository;
-            _questionnaireViewModel = questionnaireViewModel;
             _userManager = userManager;
             _workoutTransaction = workoutTransaction;
             _customerRepository = customerRepository;
@@ -36,6 +32,7 @@ namespace SmartPTUI.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            //Initiates the ViewModel
             var model = await _viewModelRepository.GetQuestionnaireViewModel(user.Id);
             return View(model);
         }
@@ -48,7 +45,7 @@ namespace SmartPTUI.Controllers
                 return View("Index", viewModel);
             }
 
-
+            //Maps any updated customer information
             var updatedCustomer = await _customerRepository.UpdateCustomer(_mapper.Map<CustomerViewModel, Customer>(viewModel.Customer));
 
             viewModel.Customer = _mapper.Map<Customer, CustomerViewModel>(updatedCustomer);

@@ -1,6 +1,7 @@
 ﻿@model DashboardViewModel
+@* Sets base colours for Bar Chart to be itterated through on page load *@
 
-@{ 
+@{
     List<string> backGroundColourList = new List<string>() {
                         "rgba(255, 99, 132, 0.2)",
                         "rgba(54, 162, 235, 0.2)",
@@ -27,17 +28,22 @@
                         "rgba(52, 235, 232, 1)",
                         "rgba(191, 10, 10, 1)",
                         "rgba(70, 219, 242, 1)",
-                        "rgba(118, 94, 214, 1)" 
+                        "rgba(118, 94, 214, 1)"
     };
 
 }
 
+@* Refference to chart js cdn *@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/chart.min.js"></script>
 
 <h1>Workout Plans:</h1>
 
+@* Itterates through workout plans *@
+
 @for (int i = 0; i < Model.WorkoutPlans.Count; i++)
 {
+
+    @* URL to Workout Plan *@
 
     @Html.ActionLink(Model.WorkoutPlans[i].WorkoutQuestion.WorkoutName, "Index", "Workout", new { workoutId = Model.WorkoutPlans[i].WorkoutPlanId }, new { @class = "btn btn-secondary" })
 
@@ -48,6 +54,7 @@
     string backgroundColourSet = "";
     string borderColourSet = "";
 
+    @* Builds up data to be injected as raw text into the ajax call to the graph *@
 
     for (int j = 0; j < Model.WorkoutPlans[i].WorkoutWeek.Count; j++)
     {

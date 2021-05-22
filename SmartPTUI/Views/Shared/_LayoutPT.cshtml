@@ -6,6 +6,7 @@
 @inject ICustomerRepository _customerRepo
 
 @{
+    //Grabs PT's personal styling choices
     var customStyling = new CustomStylingModel();
 
     var user = await _userManager.GetUserAsync(this.User);
@@ -20,6 +21,8 @@
 
 
 }
+
+@* Styling model is passed to partial view to build css *@
 
 @await Html.PartialAsync("CustomStyling.cshtml", customStyling)
 

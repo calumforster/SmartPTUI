@@ -6,7 +6,7 @@
 <div class="info-panel p-3">
 
     <ul class="list-group">
-
+        @* List of exercise meta's with URL's *@
         @for (int z = 0; z < Model.Excersizes.Count; z++)
         {
             <li class="list-group-item"> @Html.ActionLink("Exercise " + (z + 1), "ExcersizeMeta", "Workout", new { id = Model.Excersizes[z].ExcersizeMetaId }) </li>
@@ -18,7 +18,7 @@
     <br>
 
     <div class="row justify-content-center">
-
+        @* Show/Hide submit button *@
         @if (!Model.isCompletedWorkoutSession)
         {
             <div class="col-4" align="center">

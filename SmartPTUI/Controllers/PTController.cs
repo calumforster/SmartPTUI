@@ -1,14 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SmartPTUI.Areas.Identity.Data;
-using SmartPTUI.Business.Transactions;
-using SmartPTUI.Business.ViewModelRepo;
-using SmartPTUI.Business.ViewModels;
 using SmartPTUI.ContentRepository;
-using SmartPTUI.Data;
 using SmartPTUI.Models;
 using System;
 using System.Threading.Tasks;
@@ -17,23 +11,13 @@ namespace SmartPTUI.Controllers
 {
     public class PTController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IViewModelRepository _viewModelRepository;
-        private readonly IQuestionnaireViewModel _questionnaireViewModel;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IWorkoutTransaction _workoutTransaction;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
 
-        public PTController(ILogger<HomeController> logger, IViewModelRepository viewModelRepository, IQuestionnaireViewModel questionnaireViewModel, UserManager<AppUser> userManager, IWorkoutTransaction workoutTransaction, ICustomerRepository customerRepository, IMapper mapper)
+        public PTController(UserManager<AppUser> userManager, ICustomerRepository customerRepository)
         {
-            _logger = logger;
-            _viewModelRepository = viewModelRepository;
-            _questionnaireViewModel = questionnaireViewModel;
             _userManager = userManager;
-            _workoutTransaction = workoutTransaction;
             _customerRepository = customerRepository;
-            _mapper = mapper;
         }
 
 
@@ -42,6 +26,8 @@ namespace SmartPTUI.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pt = await _customerRepository.GetPTByUserId(user.Id);
+
+            //sets the viewModel state
             var ptViewModel = new PTPageViewModel()
             {
                 PersonalTrainer = pt,
@@ -62,6 +48,8 @@ namespace SmartPTUI.Controllers
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pt = await _customerRepository.GetPTByUserId(user.Id);
+
+            //attempts to find the customer entered via db call
             try
             {
                 pt.Customers.Add(await _customerRepository.GetCustomerViaEmail(customerEmail));
@@ -69,7 +57,7 @@ namespace SmartPTUI.Controllers
             }
             catch (Exception e)
             {
-
+                //if logging is implemented for a non found users
 
             }
 

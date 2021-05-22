@@ -28,7 +28,7 @@ namespace SmartPTUI.Business.Transactions
 
         public async Task<int> CreateWorkout(QuestionnaireViewModel questionResults)
         {
-
+            //Object instantiation
             var Workout = new WorkoutPlan();
 
 
@@ -36,9 +36,10 @@ namespace SmartPTUI.Business.Transactions
             Workout.WorkoutQuestion = questionResults.WorkoutQuestion;
             Workout.WorkoutWeek = new List<WorkoutWeek>();
             var excersizeList = new List<List<Excersize>>();
+
             for (int x = 0; x < questionResults.WorkoutQuestion.NumberOfWeeks; x++)
             {
-
+                //Adds a workout week based on answers on workout form
                 Workout.WorkoutWeek.Add(new WorkoutWeek()
                 {
                     StartWeight = questionResults.WorkoutQuestion.StartWeight.Value,
@@ -54,11 +55,13 @@ namespace SmartPTUI.Business.Transactions
                 for (int i = 0; i < questionResults.WorkoutQuestion.DaysPerWeek; i++)
                 {
 
-
+                    //If it's the first week, cycle through exercise type and relevent workouts per day
                     if (x == 0)
                     {
                         WorkoutSession workoutSession = new WorkoutSession();
                         workoutSession.Excersizes = new List<ExcersizeMeta>();
+
+                        //Get's the workout from the db based on what day it is 1-4, cycling round on the 3-7 days
                         excersizeList.Add(GenerateFinalExcersizeList(await _excersizeRepository.GetExcersizesWithWorkoutArea(excersizeCycle), questionResults.WorkoutQuestion.TimePerWorkout.Value));
 
                         var excersizeListOfExcersize = excersizeList[excersizeCycle];
@@ -66,6 +69,8 @@ namespace SmartPTUI.Business.Transactions
                         {
                             var excersize = excersizeListOfExcersize[j];
                             int excersizeId = excersize.Id;
+                            
+                            //Adds the exercise - limited by how many exercises per session user chose in form
                             workoutSession.Excersizes.Add(new ExcersizeMeta
                             {
                                 WeightGoal = 0,
@@ -75,8 +80,11 @@ namespace SmartPTUI.Business.Transactions
                                 ExcersizeFeedbackRating = 0
                             });
 
+                            //Object instantiation
+
                             workoutSession.Excersizes[j].ExcersizeSet = new List<ExcersizeSet>();
 
+                            //First week so set name is 10RM
                             workoutSession.Excersizes[j].ExcersizeSet.Add(new ExcersizeSet()
                             {
                                 SetName = $"10 RM Max Set"
@@ -88,6 +96,8 @@ namespace SmartPTUI.Business.Transactions
                     }
                     else
                     {
+                        //Same as on first week generation, yet clones previous week's structure for remaining ones
+
                         WorkoutSession workoutSessionFollowing = new WorkoutSession();
                         workoutSessionFollowing.Excersizes = new List<ExcersizeMeta>();
 
@@ -116,6 +126,7 @@ namespace SmartPTUI.Business.Transactions
                     }
 
 
+                    //Cyclical workout type flag - see ExeciseType enum for values
                     if ((i > 0) && (i % 3 == 0))
                     {
                         excersizeCycle = excersizeCycle - 3;
@@ -128,8 +139,10 @@ namespace SmartPTUI.Business.Transactions
 
                 }
             }
+            //Reverses list due to filo nature of list
             Workout.WorkoutWeek.Reverse();
 
+            //Saves to database
             return await _workoutRepository.SaveInitialWorkout(Workout);
 
         }
@@ -138,10 +151,12 @@ namespace SmartPTUI.Business.Transactions
         {
             var workoutPlan = await _workoutRepository.GetWorkoutPlan(workoutPlanId);
 
+            //Checks to see if the 2nd week has been completed or not (as this calculation is different to first and remaining weeks
             if (!workoutPlan.WorkoutWeek[1].isCompletedWorkoutWeek)
             {
                 await CalculateSecondWorkoutWeek(workoutPlan);
             }
+            //Checks to make sure there are remaining uncomplete workout weeks
             else if (!workoutPlan.WorkoutWeek[workoutPlan.WorkoutWeek.Count - 1].isCompletedWorkoutWeek)
             {
                 var workoutWeekList = workoutPlan.WorkoutWeek.ToList();
@@ -149,6 +164,8 @@ namespace SmartPTUI.Business.Transactions
                 int previousWeek = 0;
                 int currentWeek = 0;
 
+
+                //finds current index and previous weeks index
                 for (int h = 1; h < workoutWeekList.Count; h++)
                 {
                     if (workoutWeekList[h].isCompletedWorkoutWeek)
@@ -162,7 +179,7 @@ namespace SmartPTUI.Business.Transactions
                 var workoutWeek = workoutPlan.WorkoutWeek[currentWeek];
                 var previousWorkoutWeek = workoutPlan.WorkoutWeek[previousWeek];
 
-
+                //Itterates through workout sessions to adjust newly generated goals based on previous week
                 for (int i = 0; i < workoutWeek.Workout.Count; i++)
                 {
                     var workout = workoutWeek.Workout[i];
@@ -177,6 +194,7 @@ namespace SmartPTUI.Business.Transactions
 
                         var previousExcersizeMeta = await _workoutRepository.GetExcersizeMeta(prevEx.ExcersizeMetaId);
 
+                        //Calculated avarage reps in reserve from previous week
                         int avarageRepsInReserve = 0;
                         foreach (var sets in previousExcersizeMeta.ExcersizeSet)
                         {
@@ -185,10 +203,11 @@ namespace SmartPTUI.Business.Transactions
 
                         avarageRepsInReserve = avarageRepsInReserve / previousExcersizeMeta.ExcersizeSet.Count;
 
-                        //Add in further workout edits
+
                         var excersizeIncrease = CalculateFollowingWeekWeightRepsSets(previousExcersizeMeta.WeightGoal, previousExcersizeMeta.RepsGoal, previousExcersizeMeta.SetsGoal, avarageRepsInReserve, previousExcersizeMeta.ExcersizeFeedbackRating);
 
 
+                        //Assigns updated data to excersize meta - before overwriting in the db
                         tempExcersize.ExcersizeId = previousExcersizeMeta.ExcersizeId;
 
                         tempExcersize.WeightGoal = excersizeIncrease.Item1;
@@ -196,7 +215,7 @@ namespace SmartPTUI.Business.Transactions
                         tempExcersize.SetsGoal = excersizeIncrease.Item3;
                         tempExcersize.ExcersizeSet[0].SetName = "Set 1";
 
-
+                        //Adds sets if required and saves to database
                         for (int z = 1; z < tempExcersize.SetsGoal; z++)
                         {
 
@@ -218,10 +237,11 @@ namespace SmartPTUI.Business.Transactions
 
         private async Task CalculateSecondWorkoutWeek(WorkoutPlan workoutPlan)
         {
+            //get's first and current week
             var workoutWeek = workoutPlan.WorkoutWeek[1];
             var previousWorkoutWeek = workoutPlan.WorkoutWeek[0];
 
-
+            //itterates through workout session
             for (int i = 0; i < workoutWeek.Workout.Count; i++)
             {
                 var workout = workoutWeek.Workout[i];
@@ -240,6 +260,8 @@ namespace SmartPTUI.Business.Transactions
 
                     var weightRepSetCalculation = SecondWeekWeightRepsSets(previousExcersizeMeta.ExcersizeSet[0].WeightAchieved, workoutPlan.WorkoutQuestion.Goal);
 
+
+                    //assigns newly calculated data to excersize meta
                     tempExcersize.ExcersizeId = previousExcersizeMeta.ExcersizeId;
 
                     tempExcersize.WeightGoal = weightRepSetCalculation.Item1;
@@ -248,6 +270,7 @@ namespace SmartPTUI.Business.Transactions
                     tempExcersize.ExcersizeSet[0].SetName = "Set 1";
                     tempExcersize.ExcersizeSet[0].RepsAchieved = 0;
 
+                    //Adds in extra sets and saves to db
                     for (int z = 1; z < weightRepSetCalculation.Item3; z++)
                     {
 
@@ -267,6 +290,7 @@ namespace SmartPTUI.Business.Transactions
 
         private Tuple<int, int, int> SecondWeekWeightRepsSets(int weight, Goals workoutGoal)
         {
+            //depending on workout goal, different amount of reps, sets and weight added to workout
 
             if (workoutGoal == Goals.WeightGain)
             {
@@ -300,6 +324,8 @@ namespace SmartPTUI.Business.Transactions
 
         private Tuple<int, int, int> CalculateFollowingWeekWeightRepsSets(int weight, int reps, int sets, int rIr, int feedbackRating)
         {
+
+            //depending on feedback from previous week - weight, reps or sets are altered
             if (feedbackRating < 4)
             {
                 return new Tuple<int, int, int>(weight, reps, sets);
@@ -338,6 +364,7 @@ namespace SmartPTUI.Business.Transactions
 
             var returnedExcersizeLift = new List<Excersize>();
 
+            //uses LINQ query to find different difficulties of lift in the provided collection
             var compoundLift = excersizeList.Where(x => x.Difficulty == 1).FirstOrDefault();
             var secondaryLift = excersizeList.Where(x => x.Difficulty == 2).ToList();
             var tertiaryLift = excersizeList.Where(x => x.Difficulty == 3).ToList();
@@ -346,7 +373,7 @@ namespace SmartPTUI.Business.Transactions
             List<int> secondaryListNumbers = new List<int>();
             List<int> tertiaryListNumbers = new List<int>();
 
-
+            //depending on amount of exercises different amounts of lifts are added - will always have one compound and 3 secondary lifts
             for (int i = 0; i < numberOfExcersizes; i++)
             {
                 if (i < 1)

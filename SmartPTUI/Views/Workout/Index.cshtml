@@ -5,7 +5,7 @@
 
 <div class="info-panel p-3">
     <h2 class="text-center">Workout weeks</h2>
-
+    @* List of workout weeks with links *@
     <ul class="list-group">
         @for (int i = 0; i < Model.WorkoutWeek.Count; i++)
         {
@@ -25,7 +25,6 @@
     <br>
 
     <div class="row justify-content-center">
-        <!-- col-4 applies for xs only, needs col-sm-3 col-m-3 col-l-2 col-xl-2 maybe-->
         <div class="col-4" align="center">
             <form asp-controller="Workout" asp-action="SubmitWorkoutPlan">
 

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,6 +41,8 @@ namespace SmartPTUI
 
             services.AddAutoMapper(typeof(AutoMapperConfig));
 
+            //Dependency Injection and DB context initialisations
+
             services.AddTransient<UserManager<AppUser>>();
             services.AddDbContext<SmartPTUIContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:SmartPTUIContextConnection"]).EnableSensitiveDataLogging(), ServiceLifetime.Transient);
             services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -53,6 +54,8 @@ namespace SmartPTUI
             services.AddScoped<IWorkoutTransaction, WorkoutTransaction>();
             services.AddScoped<IExcersizeRepository, ExcersizeRepository>();
             services.AddScoped<SmartPTUIContext>();
+            
+            //MVC services
             services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -92,6 +95,7 @@ namespace SmartPTUI
                 endpoints.MapRazorPages();
             });
 
+            //Seeds the db if the db is empty
             DbInitializer.InitializeAsync(dbContext, userManager, roleManager).Wait();
         }
 

@@ -14,9 +14,10 @@ namespace SmartPTUI.Data.Data
 {
     public class DbInitializer
     {
-
+        //seeds database at project start
         public static async Task InitializeAsync(SmartPTUIContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            //Populates models to be added to db
             var _context = context;
             var _userManager = userManager;
             var _roleManager = roleManager;
@@ -63,7 +64,7 @@ namespace SmartPTUI.Data.Data
                     EmailConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D")
                 };
-
+                //Checks to see if record exists
                 if (!context.Users.Any(u => u.UserName == user.UserName))
                 {
                     var password = new PasswordHasher<AppUser>();

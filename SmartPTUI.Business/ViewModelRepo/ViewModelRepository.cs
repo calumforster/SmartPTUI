@@ -1,12 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using SmartPTUI.Business.ViewModels;
 using SmartPTUI.ContentRepository;
 using SmartPTUI.Data;
 using SmartPTUI.Data.DomainModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartPTUI.Business.ViewModelRepo
@@ -22,6 +18,7 @@ namespace SmartPTUI.Business.ViewModelRepo
             _mapper = mapper;
         }
 
+        //Builds view model containing customer and empty workout question model
         public async Task<QuestionnaireViewModel> GetQuestionnaireViewModel(string id)
         {
             var customer = await _customerRepository.GetCustomerById(id);
